@@ -1,0 +1,54 @@
+
+/** ADD YOUR AWESOME CODES HERE **/
+.log-reg-bnt{
+    display: flex;
+    flex-direction: row;
+    float: right;
+    margin-left: 10px;
+    color: white
+}
+
+.custom-h3{
+    font-size: 24px;
+     text-transform: uppercase;
+     font-weight: 600;
+}
+
+.custom-div{
+    border-top: solid;
+    border-color: #b0b435;
+}
+
+.custom-total{
+    background-color: rgb(239, 243, 241);
+}
+
+.custom-total p{
+    padding-top: 5px;
+    margin-left: 17px;
+}
+
+.custom-total a{
+    background-color: #b0b435;
+    color: white;
+    font-weight: bolder;
+    margin-top: 15px;
+    margin-right: 20px;
+}
+
+.custom-delivery{
+    display: flex;
+    justify-content: space-around;
+}
+
+.custom-logout-btn{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.borderimg {
+    border:  5px solid #b0b435 ;
+    border-radius: 5%;
+  }

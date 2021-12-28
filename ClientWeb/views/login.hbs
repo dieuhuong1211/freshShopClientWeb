@@ -1,0 +1,42 @@
+<!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Login</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active">Login</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+<!--Login form-->
+
+
+                <div class="container" style="margin-top: 30px;margin-bottom: 30px;">
+                    <div class="title-left">
+                        <h3>Account Login</h3>
+                    </div>
+                   
+                    <form method="post" class="mt-3 review-form-box" id="formLogin">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="InputEmail" class="mb-0">Email Address</label>
+                                <input type="text" name="email" class="form-control" id="InputEmail" placeholder="Enter Email"> </div>
+                            <div class="form-group col-md-6">
+                                <label for="InputPassword" class="mb-0">Password</label>
+                                <input type="password" name="password" class="form-control" id="InputPassword" placeholder="Password"> </div>
+                        </div>
+                        
+                        <button type="submit" class="btn hvr-hover">Login</button>
+                        {{#if undefinedUser}}
+                        <b style="color: coral;">
+                            The email or password you have entered is incorrect
+                        </b>
+                        {{/if}}
+                    </form>
+                </div>
