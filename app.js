@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 var session = require('express-session');
 //const fileUpload = require('express-fileupload');
+var hbs = require("hbs")
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -14,6 +15,8 @@ const galleryRouter = require('./routes/gallery');
 const aboutRouter = require('./routes/about');
 const authRouter = require('./components/auth/authRouter');
 const registerRouter = require('./routes/register');
+
+hbs.registerHelper("equal", require("handlebars-helper-equal"))
 
 const app = express();
 const passport = require('./auth/passport')
@@ -32,8 +35,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // error handler
-
-
 
 app.use(session({ 
   secret: process.env.SESSION_SECRET,

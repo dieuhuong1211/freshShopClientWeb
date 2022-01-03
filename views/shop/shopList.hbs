@@ -27,6 +27,9 @@
     <!-- End All Title Box -->
 
     <!-- Start Shop Page  -->
+<form method="get" action="/shop" id="filterandpaging">
+
+
     <div class="shop-box-inner">
         <div class="container">
             <div class="row">
@@ -34,20 +37,45 @@
                     <div class="right-product-box">
                         <div class="product-item-filter row">
                             <div class="col-12 col-sm-8 text-center text-sm-left">
-                                    <form method="get" action="/shop" id="filter">
                                     <div class="toolbar-sorter-right">
                                     <span>Sort by</span>
-                                    
                                     <select name="filter" class="selectpicker form-control" onChange="this.form.submit();" data-placeholder="$ USD">   
-                                            <option value="0">Nothing</option>
-                                            <option value="1">Popularity</option>
-                                            <option value="2">High Price → Low Price</option>
-                                            <option value="3">Low Price → High Price</option>                                       
+                                    {{#if filter}}
+                                        {{#equal filter 0}}
+                                                <option value="0" selected>Nothing</option>
+                                                <option value="1">Popularity</option>
+                                                <option value="2">High Price → Low Price</option>
+                                                <option value="3">Low Price → High Price</option>
+                                        {{/equal}} 
+                                        {{#equal filter 1}}
+                                                <option value="0">Nothing</option>
+                                                <option value="1" selected>Popularity</option>
+                                                <option value="2">High Price → Low Price</option>
+                                                <option value="3">Low Price → High Price</option>
+                                        {{/equal}}           
+                                        {{#equal filter 2}}
+                                                <option value="0">Nothing</option>
+                                                <option value="1">Popularity</option>
+                                                <option value="2" selected>High Price → Low Price</option>
+                                                <option value="3">Low Price → High Price</option>
+                                        {{/equal}} 
+                                        {{#equal filter 3}}
+                                                <option value="0">Nothing</option>
+                                                <option value="1">Popularity</option>
+                                                <option value="2" selected>High Price → Low Price</option>
+                                                <option value="3">Low Price → High Price</option>
+                                        {{/equal}}   
+                                    {{else}}  
+                                        <option value="0">Nothing</option>
+                                        <option value="1">Popularity</option>
+                                        <option value="2">High Price → Low Price</option>
+                                        <option value="3">Low Price → High Price</option>   
+                                    {{/if}}                     
                                     </select>    
                                     
                                     </div>
                                     <p>Showing all 4 results</p>
-                                    </form>
+                                    
                                 
                             </div>
                             <div class="col-12 col-sm-4 text-center text-sm-right">
@@ -135,20 +163,20 @@
                                 </div>
                             </div>
                             {{!-- pagination --}}
-                            <form method="get" action="/shop" id="main">
+                            
                             <ul class="pagination">
                                 
                                     <li class="page-item">
-                                        <input onchange='this.form.submit();' style="display: none;" id="page-prev" value="{{prePage}}" type="radio" name="page"/>
+                                        <input  onchange='this.form.submit();' style="display: none;" id="page-prev" value="{{prePage}}" type="radio" name="page"/>
                                         <label for="page-prev"  class="btn"><span aria-hidden="true">&laquo;</span></label>
                                     </li>
                                     <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
                                     <li class="page-item"></li>
-                                        <input onchange='this.form.submit();' style="display: none;" id="page-next" value="{{nextPage}}" type="radio" name="page"/>
+                                        <input  onchange='this.form.submit();' style="display: none;" id="page-next" value="{{nextPage}}" type="radio" name="page"/>
                                         <label for="page-next"  class="btn"><span aria-hidden="true">&raquo;</span></label>
                                     </li>
                                 </ul>
-                            </form>
+                          
 
                         </div>
                     </div>
@@ -197,6 +225,9 @@
             </div>
         </div>
     </div>
+
+
+</form>
     <!-- End Shop Page -->
 
 

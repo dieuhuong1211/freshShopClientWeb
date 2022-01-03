@@ -5,6 +5,7 @@ const itemPrePage = 12;
 let totalPage = 10;
 let currentPage = 1;
 let pageNumber = 0;
+let filter = 0;
 
 exports.list = async (req, res, next) => {
 
@@ -12,8 +13,9 @@ exports.list = async (req, res, next) => {
     currentPage = (pageNumber && !Number.isNaN(pageNumber)) ? parseInt(pageNumber) : 1;
     currentPage = (currentPage > 0) ? currentPage : 1;
     
-    let filter = req.query.filter;
+    filter = req.query.filter;
     filter = (filter && !Number.isNaN(filter)) ? parseInt(filter) : 0;
+    filter = (filter > 0 && filter < 4) ? filter : 0;
 
     if(filter === 1)
     {
@@ -38,6 +40,7 @@ exports.list = async (req, res, next) => {
                 currentPage,
                 prePage,
                 nextPage,
+                filter
             });
         })
         .catch(err=>{
@@ -69,6 +72,7 @@ exports.list = async (req, res, next) => {
                 currentPage,
                 prePage,
                 nextPage,
+                filter
             });
         })
         .catch(err=>{
@@ -79,7 +83,7 @@ exports.list = async (req, res, next) => {
 
     if(filter === 3)
     {
-        Promise.all([shopService.listLowToHigh( currentPage - 1, itemPrePage), shopService.Countfilter(2)])
+        Promise.all([shopService.listLowToHigh( currentPage - 1, itemPrePage), shopService.Countfilter(3)])
         .then(([products, proCount])=>{
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
@@ -100,6 +104,7 @@ exports.list = async (req, res, next) => {
                 currentPage,
                 prePage,
                 nextPage,
+                filter
             });
         })
         .catch(err=>{
@@ -109,7 +114,7 @@ exports.list = async (req, res, next) => {
     }
 
 
-    if(filter<=0 || filter>3) {
+    if(filter===0 ) {
         Promise.all([shopService.list( currentPage - 1, itemPrePage), shopService.Count()])
         .then(([products, proCount])=>{
             totalPage = Math.ceil(proCount/itemPrePage);
@@ -131,6 +136,7 @@ exports.list = async (req, res, next) => {
                 currentPage,
                 prePage,
                 nextPage,
+                filter
             });
         })
         .catch(err=>{
