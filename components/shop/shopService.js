@@ -16,7 +16,7 @@ exports.Count = () => {
     return proCount;
 }
 
-exports.Countfilter = (filter) => {
+exports.Countbyfilter = (filter) => {
     if(filter === 1)
     {
          proCount = models.products.count({ 

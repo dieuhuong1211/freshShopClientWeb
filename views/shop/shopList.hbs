@@ -37,7 +37,7 @@
                     <div class="right-product-box">
                         <div class="product-item-filter row">
                             <div class="col-12 col-sm-8 text-center text-sm-left">
-                                    <div class="toolbar-sorter-right">
+                                <div class="toolbar-sorter-right">
                                     <span>Sort by</span>
                                     <select name="filter" class="selectpicker form-control" onChange="this.form.submit();" data-placeholder="$ USD">   
                                     {{#if filter}}
@@ -74,8 +74,13 @@
                                     </select>    
                                     
                                     </div>
-                                    <p>Showing all 4 results</p>
-                                    
+                                    {{#if filter}}
+                                        {{#equal filter 0}}
+                                        <p>Every produces in our shop</p>
+                                        {{/equal}}
+                                    {{else}}
+                                    <p>Every produces in our shop</p>
+                                    {{/if}}
                                 
                             </div>
                             <div class="col-12 col-sm-4 text-center text-sm-right">

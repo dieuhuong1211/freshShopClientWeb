@@ -19,7 +19,7 @@ exports.list = async (req, res, next) => {
 
     if(filter === 1)
     {
-        Promise.all([shopService.listPopular( currentPage - 1, itemPrePage), shopService.Countfilter(1)])
+        Promise.all([shopService.listPopular( currentPage - 1, itemPrePage), shopService.Countbyfilter(1)])
         .then(([products, proCount])=>{
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
@@ -51,7 +51,7 @@ exports.list = async (req, res, next) => {
 
     if(filter === 2)
     {
-        Promise.all([shopService.listHighToLow( currentPage - 1, itemPrePage), shopService.Countfilter(2)])
+        Promise.all([shopService.listHighToLow( currentPage - 1, itemPrePage), shopService.Countbyfilter(2)])
         .then(([products, proCount])=>{
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
@@ -83,7 +83,7 @@ exports.list = async (req, res, next) => {
 
     if(filter === 3)
     {
-        Promise.all([shopService.listLowToHigh( currentPage - 1, itemPrePage), shopService.Countfilter(3)])
+        Promise.all([shopService.listLowToHigh( currentPage - 1, itemPrePage), shopService.Countbyfilter(3)])
         .then(([products, proCount])=>{
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
