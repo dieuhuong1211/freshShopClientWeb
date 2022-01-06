@@ -1,5 +1,3 @@
-const fileUpload = require('express-fileupload');
-
 const authService = require('./authService');
 
 exports.register = async (req, res) => {

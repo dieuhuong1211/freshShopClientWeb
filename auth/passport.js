@@ -4,7 +4,7 @@ const passport = require('passport')
 const {models} = require('../models');
 //const authService = require('./authService');
 
-// const Clients = require('../models/clients')
+// const users = require('../models/users')
 
 passport.use(new LocalStrategy({
     usernameField: 'email',
@@ -12,18 +12,18 @@ passport.use(new LocalStrategy({
   },
   async function(username, password, done) {
     try{
-      const client = await models.clients.findOne(
+      const user = await models.clients.findOne(
         {where: { EMAIL: username },
         raw:true
       });
-      if (!client) {
+      if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
-      const match = await validPassword(client, password);
+      const match = await validPassword(user, password);
       if (!match) {
         return done(null, false, { message: 'Incorrect password.' });
       }
-      return done(null, client);
+      return done(null, user);
     }
     catch (err){
       return done(err);
@@ -40,9 +40,9 @@ passport.deserializeUser(function(user, done) {
 });
 
 
-function validPassword(client, password)
+function validPassword(user, password)
 {
-    return bcrypt.compare(password, client.PASS);
+    return bcrypt.compare(password, user.PASS);
 }
 
 

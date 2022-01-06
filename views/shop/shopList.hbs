@@ -42,31 +42,31 @@
                                     <select name="filter" class="selectpicker form-control" onChange="this.form.submit();" data-placeholder="$ USD">   
                                     {{#if filter}}
                                         {{#equal filter 0}}
-                                                <option value="0" selected>Nothing</option>
+                                                <option value="0" selected>All products</option>
                                                 <option value="1">Popularity</option>
                                                 <option value="2">High Price → Low Price</option>
                                                 <option value="3">Low Price → High Price</option>
                                         {{/equal}} 
                                         {{#equal filter 1}}
-                                                <option value="0">Nothing</option>
+                                                <option value="0">All products</option>
                                                 <option value="1" selected>Popularity</option>
                                                 <option value="2">High Price → Low Price</option>
                                                 <option value="3">Low Price → High Price</option>
                                         {{/equal}}           
                                         {{#equal filter 2}}
-                                                <option value="0">Nothing</option>
+                                                <option value="0">All products</option>
                                                 <option value="1">Popularity</option>
                                                 <option value="2" selected>High Price → Low Price</option>
                                                 <option value="3">Low Price → High Price</option>
                                         {{/equal}} 
                                         {{#equal filter 3}}
-                                                <option value="0">Nothing</option>
+                                                <option value="0">All products</option>
                                                 <option value="1">Popularity</option>
                                                 <option value="2" selected>High Price → Low Price</option>
                                                 <option value="3">Low Price → High Price</option>
                                         {{/equal}}   
                                     {{else}}  
-                                        <option value="0">Nothing</option>
+                                        <option value="0">All products</option>
                                         <option value="1">Popularity</option>
                                         <option value="2">High Price → Low Price</option>
                                         <option value="3">Low Price → High Price</option>   
@@ -74,13 +74,7 @@
                                     </select>    
                                     
                                     </div>
-                                    {{#if filter}}
-                                        {{#equal filter 0}}
-                                        <p>Every produces in our shop</p>
-                                        {{/equal}}
-                                    {{else}}
-                                    <p>Every produces in our shop</p>
-                                    {{/if}}
+                                    
                                 
                             </div>
                             <div class="col-12 col-sm-4 text-center text-sm-right">
@@ -99,33 +93,67 @@
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
                                     <div class="row">
+                                        {{#if filter}}
+                                        {{#equal filter 0}}
+                                        <p class="shoplist_title">Every produces in our shop</p>
+                                        {{/equal}}
+                                        {{#equal filter 1}}
+                                        <p class="shoplist_title">Products that have been sold 80+ times</p>
+                                        {{/equal}}
+                                        {{#equal filter 2}}
+                                        <p class="shoplist_title">Products from cheap to expensive</p>
+                                        {{/equal}}
+                                        {{#equal filter 3}}
+                                        <p class="shoplist_title">Products from expensive to cheap</p>
+                                        {{/equal}}
+                                        {{else}}
+                                        <p class="shoplist_title">Every produces in our shop</p>
+                                        {{/if}}
+                                        {{#if search}}
+                                        <p class="shoplist_title">SEARCH BY "{{search}}"</p>
+                                        {{/if}}
+                                    </div>
+                                    <div class="row">
+                                        {{#if noResult}}
+                                            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                                <h2 class="no_result_title">{{noResult}}</h2>
+                                                <img src="../../public/images/no result found icon.png" alt="..." style="width: 200px; margin:auto">
+                                            </div>
+                                        {{else}}
                                         {{#each products}}
-                                        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                            <div class="products-single fix">
-                                                <div class="box-img-hover">
-                                                    <div class="type-lb">
-                                                        <p class="sale">Sale</p>
+                                            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="products-single fix">
+                                                    <div class="box-img-hover">
+                                                        <div class="type-lb">
+                                                            <p class="sale">New</p>
+                                                        </div>
+                                                        <img src={{IMAGE}} class="img-fluid" alt="Image">
+                                                        <div class="mask-icon">
+                                                            <ul>
+                                                                <li>
+                                                                    <input onchange='this.form.submit();' style="display: none;" id="id" value="{{PRODUCT_ID}}" type="radio" name="id"/>
+                                                                    <a href="/shop/shopDetail/{{PRODUCT_ID}}" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a>
+                                                                </li>
+                                                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
+                                                            </ul>
+                                                            {{#if ../user}}
+                                                            <a class="cart" href="#">Add to Cart</a>
+                                                            {{else}}
+                                                            <a href="/auth/logout" class="cart">Add to Cart</a>
+                                                            {{/if}}
+                                                        </div>
                                                     </div>
-                                                    <img src={{IMAGE}} class="img-fluid" alt="Image">
-                                                    <div class="mask-icon">
-                                                        <ul>
-                                                            <li>
-                                                                <input onchange='this.form.submit();' style="display: none;" id="id" value="{{PRODUCT_ID}}" type="radio" name="id"/>
-                                                                <a href="/shop/shopDetail/{{PRODUCT_ID}}" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a>
-                                                            </li>
-                                                            <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                                        </ul>
-                                                        <a class="cart" href="#">Add to Cart</a>
+                                                    <div class="why-text">
+                                                        <h4>{{PRODUCT_NAME}}</h4>
+                                                        <h5>${{PRICE}}</h5>
                                                     </div>
-                                                </div>
-                                                <div class="why-text">
-                                                    <h4>{{PRODUCT_NAME}}</h4>
-                                                    <h5>${{PRICE}}</h5>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
                                         {{/each}}
+                                        {{/if}}
+                                            
+                                        
+
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="list-view">
@@ -168,7 +196,7 @@
                                 </div>
                             </div>
                             {{!-- pagination --}}
-                            
+                            {{#if currentPage}}
                             <ul class="pagination">
                                 
                                     <li class="page-item">
@@ -181,7 +209,7 @@
                                         <label for="page-next"  class="btn"><span aria-hidden="true">&raquo;</span></label>
                                     </li>
                                 </ul>
-                          
+                            {{/if}}
 
                         </div>
                     </div>

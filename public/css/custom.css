@@ -52,3 +52,22 @@
     border:  5px solid #b0b435 ;
     border-radius: 5%;
   }
+
+  .pagination{
+      width: 100%;
+      margin: auto;
+  }
+
+.shoplist_title{
+    width: 100%;
+    text-align: center;
+    margin: 10px 10px 0px 10px;
+    font-size: 25px;
+}
+.no_result_title{
+    width: 100%;
+    text-align: center;
+    margin: 5px;
+    font-size: 65px;
+    color: #b0b435;
+}

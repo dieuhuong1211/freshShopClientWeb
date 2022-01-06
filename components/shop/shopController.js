@@ -8,6 +8,8 @@ let currentPage = 1;
 let pageNumber = 0;
 let filter = 0;
 let search = "";
+const noResult = "No Result Found :<";
+let proCount = 0;
 
 exports.list = async (req, res, next) => {
 
@@ -25,7 +27,7 @@ exports.list = async (req, res, next) => {
     if(filter===0 ) {
         Promise.all([shopService.list(search, currentPage - 1, itemPrePage)])
         .then(([products])=>{
-            const proCount = products.length;
+            proCount = products.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
             let prePage = 0;
@@ -40,13 +42,25 @@ exports.list = async (req, res, next) => {
                 prePage = currentPage - 1;
                 nextPage = currentPage + 1;
             }
-            res.render('shop/shopList', {
-                products,
-                currentPage,
-                prePage,
-                nextPage,
-                filter
-            });
+            if(products.length === 0)
+            {
+                res.render('shop/shopList', {
+                noResult,
+                filter,
+                search
+                });
+            }
+            else {
+                res.render('shop/shopList', {
+                    products,
+                    currentPage,
+                    prePage,
+                    nextPage,
+                    filter,
+                    search
+                    });
+            }
+            
         })
         .catch(err=>{
             console.log(err);
@@ -59,7 +73,7 @@ exports.list = async (req, res, next) => {
         Promise.all([shopService.listPopular(search, currentPage - 1, itemPrePage)])
         .then(([products])=>{
             
-            const proCount = products.length;
+            proCount = products.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
             let prePage = 0;
@@ -74,13 +88,24 @@ exports.list = async (req, res, next) => {
                 prePage = currentPage - 1;
                 nextPage = currentPage + 1;
             }
-            res.render('shop/shopList', {
-                products,
-                currentPage,
-                prePage,
-                nextPage,
-                filter
-            });
+            if(products.length === 0)
+            {
+                res.render('shop/shopList', {
+                noResult,
+                filter,
+                search
+                });
+            }
+            else {
+                res.render('shop/shopList', {
+                    products,
+                    currentPage,
+                    prePage,
+                    nextPage,
+                    filter,
+                    search
+                    });
+            }
         })
         .catch(err=>{
             console.log(err);
@@ -92,7 +117,7 @@ exports.list = async (req, res, next) => {
     {
         Promise.all([shopService.listHighToLow(search, currentPage - 1, itemPrePage)])
         .then(([products])=>{
-            const proCount = products.length;
+            proCount = products.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
             let prePage = 0;
@@ -107,13 +132,24 @@ exports.list = async (req, res, next) => {
                 prePage = currentPage - 1;
                 nextPage = currentPage + 1;
             }
-            res.render('shop/shopList', {
-                products,
-                currentPage,
-                prePage,
-                nextPage,
-                filter
-            });
+            if(products.length === 0)
+            {
+                res.render('shop/shopList', {
+                noResult,
+                filter,
+                search
+                });
+            }
+            else {
+                res.render('shop/shopList', {
+                    products,
+                    currentPage,
+                    prePage,
+                    nextPage,
+                    filter,
+                    search
+                    });
+            }
         })
         .catch(err=>{
             console.log(err);
@@ -125,7 +161,7 @@ exports.list = async (req, res, next) => {
     {
         Promise.all([shopService.listLowToHigh(search, currentPage - 1, itemPrePage)])
         .then(([products])=>{
-            const proCount = products.length;
+            proCount = products.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
             let prePage = 0;
@@ -140,13 +176,24 @@ exports.list = async (req, res, next) => {
                 prePage = currentPage - 1;
                 nextPage = currentPage + 1;
             }
-            res.render('shop/shopList', {
-                products,
-                currentPage,
-                prePage,
-                nextPage,
-                filter
-            });
+            if(products.length === 0)
+            {
+                res.render('shop/shopList', {
+                noResult,
+                filter,
+                search
+                });
+            }
+            else {
+                res.render('shop/shopList', {
+                    products,
+                    currentPage,
+                    prePage,
+                    nextPage,
+                    filter,
+                    search
+                    });
+            }
         })
         .catch(err=>{
             console.log(err);
@@ -157,13 +204,13 @@ exports.list = async (req, res, next) => {
 
 let id = "P0001";
 
-exports.detail = async (req, res, nest) => {
+exports.detail = async (req, res, next) => {
     id = req.params.id;
     if(id===null || id==="")
     {
         id = "P0001";
     }
-    Promise.all([shopService.detail(id), shopService.list( 0, 54)])
+    Promise.all([shopService.detail(id), shopService.listNonPaging()])
     .then(([product_detail, products])=>{
         res.render('shop/shopDetail', {
             product_detail,

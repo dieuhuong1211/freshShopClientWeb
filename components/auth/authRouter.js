@@ -17,7 +17,6 @@ router.post('/login',
   }
 );
 
-/* GET home page. */
 router.get('/login', function(req, res, next) {
   res.render('login', {undefinedUser: req.query.undefinedUser !==undefined});
 });

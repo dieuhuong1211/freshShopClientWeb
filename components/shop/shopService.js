@@ -1,5 +1,12 @@
 const {models} = require('../../models');
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
+
+exports.listNonPaging = () => {
+    return models.products.findAll({
+        raw:true
+    });
+    
+}
 
 exports.list = (search, page, itemPerPage) => {
     if(search !== "" && search !== undefined)
@@ -143,15 +150,3 @@ exports.detail = (id) => {
     });
 };
 
-// exports.searchProduct = (array, search, page, itemPerPage) => {
-//         return array.findAll({
-//             where: {
-//                 PRODUCT_NAME: {
-//                     [Op.like]: '%' + search + '%'
-//                 }
-//             },
-//             offset: page * itemPerPage, 
-//             limit: itemPerPage, 
-//             raw:true
-//         });
-// };
