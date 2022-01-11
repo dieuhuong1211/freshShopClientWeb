@@ -21,8 +21,6 @@ const app = express();
 const passport = require('./auth/passport')
 
 
-//app.use(fileUpload());
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
