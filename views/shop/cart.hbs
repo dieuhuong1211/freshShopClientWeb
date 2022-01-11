@@ -44,78 +44,39 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{#if emptyCart}}
                                 <tr>
-                                    <td class="thumbnail-img">
-                                        <a href="#">
-									<img class="img-fluid" src="/images/img-pro-01.jpg" alt="" />
-								</a>
-                                    </td>
-                                    <td class="name-pr">
-                                        <a href="#">
-									Carrot
-								</a>
-                                    </td>
-                                    <td class="price-pr">
-                                        <p>$ 80.0</p>
-                                    </td>
-                                    <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text"></td>
-                                    <td class="total-pr">
-                                        <p>$ 80.0</p>
-                                    </td>
-                                    <td class="remove-pr">
-                                        <a href="#">
-									<i class="fas fa-times"></i>
-								</a>
-                                    </td>
+                                    <p>{{emptyCart}}</p>
                                 </tr>
-                                <tr>
-                                    <td class="thumbnail-img">
-                                        <a href="#">
-									<img class="img-fluid" src="/images/img-pro-02.jpg" alt="" />
-								</a>
-                                    </td>
-                                    <td class="name-pr">
-                                        <a href="#">
-									Tomatooooo
-								</a>
-                                    </td>
-                                    <td class="price-pr">
-                                        <p>$ 60.0</p>
-                                    </td>
-                                    <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text"></td>
-                                    <td class="total-pr">
-                                        <p>$ 60.0</p>
-                                    </td>
-                                    <td class="remove-pr">
-                                        <a href="#">
-									<i class="fas fa-times"></i>
-								</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="thumbnail-img">
-                                        <a href="#">
-									<img class="img-fluid" src="/images/img-pro-03.jpg" alt="" />
-								</a>
-                                    </td>
-                                    <td class="name-pr">
-                                        <a href="#">
-									Green grapes
-								</a>
-                                    </td>
-                                    <td class="price-pr">
-                                        <p>$ 30.0</p>
-                                    </td>
-                                    <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text"></td>
-                                    <td class="total-pr">
-                                        <p>$ 30.0</p>
-                                    </td>
-                                    <td class="remove-pr">
-                                        <a href="#">
-									<i class="fas fa-times"></i>
-								</a>
-                                    </td>
-                                </tr>
+                                {{else}}
+                                    {{#each cart_products}}
+                                    <tr>
+                                        <td class="thumbnail-img">
+                                            <a href="#">
+                                        <img class="img-fluid" src="/images/img-pro-01.jpg" alt="" />
+                                    </a>
+                                        </td>
+                                        <td class="name-pr">
+                                            <a href="#">
+                                        {{PRODUCT_ID}}
+                                    </a>
+                                        </td>
+                                        <td class="price-pr">
+                                            <p>$ 80.0</p>
+                                        </td>
+                                        <td class="quantity-box"><input type="number" size="4" value={{QUANTITY}} min="0" step="1" class="c-input-text qty text"></td>
+                                        <td class="total-pr">
+                                            <p>$ 80.0</p>
+                                        </td>
+                                        <td class="remove-pr">
+                                            <a href="#">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                {{/if}}
+                                
                             </tbody>
                         </table>
                     </div>
