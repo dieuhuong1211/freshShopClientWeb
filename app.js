@@ -4,10 +4,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 var session = require('express-session');
-//const fileUpload = require('express-fileupload');
 var hbs = require("hbs")
 
-const indexRouter = require('./routes/index');
+const indexRouter = require('./components/mainpage');
 const usersRouter = require('./routes/users');
 const shopRouter = require('./components/shop');
 const contactRouter = require('./routes/contact');
