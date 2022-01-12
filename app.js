@@ -15,7 +15,10 @@ const aboutRouter = require('./routes/about');
 const authRouter = require('./components/auth/authRouter');
 const registerRouter = require('./routes/register');
 
-hbs.registerHelper("equal", require("handlebars-helper-equal"))
+hbs.registerHelper("equal", require("handlebars-helper-equal"));
+hbs.registerHelper('index_of', function(context,ndx) {
+  return context[ndx];
+});
 
 const app = express();
 const passport = require('./auth/passport')

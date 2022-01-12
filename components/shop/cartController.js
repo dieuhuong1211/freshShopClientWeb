@@ -5,12 +5,13 @@ exports.cart = async (req, res, next) => {
     if(req.user)
     {
         let clientID = req.user.CLIENT_ID;
-    console.log(clientID);
-    
-    Promise.all([cartService.cart(clientID)])
-        .then(([cart_products])=>{
+        console.log(clientID);
+        try{
+            const cart_products = await cartService.cart(clientID);
+            console.log(cart_products.length);
             if(cart_products.length === 0)
             {
+                console.log("ko co product trong cart");
                 res.render('shop/cart', {
                     emptyCart
                 });
@@ -19,25 +20,28 @@ exports.cart = async (req, res, next) => {
                 let product = [];
                 for(let i = 0; i < cart_products.length; i++)
                 {
-                    let product_id = cart_products.PRODUCT_ID;
+                    let product_id = cart_products[i].PRODUCT_ID;
                     try{
-                        product[i] = cartService.productInCart(product_id);
+                        product[i] = await cartService.productInCart(product_id);
+                        console.log(product[i]);
+                        product[i].cartquantity = cart_products[i].QUANTITY;
+                        product[i].totalprice = cart_products[i].QUANTITY * product[i].PRICE;
+                        console.log("tim product");
                     }
                     catch(err){
                         console.log(err);
                     }
                 }
                 res.render('shop/cart', {
-                    cart_products,
                     product
                 });
             }
-            
-        })
-        .catch(err=>{
+        }
+        catch(err)
+        {
             console.log(err);
-            next();
-        }); 
+        }
+        
     }
     else {
         res.redirect('../auth/login');

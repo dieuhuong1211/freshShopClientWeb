@@ -46,11 +46,13 @@
                             <tbody>
                                 {{#if emptyCart}}
                                 <tr>
-                                    <p>{{emptyCart}}</p>
+                                    <td colspan="100%">
+                                        <p class="no_result_title">{{emptyCart}}</p>
+                                    </td>
+                                    
                                 </tr>
                                 {{else}}
-                                    {{#each cart_products}}
-                                    {{#each ../product}}
+                                    {{#each product}}
                                     <tr>
                                         <td class="thumbnail-img">
                                             <a href="#">
@@ -65,9 +67,9 @@
                                         <td class="price-pr">
                                             <p>$ {{PRICE}}</p>
                                         </td>
-                                        <td class="quantity-box"><input type="number" size="4" value={{QUANTITY}} min="0" step="1" class="c-input-text qty text"></td>
+                                        <td class="quantity-box"><input type="number" size="4" value={{cartquantity}} min="0" step="1" class="c-input-text qty text"></td>
                                         <td class="total-pr">
-                                            <p>$ {{PRICE}}</p>
+                                            <p>$ {{totalprice}}</p>
                                         </td>
                                         <td class="remove-pr">
                                             <a href="#">
@@ -75,7 +77,7 @@
                                     </a>
                                         </td>
                                     </tr>
-                                    {{/each}}
+       
                                     {{/each}}
                                 {{/if}}
                                 
