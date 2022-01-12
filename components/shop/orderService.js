@@ -11,7 +11,14 @@ exports.order = (clientID) => {
         raw: true
     });
 }
-
+exports.orderByID = (orderID) => {
+    return models.orders.findOne({
+        where: {
+            ORDER_ID: orderID,
+        },
+        raw: true
+    });
+}
 exports.bill = (orderID) =>{
     return models.bills.findOne({
         where: {
@@ -50,6 +57,17 @@ exports.bill = (orderID) =>{
             ORDER_ID: orderID,
             ISDELETED: false
 
+        },
+        raw: true
+    });
+}
+
+exports.deliverySuccess = (clientID) =>{
+    return models.deliveries.findAll({
+        where: {
+            CLIENT_ID: clientID,
+            ISDELETED: false,
+            DELIVERY_STATUS: "SUCCEED"
         },
         raw: true
     });
