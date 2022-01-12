@@ -3,6 +3,7 @@ var router = express.Router();
 
 const ShopController = require('./shopController');
 const CartController = require('./cartController');
+const ChekoutController = require('./checkoutController');
 
 /* GET home page. */
 router.get('/', ShopController.list);
@@ -10,18 +11,8 @@ router.get('/', ShopController.list);
 router.get('/shopDetail/:id', ShopController.detail);
 
 router.get('/cart', CartController.cart);
-// router.get('/cart', async function(req, res) {
-//   if(req.user)
-//   {
-    
-//   }
-//   else
-//     res.redirect('../auth/login');
-// });
 
-router.get('/checkout', function(req, res, next) {
-  res.render('shop/checkout', { title: 'Express' });
-});
+router.get('/checkout', ChekoutController.checkout);
 
 router.get('/wishList', function(req, res, next) {
   res.render('shop/wishList', { title: 'Express' });
