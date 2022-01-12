@@ -1,8 +1,13 @@
 const {models} = require('../../models');
 const { Op } = require('sequelize');
-
-exports.listNonPaging = () => {
+const Sequelize = require('sequelize');
+exports.listNonPaging = (item = 25) => {
     return models.products.findAll({
+        where: {
+            ISDELETED: false
+        },
+        order: Sequelize.literal('rand()'),
+        limit: item, 
         raw:true
     });
     
