@@ -10,24 +10,11 @@ module.exports = function(sequelize, DataTypes) {
         key: 'ORDER_ID'
       }
     },
-    DELIVERY_ID: {
-      type: DataTypes.CHAR(5),
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'deliveries',
-        key: 'DELIVERY_ID'
-      }
-    },
     PAYMENT: {
       type: DataTypes.STRING(50),
       allowNull: true
     },
     DISCOUNT: {
-      type: DataTypes.FLOAT,
-      allowNull: true
-    },
-    COUPON: {
       type: DataTypes.FLOAT,
       allowNull: true
     },
@@ -54,14 +41,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "ORDER_ID" },
-          { name: "DELIVERY_ID" },
-        ]
-      },
-      {
-        name: "fk_b_d",
-        using: "BTREE",
-        fields: [
-          { name: "DELIVERY_ID" },
         ]
       },
     ]

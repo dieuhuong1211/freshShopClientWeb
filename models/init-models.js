@@ -25,13 +25,11 @@ function initModels(sequelize) {
   clients.belongsToMany(orders, { as: 'ORDER_ID_orders_orders_returns', through: orders_return, foreignKey: "CLIENT_ID", otherKey: "ORDER_ID" });
   clients.belongsToMany(products, { as: 'PRODUCT_ID_products', through: carts, foreignKey: "CLIENT_ID", otherKey: "PRODUCT_ID" });
   clients.belongsToMany(products, { as: 'PRODUCT_ID_products_wishlists', through: wishlists, foreignKey: "CLIENT_ID", otherKey: "PRODUCT_ID" });
-  deliveries.belongsToMany(orders, { as: 'ORDER_ID_orders', through: bills, foreignKey: "DELIVERY_ID", otherKey: "ORDER_ID" });
   orders.belongsToMany(clients, { as: 'CLIENT_ID_clients_orders_returns', through: orders_return, foreignKey: "ORDER_ID", otherKey: "CLIENT_ID" });
-  orders.belongsToMany(deliveries, { as: 'DELIVERY_ID_deliveries', through: bills, foreignKey: "ORDER_ID", otherKey: "DELIVERY_ID" });
   orders.belongsToMany(products, { as: 'PRODUCT_ID_products_orders_details', through: orders_detail, foreignKey: "ORDER_ID", otherKey: "PRODUCT_ID" });
   products.belongsToMany(clients, { as: 'CLIENT_ID_clients', through: carts, foreignKey: "PRODUCT_ID", otherKey: "CLIENT_ID" });
   products.belongsToMany(clients, { as: 'CLIENT_ID_clients_wishlists', through: wishlists, foreignKey: "PRODUCT_ID", otherKey: "CLIENT_ID" });
-  products.belongsToMany(orders, { as: 'ORDER_ID_orders_orders_details', through: orders_detail, foreignKey: "PRODUCT_ID", otherKey: "ORDER_ID" });
+  products.belongsToMany(orders, { as: 'ORDER_ID_orders', through: orders_detail, foreignKey: "PRODUCT_ID", otherKey: "ORDER_ID" });
   deliveries.belongsTo(admins, { as: "MANAGER_admin", foreignKey: "MANAGER"});
   admins.hasMany(deliveries, { as: "deliveries", foreignKey: "MANAGER"});
   orders.belongsTo(admins, { as: "MANAGER_admin", foreignKey: "MANAGER"});
@@ -48,10 +46,8 @@ function initModels(sequelize) {
   clients.hasMany(orders_return, { as: "orders_returns", foreignKey: "CLIENT_ID"});
   wishlists.belongsTo(clients, { as: "CLIENT", foreignKey: "CLIENT_ID"});
   clients.hasMany(wishlists, { as: "wishlists", foreignKey: "CLIENT_ID"});
-  bills.belongsTo(deliveries, { as: "DELIVERY", foreignKey: "DELIVERY_ID"});
-  deliveries.hasMany(bills, { as: "bills", foreignKey: "DELIVERY_ID"});
   bills.belongsTo(orders, { as: "ORDER", foreignKey: "ORDER_ID"});
-  orders.hasMany(bills, { as: "bills", foreignKey: "ORDER_ID"});
+  orders.hasOne(bills, { as: "bill", foreignKey: "ORDER_ID"});
   deliveries.belongsTo(orders, { as: "ORDER", foreignKey: "ORDER_ID"});
   orders.hasMany(deliveries, { as: "deliveries", foreignKey: "ORDER_ID"});
   orders_detail.belongsTo(orders, { as: "ORDER", foreignKey: "ORDER_ID"});

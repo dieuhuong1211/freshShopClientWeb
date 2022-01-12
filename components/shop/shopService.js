@@ -15,7 +15,9 @@ exports.list = (search, page, itemPerPage) => {
             where: {
                 PRODUCT_NAME: {
                     [Op.like]: '%' + search + '%'
-                }
+                },
+            ISDELETED: false
+
             },
             offset: page * itemPerPage, 
             limit: itemPerPage, 
@@ -24,6 +26,9 @@ exports.list = (search, page, itemPerPage) => {
     }
     else {
         return models.products.findAll({
+            where: {
+            ISDELETED: false
+            },
             offset: page * itemPerPage, 
             limit: itemPerPage, 
             raw:true
@@ -48,7 +53,9 @@ exports.listPopular = (search, page, itemPerPage) => {
                 },
                 PRODUCT_NAME: {
                     [Op.like]: '%' + search + '%'
-                }
+                },
+                ISDELETED: false
+                
             },
             offset: page * itemPerPage, 
             limit: itemPerPage, 
@@ -61,7 +68,8 @@ exports.listPopular = (search, page, itemPerPage) => {
             where: {
                 SOLD: {
                     [Op.gte]: 80,  
-                }
+                },
+                ISDELETED: false
             },
             offset: page * itemPerPage, 
             limit: itemPerPage, 
@@ -76,7 +84,9 @@ exports.listHighToLow = (search, page, itemPerPage) => {
             where: {
                 PRODUCT_NAME: {
                     [Op.like]: '%' + search + '%'
-                }
+                },
+                ISDELETED: false
+                
             },
             order: [
                 ['PRICE', 'DESC'],
@@ -88,6 +98,9 @@ exports.listHighToLow = (search, page, itemPerPage) => {
     }
     else{
         return models.products.findAll({
+            where: {
+                ISDELETED: false
+            },
             order: [
                 ['PRICE', 'DESC'],
             ],
@@ -105,7 +118,8 @@ exports.listLowToHigh = (search, page, itemPerPage) => {
             where: {
                 PRODUCT_NAME: {
                     [Op.like]: '%' + search + '%'
-                }
+                },
+                ISDELETED: false
             },
             order: [
                 ['PRICE', 'ASC'],
@@ -118,6 +132,9 @@ exports.listLowToHigh = (search, page, itemPerPage) => {
     else
     {
         return models.products.findAll({
+            where: {
+                ISDELETED: false
+            },
             order: [
                 ['PRICE', 'ASC'],
             ],

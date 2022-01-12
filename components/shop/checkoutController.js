@@ -39,7 +39,7 @@ exports.checkout = async (req, res, next) => {
                     }
                 }
                 discount = subtotal*0.1;
-                tax = subtotal*0.05;
+                tax = subtotal*0.02;
                 const grandtotal = subtotal - discount + tax + shipping;
                 res.render('shop/checkout', {
                     product,

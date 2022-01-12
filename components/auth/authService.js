@@ -2,7 +2,12 @@ const bcrypt = require('bcrypt');
 const {models} = require('../../models');
 
 exports.findAccount = async (email) =>{
-    const account = await models.clients.findOne({where: {EMAIL: email}} );
+    const account = await models.clients.findOne({
+        where: {
+            EMAIL: email,
+            ISDELETED: false
+        }
+    });
     console.log(account);
     return account;
 }
