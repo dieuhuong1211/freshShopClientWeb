@@ -107,7 +107,7 @@
                                                     {{#each productList}}
                                                     <li style="width:80%;margin: auto;">
                                                         <a href="/shop/shopDetail/{{PRODUCT_ID}}" class="photo"><img src="{{image}}" class="cart-thumb" alt="" /></a>
-                                                        <h6><a href="/shop/shopDetail/{{PRODUCT_ID}}">Carrot </a></h6>
+                                                        <h6><a href="/shop/shopDetail/{{PRODUCT_ID}}">{{name}} </a></h6>
                                                         <p>{{QUANTITY}} x <span class="price">${{PRICE}}</span> = <span class="price">${{price}}</span></p>
                                                     </li>
                                                     {{/each}}
@@ -128,64 +128,34 @@
                                         </div>
                                         <div class=" col-md-6">
                                             <h3 class="custom-h3">Return</h3>
+                                            {{#each returns}}
                                             <div class="custom-div">
-                                                <a data-toggle="collapse"  href="#sad1"> 
+                                                <a data-toggle="collapse"  href="#{{ORDER_ID}}"> 
                                                     <i class="fas fa-sad-tear"></i>
-                                                    <p>Reason for return: failure to deliver</p>
+                                                    <p>Reason for return: {{REASON}}</p>
                                                 </a>
-                                                <ul class="cart-list collapse" id="sad1">
-                                                    <li>
-                                                        <a href="/shop/shopDetail" class="photo"><img src="/images/img-pro-01.jpg" class="cart-thumb" alt="" /></a>
-                                                        <h6><a href="/shop/shopDetail">Carrot </a></h6>
-                                                        <p>1 x <span class="price">$80.00</span> = <span class="price">$80.00</span></p>
+                                                <ul class="cart-list collapse" id="{{ORDER_ID}}">
+                                                    {{#each productList}}
+                                                    <li style="width:80%;margin: auto;">
+                                                        <a href="/shop/shopDetail/{{PRODUCT_ID}}" class="photo"><img src="{{image}}" class="cart-thumb" alt="" /></a>
+                                                        <h6><a href="/shop/shopDetail/{{PRODUCT_ID}}">{{name}} </a></h6>
+                                                        <p>{{QUANTITY}} x <span class="price">${{PRICE}}</span> = <span class="price">${{price}}</span></p>
                                                     </li>
-                                                    <li>
-                                                        <a href="/shop/shopDetail" class="photo"><img src="/images/img-pro-02.jpg" class="cart-thumb" alt="" /></a>
-                                                        <h6><a href="/shop/shopDetail">Potato</a></h6>
-                                                        <p>1 x <span class="price">$60.00</span> = <span class="price">$60.00</span></p>
-                                                    </li>
-                                                    <li>
-                                                        <a href="/shop/shopDetail" class="photo"><img src="/images/img-pro-03.jpg" class="cart-thumb" alt="" /></a>
-                                                        <h6><a href="/shop/shopDetail">Green grapes</a></h6>
-                                                        <p>1 x <span class="price">$40.00</span> = <span class="price">$40.00</span></p>
-                                                    </li>
+                                                    {{/each}}
                                                     <div class="custom-total" style="height: 70px; text-align:left">
                                                         
-                                                        <p class="custom-total"><strong>Total</strong>: $180.00</p>
-                                                        <p class="custom-total"><strong>Return Date</strong>: 15/10/2021</p>
+                                                        <p class="custom-total">
+                                                            <strong>Discount</strong>: ${{discount}}&nbsp; - &nbsp;
+                                                            <strong>Tax</strong>: ${{tax}}&nbsp; - &nbsp;
+                                                            <strong>Shipping</strong>: ${{shipping}}&nbsp; - &nbsp;
+                                                            <b style="color: #b0b435"><strong>Total</strong>: ${{totalprice}}</b>
+                                                        </p>
+                                                        <p class="custom-total"><strong>Return Date</strong>: {{returnday}}</p>
                                                         
                                                     </div>
                                                 </ul>
                                             </div>
-                                            <div class="custom-div">
-                                                <a data-toggle="collapse"  href="#sad2"> 
-                                                    <i class="fas fa-sad-tear"></i>
-                                                    <p>Reason for return: damaged goods</p>
-                                                </a>
-                                                <ul class="cart-list collapse" id="sad2">
-                                                    <li>
-                                                        <a href="/shop/shopDetail" class="photo"><img src="/images/img-pro-01.jpg" class="cart-thumb" alt="" /></a>
-                                                        <h6><a href="/shop/shopDetail">Carrot </a></h6>
-                                                        <p>1 x <span class="price">$80.00</span> = <span class="price">$80.00</span></p>
-                                                    </li>
-                                                    <li>
-                                                        <a href="/shop/shopDetail" class="photo"><img src="/images/img-pro-02.jpg" class="cart-thumb" alt="" /></a>
-                                                        <h6><a href="/shop/shopDetail">Potato</a></h6>
-                                                        <p>1 x <span class="price">$60.00</span> = <span class="price">$60.00</span></p>
-                                                    </li>
-                                                    <li>
-                                                        <a href="/shop/shopDetail" class="photo"><img src="/images/img-pro-03.jpg" class="cart-thumb" alt="" /></a>
-                                                        <h6><a href="/shop/shopDetail">Green grapes</a></h6>
-                                                        <p>1 x <span class="price">$40.00</span> = <span class="price">$40.00</span></p>
-                                                    </li>
-                                                    <div class="custom-total" style="height: 70px; text-align:left">
-                                                        
-                                                        <p class="custom-total"><strong>Total</strong>: $180.00</p>
-                                                        <p class="custom-total"><strong>Return Date</strong>: 18/10/2021</p>
-                                                        
-                                                    </div>
-                                                </ul>
-                                            </div>
+                                            {{/each}}
                                         </div>
                                     </div>
                                 </div>

@@ -8,6 +8,8 @@ let orders = [];
 let orders_products = [];
 let success_products = [];
 let success = [];
+let returns_products = [];
+let returns = [];
 exports.myorder = async (req, res) => {
     
     let clientID = null;
@@ -22,7 +24,7 @@ exports.myorder = async (req, res) => {
         return;
     }
 
-    //render order on transit
+    //render orders on transit
     try{
         orders = await orderService.order(clientID);
         //console.log(orders.length);
@@ -107,10 +109,10 @@ exports.myorder = async (req, res) => {
         console.log(err);
         return;
     }
-    //render succedd order
+    //render succedd orders
     try{
         success = await orderService.deliverySuccess(clientID);
-        console.log(success.length);
+        //console.log(success.length);
         if(success.length === 0)
         {
             console.log("ko co don hang thanh cong nao");
@@ -177,7 +179,7 @@ exports.myorder = async (req, res) => {
                 }
                 try {
                     bills[i] = await orderService.bill(success[i].ORDER_ID);
-                    console.log(bills[i]);
+                    //console.log(bills[i]);
                     success[i].totalprice = success[i].totalprice - bills[i].DISCOUNT + bills[i].TAX + bills[i].SHIPPING_COST;
                     success[i].discount = bills[i].DISCOUNT;
                     success[i].tax =  bills[i].TAX;
@@ -199,27 +201,177 @@ exports.myorder = async (req, res) => {
         console.log(err);
         return;
     }
+    //render returned orders
+    try{
+        returns = await orderService.returnOrder(clientID);
+        console.log(returns.length);
+        if(returns.length === 0)
+        {
+            console.log("ko co don tra hang nao");
+            notfound = notfound + 1;
+            
+        }
+        else{
+            
+            let bills = [];
+            let price = 0;
+            let totalprice = 0;
+            for(let i = 0; i < returns.length; i++)
+            {
+                try{
+                    returns_products[i] = await orderService.productListInOrder(returns[i].ORDER_ID); 
+                    console.log("don tra hang");
+                    console.log(returns_products[i]);
+                    const daytime = new Date(returns[i].DELIVERY_DAY);
+                    if (!isNaN(daytime.getTime())) {
+                        //get date
+                        let d = daytime.getDate();
+                        let m = daytime.getMonth() + 1;
+                        let y = daytime.getFullYear();
+                        returns[i].arrive = d + '/' + m + '/' + y;
+                        
+                    }
+                    for(let j = 0; j < returns_products[i].length; j++)
+                    {
+                        try{
+                            const product_detail = await orderService.productDetail(returns_products[i][j].PRODUCT_ID);
+                            //console.log(product_detail);
+                            returns_products[i][j].image = product_detail.IMAGE;
+                            returns_products[i][j].name = product_detail.PRODUCT_NAME;
+                            price = returns_products[i][j].PRICE * returns_products[i][j].QUANTITY;
+                            returns_products[i][j].price = price;
+                            totalprice = totalprice + price;
+                        }
+                        catch(err){
+                            console.log(err);
+                        }
+                    }
+                    returns[i].totalprice = totalprice;
+                    totalprice = 0;
+                    returns[i].productList = returns_products[i];
+                }
+                catch(err){
+                    console.log(err);
+                }
+                try{
+                    const orderbyid = await orderService.orderByID(returns[i].ORDER_ID);
+                    const daytime = new Date(orderbyid.ORDER_DATE);
+                    if (!isNaN(daytime.getTime())) {
+                        //get date
+                        let d = daytime.getDate();
+                        let m = daytime.getMonth() + 1;
+                        let y = daytime.getFullYear();
+                        returns[i].returnday = d + '/' + m + '/' + y;
+                        
+                    }
+                }
+                catch(err){
+                    console.log(err);
+                }
+                try {
+                    bills[i] = await orderService.bill(returns[i].ORDER_ID);
+                    console.log(bills[i]);
+                    returns[i].totalprice = returns[i].totalprice - bills[i].DISCOUNT + bills[i].TAX + bills[i].SHIPPING_COST;
+                    returns[i].discount = bills[i].DISCOUNT;
+                    returns[i].tax =  bills[i].TAX;
+                    returns[i].shipping = bills[i].SHIPPING_COST;
+                }
+                catch(err) {
+                    console.log(err);
+                }
+                    
+            }
+          
+        }
+    }
+    catch(err)
+    {
+        console.log(err);
+        return;
+    }
+
+
     switch(notfound){
         case 1:
         {
-            res.render('shop/myOrders', {
-                success_products,
-                success,
-            });
+            if(orders.length === 0)
+            {
+                res.render('shop/myOrders', {
+                    emptyOrder,
+
+                    success,
+
+                    returns
+                });
+            }
+            else if(success.length === 0)
+            {
+                res.render('shop/myOrders', {
+                    emptySuccess,
+
+                    orders,
+
+                    returns
+                });
+            }
+            else
+            {
+                res.render('shop/myOrders', {
+                    emptyReturn,
+
+                    orders,
+
+                    success,
+                });
+            }
+            
         }
         case 2:
         {
+            if(orders.length > 0)
+            {
+                res.render('shop/myOrders', {
+                    emptySuccess,
+                    emptyReturn,
+
+                    orders,
+                });
+            }
+            else if(success.length > 0)
+            {
+                res.render('shop/myOrders', {
+                    emptyOrder,
+                    emptyReturn,
+
+                    success,
+                });
+            }
+            else {
+                res.render('shop/myOrders', {
+                    emptySuccess,
+                    emptyOrder,
+
+                    returns
+                });
+            }
+           
+        }
+        case 3:
+        {
             res.render('shop/myOrders', {
-                orders_products,
-                orders,
+                emptySuccess,
+                emptyOrder,
+                emptyReturn
             });
         }
         default:
             res.render('shop/myOrders', {
-                orders_products,
+
                 orders,
-                success_products,
-                success
+ 
+                success,
+   
+                returns
             });
            
     }

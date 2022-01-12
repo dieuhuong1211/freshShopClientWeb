@@ -73,12 +73,11 @@ exports.deliverySuccess = (clientID) =>{
     });
 }
 
-exports.returnProduct = (productID) =>{
-    return models.orders_detail.findOne({
+exports.returnOrder = (clientID) =>{
+    return models.orders_return.findAll({
         where: {
-            PRODUCT_ID: productID,
+            CLIENT_ID: clientID,
             ISDELETED: false
-
         },
         raw: true
     });
