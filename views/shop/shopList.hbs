@@ -27,6 +27,9 @@
     <!-- End All Title Box -->
 
     <!-- Start Shop Page  -->
+    <form method="get" id="addtocart">
+
+    </form>
 <form method="get" action="/shop" id="filterandpaging">
 
 
@@ -115,9 +118,8 @@
                                     </div>
                                     <div class="row">
                                         {{#if noResult}}
-                                            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                                <h2 class="no_result_title">{{noResult}}</h2>
-                                                <img src="../../public/images/no result found icon.png" alt="..." style="width: 200px; margin:auto">
+                                            <div class="col-12" style="text-align: center;">
+                                                <img src="/images/noresultfoundicon.png" alt="">
                                             </div>
                                         {{else}}
                                         {{#each products}}
@@ -131,13 +133,12 @@
                                                         <div class="mask-icon">
                                                             <ul>
                                                                 <li>
-                                                                    <input onchange='this.form.submit();' style="display: none;" id="id" value="{{PRODUCT_ID}}" type="radio" name="id"/>
                                                                     <a href="/shop/shopDetail/{{PRODUCT_ID}}" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a>
                                                                 </li>
                                                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                                                             </ul>
                                                             {{#if ../user}}
-                                                            <a class="cart" href="#">Add to Cart</a>
+                                                            <button class="button_cart" type="submit" name="cart" value="{{PRODUCT_ID}}" form="addtocart">Add to Cart</button>
                                                             {{else}}
                                                             <a href="/auth/logout" class="cart">Add to Cart</a>
                                                             {{/if}}
@@ -171,7 +172,7 @@
                                                         <img src={{IMAGE}} class="img-fluid" alt="Image">
                                                         <div class="mask-icon">
                                                             <ul>
-                                                                <li><a href="/shop/shopDetail" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                                                <li><a href="/shop/shopDetail/{{PRODUCT_ID}}" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
                                                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                                                             </ul>
 
@@ -218,8 +219,8 @@
                     <div class="product-categori">
                         <div class="search-product">
                             {{#if search}}
-                                <input class="form-control" placeholder="{{search}}" type="text" name="search">
-                                <button type="submit"> <i class="fa fa-search"></i> </button>
+                                <input class="form-control" placeholder="{{search}}" value="{{search}}" type="text" name="search">
+                                <button type="submit" style="float: right;"> <i class="fa fa-search"></i> </button>
                             {{else}}
                                 <input class="form-control" placeholder="Search here..." type="text" name="search">
                                 <button type="submit"> <i class="fa fa-search"></i> </button>

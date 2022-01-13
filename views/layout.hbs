@@ -146,7 +146,7 @@
                 <!-- /.navbar-collapse -->
 
                 <!-- Start Atribute Navigation -->
-                <div class="attr-nav">
+                {{!-- <div class="attr-nav">
                     <ul>
                         <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
                         <li class="side-menu">
@@ -157,37 +157,31 @@
 							</a>
 						</li>
                     </ul>
-                </div>
+                </div> --}}
                 <!-- End Atribute Navigation -->
             </div>
-            <!-- Start Side Menu -->
+            {{!-- <!-- Start Side Menu -->
             <div class="side">
                 <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+                {{#if user}}
                 <li class="cart-box">
                     <ul class="cart-list">
+                        {{#each cartproductlist}}
                         <li>
-                            <a href="/shop/shopDetail" class="photo"><img src="/images/img-pro-01.jpg" class="cart-thumb" alt="" /></a>
-                            <h6><a href="/shop/shopDetail">Carrot</a></h6>
-                            <p>1 x<span class="price"> $80.00</span></p>
+                            <a href="/shop/shopDetail/{{PRODUCT_ID}}" class="photo"><img src="{{IMAGE}}" class="cart-thumb" alt="" /></a>
+                            <h6><a href="/shop/shopDetail/{{PRODUCT_ID}}">{{PRODUCT_NAME}}</a></h6>
+                            <p>{{quantity}} x<span class="price"> ${{totalprice}}</span></p>
                         </li>
-                        <li>
-                            <a href="/shop/shopDetail" class="photo"><img src="/images/img-pro-02.jpg" class="cart-thumb" alt="" /></a>
-                            <h6><a href="/shop/shopDetail">Tomato</a></h6>
-                            <p>1 x<span class="price"> $60.00</span></p>
-                        </li>
-                        <li>
-                            <a href="/shop/shopDetail" class="photo"><img src="/images/img-pro-03.jpg" class="cart-thumb" alt="" /></a>
-                            <h6><a href="/shop/shopDetail">Green grapes</a></h6>
-                            <p>1 x<span class="price"> $40.00</span></p>
-                        </li>
+                        {{/each}}
                         <li class="total">
                             <a href="/shop/cart" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
-                            <span class="float-right"><strong>Total</strong>: $180.00</span>
+                            <span class="float-right"><strong>Total</strong>: ${{grandtotal}}</span>
                         </li>
                     </ul>
                 </li>
+                {{/if}}
             </div>
-            <!-- End Side Menu -->
+            <!-- End Side Menu --> --}}
         </nav>
         <!-- End Navigation -->
     </header>

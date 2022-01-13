@@ -71,3 +71,13 @@
     font-size: 65px;
     color: #b0b435;
 }
+
+.button_cart{
+    background: #b0b435;
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+    padding: 10px 20px;
+    font-weight: 700;
+    color: #ffffff;
+}

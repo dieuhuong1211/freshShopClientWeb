@@ -155,7 +155,8 @@ exports.listLowToHigh = (search, page, itemPerPage) => {
 exports.category = (page, itemPerPage, type)=> {
     return models.products.findAll({
         where: {
-            PRODUCT_TYPE: type
+            PRODUCT_TYPE: type,
+            ISDELETED: false
         },
         offset: page * itemPerPage, 
         limit: itemPerPage, 
@@ -166,9 +167,70 @@ exports.category = (page, itemPerPage, type)=> {
 exports.detail = (id) => {
     return models.products.findAll({
         where: {
-            PRODUCT_ID: id
+            PRODUCT_ID: id,
+            ISDELETED: false
         },
         raw: true
     });
 };
 
+exports.availableProduct = (productID) => {
+    const product = models.products.findOne({
+        where: {
+            PRODUCT_ID: productID,
+            ISDELETED: false
+        },
+        raw:true
+    });
+    if (product.STONK === "IN STOCK")
+    {
+        return true;
+    }
+    return false;
+}
+
+exports.addToCart = (productID, clientID) => {
+    return models.carts.create({
+        EMAIL: productID, 
+        CLIENT_ID: clientID,
+        QUANTITY: 1, 
+        ISDELETED: false
+    });
+    
+}
+
+exports.updateCart = (quantity, productID, clientID) => {
+    return models.carts.update(
+        {
+        QUANTITY: quantity,
+        },
+        { where: 
+            {
+            EMAIL: productID, 
+            CLIENT_ID: clientID,
+            }
+        }
+    );
+    
+}
+
+// exports.cart = (clientID) => {
+//     return models.carts.findAll({
+//         where: {
+//             CLIENT_ID: clientID,
+//             ISDELETED: false
+//         },
+//         raw: true
+//     });
+// }
+
+// exports.productInCart = (productID) =>{
+//     return models.products.findOne({
+//         where: {
+//             PRODUCT_ID: productID,
+//             ISDELETED: false
+
+//         },
+//         raw: true
+//     });
+// }

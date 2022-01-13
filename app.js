@@ -10,10 +10,8 @@ const indexRouter = require('./components/mainpage');
 const usersRouter = require('./routes/users');
 const shopRouter = require('./components/shop');
 const contactRouter = require('./routes/contact');
-const galleryRouter = require('./routes/gallery');
 const aboutRouter = require('./routes/about');
 const authRouter = require('./components/auth/authRouter');
-const registerRouter = require('./routes/register');
 
 hbs.registerHelper("equal", require("handlebars-helper-equal"));
 hbs.registerHelper('index_of', function(context,ndx) {
@@ -27,6 +25,7 @@ const passport = require('./auth/passport')
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -50,15 +49,13 @@ app.use(function (req, res, next) {
   next()
 })
 
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/shop', shopRouter);
 app.use('/contact', contactRouter);
-app.use('/gallery', galleryRouter);
 app.use('/about', aboutRouter);
 app.use('/auth', authRouter);
-app.use('/register', registerRouter);
+
 
 
 app.get("/sitemap", (req, res) => {
