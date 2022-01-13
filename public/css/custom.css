@@ -81,3 +81,19 @@
     font-weight: 700;
     color: #ffffff;
 }
+.modal-title{
+    width: 100%;
+    text-align: center;
+    margin: 5px;
+    font-size: 35px;
+    color: #b0b435;
+
+}
+
+.modal-body {
+    width: 100%;
+    text-align: center;
+    margin: 5px;
+    font-size: 20px;
+   
+}

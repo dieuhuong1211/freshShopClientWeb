@@ -19,6 +19,10 @@ module.exports = function(sequelize, DataTypes) {
         key: 'CLIENT_ID'
       }
     },
+    RETURN_DAY: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
     REASON: {
       type: DataTypes.STRING(100),
       allowNull: true

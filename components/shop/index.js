@@ -8,7 +8,6 @@ const OrderController = require('./orderController');
 
 /* GET home page. */
 router.get('/', ShopController.list);
-router.post('/', ShopController.addToCart);
 
 router.get('/shopDetail/:id', ShopController.detail);
 

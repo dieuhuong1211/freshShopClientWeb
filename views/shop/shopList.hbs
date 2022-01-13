@@ -9,7 +9,7 @@
         </div>
     </div>
     <!-- End Top Search -->
-
+    
     <!-- Start All Title Box -->
     <div class="all-title-box">
         <div class="container">
@@ -27,9 +27,7 @@
     <!-- End All Title Box -->
 
     <!-- Start Shop Page  -->
-    <form method="get" id="addtocart">
 
-    </form>
 <form method="get" action="/shop" id="filterandpaging">
 
 
@@ -127,7 +125,12 @@
                                                 <div class="products-single fix">
                                                     <div class="box-img-hover">
                                                         <div class="type-lb">
+                                                            {{#equal STOCK "IN STOCK"}}
                                                             <p class="sale">New</p>
+                                                            {{/equal}}
+                                                            {{#equal STOCK "OUT STOCK"}}
+                                                            <p class="sale">Sold out</p>
+                                                            {{/equal}}
                                                         </div>
                                                         <img src={{IMAGE}} class="img-fluid" alt="Image">
                                                         <div class="mask-icon">
@@ -138,7 +141,7 @@
                                                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                                                             </ul>
                                                             {{#if ../user}}
-                                                            <button class="button_cart" type="submit" name="cart" value="{{PRODUCT_ID}}" form="addtocart">Add to Cart</button>
+                                                                <button class="button_cart" type="submit" name="cart" value="{{PRODUCT_ID}}" >Add to Cart</button>
                                                             {{else}}
                                                             <a href="/auth/logout" class="cart">Add to Cart</a>
                                                             {{/if}}
@@ -259,12 +262,42 @@
 
                     </div>
                 </div>
+                
+                <div class="modal show" id="exampleModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Notification</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body ">
+                            <p>{{cartResult}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+                            <a href="shop/cart" type="button" class="btn btn-secondary">Go to my cart</a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+              
             </div>
         </div>
     </div>
-
+    
+    <input id="btnModal" data-toggle="modal" type="button" data-target="#exampleModal" hidden></input>
+{{#if cartResult}}
+<script>
+    document.addEventListener('DOMContentLoaded',function(){
+        document.getElementById("btnModal").click();
+    });
+</script>
+{{/if}}
 
 </form>
+
     <!-- End Shop Page -->
 
 

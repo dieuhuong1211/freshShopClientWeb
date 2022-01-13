@@ -10,7 +10,10 @@ let filter = 0;
 let search = "";
 const noResult = "No Result Found :<";
 let proCount = 0;
-const outstonk = "Product is sold out";
+const outstonk = "Sorry, this product is sold out :<";
+const carthaveproduct = "Your cart already has this product";
+const addtocartsuccess = "Product successfully added to cart :>";
+
 
 exports.list = async (req, res, next) => {
 
@@ -30,9 +33,11 @@ exports.list = async (req, res, next) => {
     if(filter == 0 ) {
         try{
             products = await shopService.list(search, currentPage - 1, itemPrePage);
-            proCount = products.length;
+            const allproduct = await shopService.listNonPaging(search);
+            proCount = allproduct.length;
             totalPage = Math.ceil(proCount/itemPrePage);
-            currentPage = (currentPage <= totalPage) ? currentPage : totalPage
+            currentPage = (currentPage <= totalPage) ? currentPage : totalPage;
+            
             if(totalPage === 1)
             {
                 prePage = 1;
@@ -59,7 +64,8 @@ exports.list = async (req, res, next) => {
     {
         try{
             products = await shopService.listPopular(search, currentPage - 1, itemPrePage);
-            proCount = products.length;
+            const allproduct = await shopService.listNonPaging(search);
+            proCount = allproduct.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
             if(totalPage === 1)
@@ -88,7 +94,8 @@ exports.list = async (req, res, next) => {
     {
         try{
             products = await shopService.listHighToLow(search, currentPage - 1, itemPrePage);
-            proCount = products.length;
+            const allproduct = await shopService.listNonPaging(search);
+            proCount = allproduct.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
             if(totalPage === 1)
@@ -117,7 +124,8 @@ exports.list = async (req, res, next) => {
     {
         try{
             products = await shopService.listLowToHigh(search, currentPage - 1, itemPrePage);
-            proCount = products.length;
+            const allproduct = await shopService.listNonPaging(search);
+            proCount = allproduct.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage;
             if(totalPage === 1)
@@ -142,54 +150,107 @@ exports.list = async (req, res, next) => {
         }
         
     }
+
     // add product to cart
     const productID = req.query.cart;
-    try{
-        let stonk = await shopService.availableProduct(productID);
-        if(stonk === false)
-        {
+    let clientID;
+    if(req.user)
+    {
+        clientID = req.user.CLIENT_ID;
+    }
+    let cartResult = outstonk;
+    if(productID && clientID)
+    {
+        try{ //in stonk?
+            let stonk = await shopService.detail(productID);
+            //console.log("stonk "+stonk.STOCK);
+            if(stonk.STOCK === "IN STOCK")
+            {
+                cartResult = addtocartsuccess;
+                const productInCart = await shopService.productInCart(productID);
+                //console.log("productInCart "+ productInCart.length);
+                console.log(productInCart);
+                if (productInCart.length > 0)
+                {
+                    cartResult = carthaveproduct;
+                }
+                else{
+                    try{
+                    const cart = await shopService.addToCart(productID, clientID);
+                    //console.log("cart " + cart);
+                    }
+                    catch(err){
+                        console.log(err);
+                        next();
+                    }
+                }
+            } 
+        }
+        catch(err){
+            console.log(err);
+        }
+        if(prePage === nextPage) {
+            console.log("part 1");
             res.render('shop/shopList', {
-                outstonk
+                products,
+                filter,
+                search,
+                cartResult
                 });
-            return;
-        } 
-    }
-    catch(err){
-        console.log(err);
-    }
-    try{
+        }
+        else {
+            console.log("part 2");
 
+            res.render('shop/shopList', {
+                products,
+                currentPage,
+                prePage,
+                nextPage,
+                filter,
+                search,
+                cartResult
+                });
+        
+        }
+        console.log("alehoyaaaaaa " + cartResult);
+        return;
     }
-    catch(err){
-        console.log(err);
-        next();
-    }
-
+    
     if(products.length === 0)
     {
+        console.log("part 3");
+
         res.render('shop/shopList', {
         noResult,
         filter,
-        search
+        search,
         });
     }
     else if(prePage === nextPage) {
+        console.log("part 4");
+
         res.render('shop/shopList', {
             products,
             filter,
-            search
+            search,
             });
     }
     else {
+        console.log("part 5");
         res.render('shop/shopList', {
+            
+
             products,
             currentPage,
             prePage,
             nextPage,
             filter,
-            search
+            search,
             });
     }
+   
+    
+    
 };
 
 let id = "P0001";
@@ -213,27 +274,27 @@ exports.detail = async (req, res, next) => {
     });
 };
 
-const outstonk = "Product is sold out";
-exports.addToCart = async (req, res, next) => {
-    const productID = req.query.cart;
-    try{
-        let stonk = await shopService.availableProduct(productID);
-        if(stonk === false)
-        {
-            res.render('shop/shopList', {
-                outstonk
-                });
-            return;
-        } 
-    }
-    catch(err){
-        console.log(err);
-    }
-    try{
+// const outstonk = "Product is sold out";
+// exports.addToCart = async (req, res, next) => {
+//     const productID = req.query.cart;
+//     try{
+//         let stonk = await shopService.availableProduct(productID);
+//         if(stonk === false)
+//         {
+//             res.render('shop/shopList', {
+//                 outstonk
+//                 });
+//             return;
+//         } 
+//     }
+//     catch(err){
+//         console.log(err);
+//     }
+//     try{
 
-    }
-    catch(err){
-        console.log(err);
-        next();
-    }
-};
+//     }
+//     catch(err){
+//         console.log(err);
+//         next();
+//     }
+// };

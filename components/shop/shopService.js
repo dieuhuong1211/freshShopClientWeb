@@ -1,15 +1,31 @@
 const {models} = require('../../models');
 const { Op } = require('sequelize');
 const Sequelize = require('sequelize');
-exports.listNonPaging = (item = 25) => {
-    return models.products.findAll({
-        where: {
+exports.listNonPaging = (search) => {
+    if(search !== "" && search !== undefined)
+    {
+        return models.products.findAll({
+            where: {
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
             ISDELETED: false
-        },
-        order: Sequelize.literal('rand()'),
-        limit: item, 
-        raw:true
-    });
+
+            },
+            raw:true
+        });
+        
+    }
+    else {
+        return models.products.findAll({
+            where: {
+                ISDELETED: false
+            },
+            order: Sequelize.literal('rand()'),
+            raw:true
+        });
+    }
+    
     
 }
 
@@ -165,7 +181,7 @@ exports.category = (page, itemPerPage, type)=> {
 };
 
 exports.detail = (id) => {
-    return models.products.findAll({
+    return models.products.findOne({
         where: {
             PRODUCT_ID: id,
             ISDELETED: false
@@ -174,24 +190,10 @@ exports.detail = (id) => {
     });
 };
 
-exports.availableProduct = (productID) => {
-    const product = models.products.findOne({
-        where: {
-            PRODUCT_ID: productID,
-            ISDELETED: false
-        },
-        raw:true
-    });
-    if (product.STONK === "IN STOCK")
-    {
-        return true;
-    }
-    return false;
-}
 
 exports.addToCart = (productID, clientID) => {
     return models.carts.create({
-        EMAIL: productID, 
+        PRODUCT_ID: productID, 
         CLIENT_ID: clientID,
         QUANTITY: 1, 
         ISDELETED: false
@@ -199,21 +201,30 @@ exports.addToCart = (productID, clientID) => {
     
 }
 
-exports.updateCart = (quantity, productID, clientID) => {
-    return models.carts.update(
-        {
-        QUANTITY: quantity,
-        },
-        { where: 
-            {
-            EMAIL: productID, 
-            CLIENT_ID: clientID,
-            }
-        }
-    );
+// exports.updateCart = (quantity, productID, clientID) => {
+//     return models.carts.update(
+//         {
+//         QUANTITY: quantity,
+//         },
+//         { where: 
+//             {
+//             EMAIL: productID, 
+//             CLIENT_ID: clientID,
+//             }
+//         }
+//     );
     
-}
+// }
+exports.productInCart = (productID) =>{
+    return models.carts.findAll({
+        where: {
+            PRODUCT_ID: productID,
+            ISDELETED: false
 
+        },
+        raw: true
+    });
+}
 // exports.cart = (clientID) => {
 //     return models.carts.findAll({
 //         where: {
@@ -224,13 +235,4 @@ exports.updateCart = (quantity, productID, clientID) => {
 //     });
 // }
 
-// exports.productInCart = (productID) =>{
-//     return models.products.findOne({
-//         where: {
-//             PRODUCT_ID: productID,
-//             ISDELETED: false
 
-//         },
-//         raw: true
-//     });
-// }
