@@ -252,15 +252,17 @@ exports.list = async (req, res, next) => {
 };
 
 let id = "P0001";
-
+let reviewPage = 1;
+let reviewitemperpage = 3;
 exports.detail = async (req, res, next) => {
     id = req.params.id;
+    let product_detail;
     if(id===null || id==="")
     {
         id = "P0001";
     }
     try{
-        const product_detail = await shopService.detail(id);
+        product_detail = await shopService.detail(id);
         console.log(product_detail);
         const category = product_detail.PRODUCT_TYPE;
         const products = await shopService.listItemByCategory(category);
@@ -276,28 +278,3 @@ exports.detail = async (req, res, next) => {
     }
     
 };
-
-// const outstonk = "Product is sold out";
-// exports.addToCart = async (req, res, next) => {
-//     const productID = req.query.cart;
-//     try{
-//         let stonk = await shopService.availableProduct(productID);
-//         if(stonk === false)
-//         {
-//             res.render('shop/shopList', {
-//                 outstonk
-//                 });
-//             return;
-//         } 
-//     }
-//     catch(err){
-//         console.log(err);
-//     }
-//     try{
-
-//     }
-//     catch(err){
-//         console.log(err);
-//         next();
-//     }
-// };

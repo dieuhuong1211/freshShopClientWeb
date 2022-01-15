@@ -200,6 +200,27 @@ exports.detail = (id) => {
     });
 };
 
+exports.review = (productID, page, itemPerPage) => {
+    return models.reviews.findAll({
+        where: {
+            PRODUCT_ID: productID,
+            ISDELETED: false
+        },
+        offset: page * itemPerPage, 
+        limit: itemPerPage, 
+        raw: true
+    });
+}
+
+exports.personalReview = (clientID) => {
+    return models.reviews.findOne({
+        where: {
+            CLIENT_ID: clientID,
+            ISDELETED: false
+        },
+        raw: true
+    });
+}
 
 exports.addToCart = (productID, clientID) => {
     
@@ -236,8 +257,6 @@ exports.productInCartIsDelete = (productID, clientID) =>{
         raw: true
     });
 }
-
-
 
 exports.restoreProductInCart = (productID, clientID) => {
     return models.carts.update(
