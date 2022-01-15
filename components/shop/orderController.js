@@ -377,5 +377,34 @@ exports.myorder = async (req, res) => {
     }
 }
 
+exports.editOrderPage = async (req,res,next) => {
+    let clientID = null;
+
+    if(req.user)
+    {
+        clientID = req.user.CLIENT_ID;
+        //console.log(clientID);
+    }
+    else {
+        res.redirect('../auth/login');
+        return;
+    }
+
+    const deliveryID = req.body.deleteRecieved;
+    let delivery;
+    if(deliveryID)
+    {
+        try{
+            delivery = await orderService.findDeliveryByID(deliveryID);
+            
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
+    }
+    
+}
+
 
 

@@ -261,17 +261,22 @@ exports.detail = async (req, res, next) => {
     {
         id = "P0001";
     }
-    Promise.all([shopService.detail(id), shopService.listNonPaging()])
-    .then(([product_detail, products])=>{
+    try{
+        const product_detail = await shopService.detail(id);
+        console.log(product_detail);
+        const category = product_detail.PRODUCT_TYPE;
+        const products = await shopService.listItemByCategory(category);
         res.render('shop/shopDetail', {
             product_detail,
             products,
         });
-    })
-    .catch(err=>{
+    }
+    catch(err)
+    {
         console.log(err);
         next();
-    });
+    }
+    
 };
 
 // const outstonk = "Product is sold out";

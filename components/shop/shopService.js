@@ -1,6 +1,16 @@
 const {models} = require('../../models');
 const { Op } = require('sequelize');
 const Sequelize = require('sequelize');
+exports.listItemByCategory = (category) => {
+    return models.products.findAll({
+        where: {
+            ISDELETED: false,
+            PRODUCT_TYPE: category
+        },
+        order: Sequelize.literal('rand()'),
+        raw:true
+    });
+};
 exports.listNonPaging = (search) => {
     if(search !== "" && search !== undefined)
     {
@@ -201,20 +211,6 @@ exports.addToCart = (productID, clientID) => {
     
 }
 
-// exports.updateCart = (quantity, productID, clientID) => {
-//     return models.carts.update(
-//         {
-//         QUANTITY: quantity,
-//         },
-//         { where: 
-//             {
-//             EMAIL: productID, 
-//             CLIENT_ID: clientID,
-//             }
-//         }
-//     );
-    
-// }
 exports.productInCart = (productID) =>{
     return models.carts.findAll({
         where: {
@@ -225,14 +221,4 @@ exports.productInCart = (productID) =>{
         raw: true
     });
 }
-// exports.cart = (clientID) => {
-//     return models.carts.findAll({
-//         where: {
-//             CLIENT_ID: clientID,
-//             ISDELETED: false
-//         },
-//         raw: true
-//     });
-// }
-
 

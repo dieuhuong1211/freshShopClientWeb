@@ -82,3 +82,24 @@ exports.returnOrder = (clientID) =>{
         raw: true
     });
 }
+
+exports.findDeliveryByID = (deliveryID) => {
+    return models.deliveries.findOne({
+        where: {
+            DELIVERY_ID: deliveryID,
+            ISDELETED: false
+        },
+        raw: true
+    });
+}
+
+
+exports.deleteSuccessDelivery= (deliveryID) => {
+    return models.deliveries.update({
+        where: {
+            DELIVERY_ID: deliveryID,
+            ISDELETED: false
+        },
+        raw: true
+    });
+}

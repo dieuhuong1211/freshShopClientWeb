@@ -31,7 +31,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-5 col-lg-5 col-md-6">
-                    {{#each product_detail}}
+                    {{#with product_detail}}
                     <div id="carousel-example-1" class="single-product-slider carousel slide" data-ride="carousel">
                         <div class="carousel-inner" role="listbox">
                             <div class="carousel-item active"> <img class="d-block w-100" src="{{IMAGE}}" alt="First slide"> </div>
@@ -99,14 +99,14 @@
 						</div>
                     </div>
                 </div>
-                {{/each}}
+                {{/with}}
             </div>
 			
 
             <div class="row my-5">
                 <div class="col-lg-12">
                     <div class="title-all text-center">
-                        <h1>Featured Products</h1>
+                        <h1>Related Products</h1>
                         <p>We have lots of fresh produces every day. Home delivery options available at checkout</p>
                     </div>
                     <div class="featured-products-box owl-carousel owl-theme">

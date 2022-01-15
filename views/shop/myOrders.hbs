@@ -1,14 +1,4 @@
-<!-- Start Top Search -->
-    <div class="top-search">
-        <div class="container">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                <input type="text" class="form-control" placeholder="Search">
-                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
-            </div>
-        </div>
-    </div>
-    <!-- End Top Search -->
+
 
     <!-- Start All Title Box -->
     <div class="all-title-box">
@@ -25,6 +15,9 @@
         </div>
     </div>
     <!-- End All Title Box -->
+
+<form method="post" action="/_method=PUT">
+
 
     <!-- Start My Order  -->
     <div class="my-account-box-main">
@@ -97,7 +90,7 @@
 
                                     <div class="row my-5">
                                         <div class="col-md-6">
-                                            <h3 class="custom-h3">Buy Again</h3>
+                                            <h3 class="custom-h3">Orders received</h3>
                                             {{#each success}}
                                             <div class="custom-div">
                                                 <a data-toggle="collapse"  href="#{{ORDER_ID}}"> 
@@ -113,7 +106,7 @@
                                                     </li>
                                                     {{/each}}
                                                     <div class="custom-total" style="height: 70px; text-align:left">
-                                                        <a href="/shop/cart" class="btn btn-default hvr-hover btn-cart float-right custom-total">BUY AGAIN</a>
+                                                        <button name="deleteRecieved" value="{{DELIVERY_ID}}" type="submit" class="btn btn-default hvr-hover float-right custom-total">DELETE</button>
                                                         <p class="custom-total">
                                                             <strong>Discount</strong>: ${{discount}}&nbsp; - &nbsp;
                                                             <strong>Tax</strong>: ${{tax}}&nbsp; - &nbsp;
@@ -167,4 +160,6 @@
             </div>
         </div>
     </div>
+
+</form>
     <!-- End My Order -->
