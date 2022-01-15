@@ -167,22 +167,22 @@ exports.list = async (req, res, next) => {
             if(stonk.STOCK === "IN STOCK")
             {
                 cartResult = addtocartsuccess;
-                const productInCart = await shopService.productInCart(productID);
+                const productInCart = await shopService.productInCart(productID, clientID);
+                const dummyInCart = await shopService.productInCartIsDelete(productID, clientID);
                 //console.log("productInCart "+ productInCart.length);
                 console.log(productInCart);
+                console.log("dummyInCart: ",dummyInCart);
+
                 if (productInCart.length > 0)
                 {
                     cartResult = carthaveproduct;
                 }
+                else if(dummyInCart.length > 0)
+                {
+                    const cart = await shopService.restoreProductInCart(productID, clientID);
+                }
                 else{
-                    try{
                     const cart = await shopService.addToCart(productID, clientID);
-                    //console.log("cart " + cart);
-                    }
-                    catch(err){
-                        console.log(err);
-                        next();
-                    }
                 }
             } 
         }
@@ -212,7 +212,7 @@ exports.list = async (req, res, next) => {
                 });
         
         }
-        console.log("alehoyaaaaaa " + cartResult);
+        console.log("cartResult " + cartResult);
         return;
     }
     
@@ -238,8 +238,6 @@ exports.list = async (req, res, next) => {
     else {
         console.log("part 5");
         res.render('shop/shopList', {
-            
-
             products,
             currentPage,
             prePage,

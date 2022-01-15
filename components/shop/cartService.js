@@ -21,3 +21,17 @@ exports.productInCart = (productID) =>{
         raw: true
     });
 }
+
+exports.deleteProductInCart = (productID, clientID) => {
+    return models.carts.update(
+        {
+        ISDELETED: true
+        },
+        {
+            where: {
+                PRODUCT_ID: productID,
+                CLIENT_ID: clientID,
+
+            }
+        });
+}

@@ -202,6 +202,7 @@ exports.detail = (id) => {
 
 
 exports.addToCart = (productID, clientID) => {
+    
     return models.carts.create({
         PRODUCT_ID: productID, 
         CLIENT_ID: clientID,
@@ -211,10 +212,11 @@ exports.addToCart = (productID, clientID) => {
     
 }
 
-exports.productInCart = (productID) =>{
+exports.productInCart = (productID, clientID) =>{
     return models.carts.findAll({
         where: {
             PRODUCT_ID: productID,
+            CLIENT_ID: clientID,
             ISDELETED: false
 
         },
@@ -222,3 +224,31 @@ exports.productInCart = (productID) =>{
     });
 }
 
+exports.productInCartIsDelete = (productID, clientID) =>{
+    return models.carts.findAll({
+        where: {
+            PRODUCT_ID: productID,
+            CLIENT_ID: clientID,
+
+            ISDELETED: true
+
+        },
+        raw: true
+    });
+}
+
+
+
+exports.restoreProductInCart = (productID, clientID) => {
+    return models.carts.update(
+        {
+        ISDELETED: false
+        },
+        {
+            where: {
+                PRODUCT_ID: productID,
+                CLIENT_ID: clientID,
+
+            }
+        });
+}

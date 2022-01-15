@@ -55,3 +55,41 @@ exports.cart = async (req, res, next) => {
         res.redirect('../auth/login');
     }
 };
+
+exports.editCart = async (req,res,next) => {
+    let clientID = null;
+
+    if(req.user)
+    {
+        clientID = req.user.CLIENT_ID;
+        //console.log(clientID);
+    }
+    else {
+        res.redirect('../auth/login');
+        return;
+    }
+
+    const del_productID = req.body.delete;
+    console.log(del_productID);
+
+    let del;
+    if(del_productID)
+    {
+        try{
+            del = await cartService.deleteProductInCart(del_productID, clientID);
+            console.log(del);
+
+        }
+        catch(err)
+        {
+            console.log(err);
+            return next();
+        }
+        res.redirect('back');
+
+    }
+    const updateQuantity = req.body.quantity;
+    const price = req.body.price;
+
+    
+}
