@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     STOCK: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.ENUM('IN STOCK','OUT STOCK'),
       allowNull: true
     },
     QUANTITY: {

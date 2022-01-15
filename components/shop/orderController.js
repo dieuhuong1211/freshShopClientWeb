@@ -2,7 +2,7 @@ const orderService = require('./orderService');
 const emptyOrder = "You have not created any orders yet";
 const emptySuccess = "Not Found";
 const emptyReturn = "Not Found";
-let notfound = 0;
+
 
 let orders = [];
 let orders_products = [];
@@ -10,9 +10,10 @@ let success_products = [];
 let success = [];
 let returns_products = [];
 let returns = [];
-exports.myorder = async (req, res) => {
+exports.myorder = async (req, res, next) => {
     
     let clientID = null;
+    let notfound = 0;
     
     if(req.user)
     {
@@ -74,6 +75,7 @@ exports.myorder = async (req, res) => {
                         }
                         catch(err){
                             console.log(err);
+                            return next();
                         }
                     }
                     orders[i].totalprice = totalprice;
@@ -82,10 +84,11 @@ exports.myorder = async (req, res) => {
                 }
                 catch(err){
                     console.log(err);
+                    return next();
                 }
                 try {
                     bills[i] = await orderService.bill(orders[i].ORDER_ID);
-                    //console.log(bills[i]);
+                    console.log(bills[i]);
                     orders[i].totalprice = orders[i].totalprice - bills[i].DISCOUNT + bills[i].TAX + bills[i].SHIPPING_COST;
                     orders[i].discount = bills[i].DISCOUNT;
                     orders[i].tax =  bills[i].TAX;
@@ -95,6 +98,7 @@ exports.myorder = async (req, res) => {
                 }
                 catch(err) {
                     console.log(err);
+                    return next();
                 }
                 
            }
@@ -107,12 +111,12 @@ exports.myorder = async (req, res) => {
     catch(err)
     {
         console.log(err);
-        return;
+        return next();
     }
     //render succedd orders
     try{
         success = await orderService.deliverySuccess(clientID);
-        //console.log(success.length);
+        console.log("success.length: ", success.length);
         if(success.length === 0)
         {
             console.log("ko co don hang thanh cong nao");
@@ -153,6 +157,7 @@ exports.myorder = async (req, res) => {
                         }
                         catch(err){
                             console.log(err);
+                            return next();
                         }
                     }
                     success[i].totalprice = totalprice;
@@ -161,6 +166,7 @@ exports.myorder = async (req, res) => {
                 }
                 catch(err){
                     console.log(err);
+                    return next();
                 }
                 try{
                     const orderbyid = await orderService.orderByID(success[i].ORDER_ID);
@@ -176,6 +182,7 @@ exports.myorder = async (req, res) => {
                 }
                 catch(err){
                     console.log(err);
+                    return next();
                 }
                 try {
                     bills[i] = await orderService.bill(success[i].ORDER_ID);
@@ -187,6 +194,7 @@ exports.myorder = async (req, res) => {
                 }
                 catch(err) {
                     console.log(err);
+                    return next();
                 }
                     
             }
@@ -199,15 +207,15 @@ exports.myorder = async (req, res) => {
     catch(err)
     {
         console.log(err);
-        return;
+        return next();
     }
     //render returned orders
     try{
         returns = await orderService.returnOrder(clientID);
-        console.log(returns.length);
+        //console.log(returns.length);
         if(returns.length === 0)
         {
-            console.log("ko co don tra hang nao");
+            //console.log("ko co don tra hang nao");
             notfound = notfound + 1;
             
         }
@@ -220,8 +228,8 @@ exports.myorder = async (req, res) => {
             {
                 try{
                     returns_products[i] = await orderService.productListInOrder(returns[i].ORDER_ID); 
-                    console.log("don tra hang");
-                    console.log(returns_products[i]);
+                    //console.log("don tra hang");
+                    //console.log(returns_products[i]);
                     const daytime = new Date(returns[i].DELIVERY_DAY);
                     if (!isNaN(daytime.getTime())) {
                         //get date
@@ -244,6 +252,7 @@ exports.myorder = async (req, res) => {
                         }
                         catch(err){
                             console.log(err);
+                            return next();
                         }
                     }
                     returns[i].totalprice = totalprice;
@@ -252,6 +261,7 @@ exports.myorder = async (req, res) => {
                 }
                 catch(err){
                     console.log(err);
+                    return next();
                 }
                 try{
                     const orderbyid = await orderService.orderByID(returns[i].ORDER_ID);
@@ -267,10 +277,11 @@ exports.myorder = async (req, res) => {
                 }
                 catch(err){
                     console.log(err);
+                    return next();
                 }
                 try {
                     bills[i] = await orderService.bill(returns[i].ORDER_ID);
-                    console.log(bills[i]);
+                    //console.log(bills[i]);
                     returns[i].totalprice = returns[i].totalprice - bills[i].DISCOUNT + bills[i].TAX + bills[i].SHIPPING_COST;
                     returns[i].discount = bills[i].DISCOUNT;
                     returns[i].tax =  bills[i].TAX;
@@ -278,6 +289,7 @@ exports.myorder = async (req, res) => {
                 }
                 catch(err) {
                     console.log(err);
+                    return next();
                 }
                     
             }
@@ -287,10 +299,10 @@ exports.myorder = async (req, res) => {
     catch(err)
     {
         console.log(err);
-        return;
+        return next();
     }
 
-
+    console.log("not found: ", notfound)
     switch(notfound){
         case 1:
         {
@@ -298,9 +310,7 @@ exports.myorder = async (req, res) => {
             {
                 res.render('shop/myOrders', {
                     emptyOrder,
-
                     success,
-
                     returns
                 });
             }
@@ -308,9 +318,7 @@ exports.myorder = async (req, res) => {
             {
                 res.render('shop/myOrders', {
                     emptySuccess,
-
                     orders,
-
                     returns
                 });
             }
@@ -318,12 +326,11 @@ exports.myorder = async (req, res) => {
             {
                 res.render('shop/myOrders', {
                     emptyReturn,
-
                     orders,
-
                     success,
                 });
             }
+            break;
             
         }
         case 2:
@@ -333,7 +340,6 @@ exports.myorder = async (req, res) => {
                 res.render('shop/myOrders', {
                     emptySuccess,
                     emptyReturn,
-
                     orders,
                 });
             }
@@ -342,7 +348,6 @@ exports.myorder = async (req, res) => {
                 res.render('shop/myOrders', {
                     emptyOrder,
                     emptyReturn,
-
                     success,
                 });
             }
@@ -350,10 +355,10 @@ exports.myorder = async (req, res) => {
                 res.render('shop/myOrders', {
                     emptySuccess,
                     emptyOrder,
-
                     returns
                 });
             }
+            break;
            
         }
         case 3:
@@ -363,16 +368,16 @@ exports.myorder = async (req, res) => {
                 emptyOrder,
                 emptyReturn
             });
+            break;
+
         }
         default:
             res.render('shop/myOrders', {
-
                 orders,
- 
                 success,
-   
                 returns
             });
+            break;
            
     }
 }
@@ -391,18 +396,24 @@ exports.editOrderPage = async (req,res,next) => {
     }
 
     const deliveryID = req.body.deleteRecieved;
-    let delivery;
+    console.log(deliveryID);
+    console.log("123123123123");
+
+    let del;
     if(deliveryID)
     {
         try{
-            delivery = await orderService.findDeliveryByID(deliveryID);
-            
+            del = await orderService.deleteSuccessDelivery(deliveryID);
+            console.log(del);
+
         }
         catch(err)
         {
             console.log(err);
+            return next();
         }
     }
+    res.redirect('back');
     
 }
 

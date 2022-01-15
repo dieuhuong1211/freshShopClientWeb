@@ -16,6 +16,7 @@ router.get('/cart', CartController.cart);
 router.get('/checkout', ChekoutController.checkout);
 
 router.get('/myOrders', OrderController.myorder);
+router.post('/myOrders', OrderController.editOrderPage);
 
 router.get('/wishList', function(req, res, next) {
   res.render('shop/wishList', { title: 'Express' });

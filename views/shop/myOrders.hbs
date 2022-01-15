@@ -16,7 +16,7 @@
     </div>
     <!-- End All Title Box -->
 
-<form method="post" action="/_method=PUT">
+<form method="post">
 
 
     <!-- Start My Order  -->
@@ -34,7 +34,7 @@
                                     <h4>Your Orders</h4>
                                     <p>Track, return, or buy things again</p>
                                 </div>
-                                <div class="mt-3 collapse " id="formOrder">
+                                <div class="mt-3 collapse show" id="formOrder">
                                     <div class="row my-5">
                                         <div class="col-md-12">
                                             <h3 class="custom-h3">In Transit</h3>
@@ -91,13 +91,18 @@
                                     <div class="row my-5">
                                         <div class="col-md-6">
                                             <h3 class="custom-h3">Orders received</h3>
+                                            {{#if emptySuccess}}
+                                            <div class="custom-div">
+                                            <p class="no_result_title" style="size: 14px;">{{emptySuccess}}</p>
+                                            </div>
+                                            {{else}}
                                             {{#each success}}
                                             <div class="custom-div">
-                                                <a data-toggle="collapse"  href="#{{ORDER_ID}}"> 
+                                                <a data-toggle="collapse"  href="#{{DELIVERY_ID}}"> 
                                                     <i class="fas fa-smile-wink"></i> 
                                                     <p>Day Received: {{arrive}}</p>
                                                 </a>
-                                                <ul class="cart-list collapse"  id="{{ORDER_ID}}">
+                                                <ul class="cart-list collapse"  id="{{DELIVERY_ID}}">
                                                     {{#each productList}}
                                                     <li style="width:80%;margin: auto;">
                                                         <a href="/shop/shopDetail/{{PRODUCT_ID}}" class="photo"><img src="{{image}}" class="cart-thumb" alt="" /></a>
@@ -119,9 +124,15 @@
                                                 </ul>
                                             </div>
                                             {{/each}}
+                                            {{/if}}
                                         </div>
                                         <div class=" col-md-6">
                                             <h3 class="custom-h3">Return</h3>
+                                            {{#if emptyReturn}}
+                                            <div class="custom-div">
+                                                <p class="no_result_title" style="size: 14px;">{{emptyReturn}}</p>
+                                            </div>
+                                            {{else}}
                                             {{#each returns}}
                                             <div class="custom-div">
                                                 <a data-toggle="collapse"  href="#{{ORDER_ID}}"> 
@@ -150,6 +161,7 @@
                                                 </ul>
                                             </div>
                                             {{/each}}
+                                            {{/if}}
                                         </div>
                                     </div>
                                 </div>

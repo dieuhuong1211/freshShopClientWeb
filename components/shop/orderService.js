@@ -94,12 +94,14 @@ exports.findDeliveryByID = (deliveryID) => {
 }
 
 
-exports.deleteSuccessDelivery= (deliveryID) => {
-    return models.deliveries.update({
-        where: {
-            DELIVERY_ID: deliveryID,
-            ISDELETED: false
+exports.deleteSuccessDelivery = (deliveryID) => {
+    return models.deliveries.update(
+        {
+        ISDELETED: true
         },
-        raw: true
-    });
+        {
+            where: {
+                DELIVERY_ID: deliveryID,
+            }
+        });
 }
