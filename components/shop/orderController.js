@@ -69,9 +69,8 @@ exports.myorder = async (req, res, next) => {
                             //console.log(product_detail);
                             orders_products[i][j].image = product_detail.IMAGE;
                             orders_products[i][j].name = product_detail.PRODUCT_NAME;
-                            price = orders_products[i][j].PRICE * orders_products[i][j].QUANTITY;
-                            orders_products[i][j].price = price;
-                            totalprice = totalprice + price;
+                            orders_products[i][j].price = orders_products[i][j].PRODUCTPRICE / orders_products[i][j].QUANTITY;
+                            totalprice = totalprice + orders_products[i][j].PRODUCTPRICE;
                         }
                         catch(err){
                             console.log(err);
@@ -151,9 +150,8 @@ exports.myorder = async (req, res, next) => {
                             //console.log(product_detail);
                             success_products[i][j].image = product_detail.IMAGE;
                             success_products[i][j].name = product_detail.PRODUCT_NAME;
-                            price = success_products[i][j].PRICE * success_products[i][j].QUANTITY;
-                            success_products[i][j].price = price;
-                            totalprice = totalprice + price;
+                            success_products[i][j].price = success_products[i][j].PRODUCTPRICE / success_products[i][j].QUANTITY;
+                            totalprice = totalprice + success_products[i][j].PRODUCTPRICE;
                         }
                         catch(err){
                             console.log(err);
@@ -246,9 +244,8 @@ exports.myorder = async (req, res, next) => {
                             //console.log(product_detail);
                             returns_products[i][j].image = product_detail.IMAGE;
                             returns_products[i][j].name = product_detail.PRODUCT_NAME;
-                            price = returns_products[i][j].PRICE * returns_products[i][j].QUANTITY;
-                            returns_products[i][j].price = price;
-                            totalprice = totalprice + price;
+                            returns_products[i][j].price = returns_products[i][j].PRODUCTPRICE / returns_products[i][j].QUANTITY;
+                            totalprice = totalprice + returns_products[i][j].PRODUCTPRICE;
                         }
                         catch(err){
                             console.log(err);

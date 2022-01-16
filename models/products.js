@@ -2,23 +2,27 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('products', {
     PRODUCT_ID: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.CHAR(100),
       allowNull: false,
       primaryKey: true
     },
     IMAGE: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(250),
       allowNull: true
     },
     PRODUCT_NAME: {
       type: DataTypes.STRING(100),
       allowNull: true
     },
-    PRODUCT_TYPE: {
-      type: DataTypes.STRING(50),
-      allowNull: true
+    CATEGORY: {
+      type: DataTypes.CHAR(100),
+      allowNull: true,
+      references: {
+        model: 'categories',
+        key: 'CATEGORY_ID'
+      }
     },
-    STOCK: {
+    STONK: {
       type: DataTypes.ENUM('IN STOCK','OUT STOCK'),
       allowNull: true
     },
@@ -39,7 +43,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     IMPORTER: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.CHAR(100),
       allowNull: true,
       references: {
         model: 'admins',
@@ -47,7 +51,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     DETAIL: {
-      type: DataTypes.STRING(200),
+      type: DataTypes.STRING(1000),
       allowNull: true
     },
     ISDELETED: {
@@ -72,6 +76,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "IMPORTER" },
+        ]
+      },
+      {
+        name: "fk_p_ca",
+        using: "BTREE",
+        fields: [
+          { name: "CATEGORY" },
         ]
       },
     ]

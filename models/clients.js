@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('clients', {
     CLIENT_ID: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.CHAR(100),
       allowNull: false,
       primaryKey: true
     },

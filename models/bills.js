@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('bills', {
     ORDER_ID: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.CHAR(100),
       allowNull: false,
       primaryKey: true,
       references: {

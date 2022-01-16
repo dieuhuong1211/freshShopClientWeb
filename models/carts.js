@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('carts', {
     CLIENT_ID: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.CHAR(100),
       allowNull: false,
       primaryKey: true,
       references: {
@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     PRODUCT_ID: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.CHAR(100),
       allowNull: false,
       primaryKey: true,
       references: {

@@ -201,18 +201,21 @@
                             </div>
                             {{!-- pagination --}}
                             {{#if currentPage}}
-                            <ul class="pagination">
+                            <div  style="display: flex; justify-content: center;">
+                                <ul class="pagination" style="max-width:fit-content; margin-right: auto;margin-left: auto;">
                                 
                                     <li class="page-item">
                                         <input  onchange='this.form.submit();' style="display: none;" id="page-prev" value="{{prePage}}" type="radio" name="page"/>
                                         <label for="page-prev"  class="btn"><span aria-hidden="true">&laquo;</span></label>
                                     </li>
-                                    <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+                                    <li class="page-item"><a class="page-link" style="width:40px; background-color:#b0b435; color:white; text-align:center">{{currentPage}}</a></li>
                                     <li class="page-item"></li>
                                         <input  onchange='this.form.submit();' style="display: none;" id="page-next" value="{{nextPage}}" type="radio" name="page"/>
                                         <label for="page-next"  class="btn"><span aria-hidden="true">&raquo;</span></label>
                                     </li>
                                 </ul>
+                            </div>
+                            
                             {{/if}}
 
                         </div>

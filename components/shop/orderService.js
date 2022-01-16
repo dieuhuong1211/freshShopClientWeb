@@ -74,10 +74,11 @@ exports.deliverySuccess = (clientID) =>{
 }
 
 exports.returnOrder = (clientID) =>{
-    return models.orders_return.findAll({
+    return models.deliveries.findAll({
         where: {
             CLIENT_ID: clientID,
-            ISDELETED: false
+            ISDELETED: false,
+            DELIVERY_STATUS: "RETURN"
         },
         raw: true
     });
