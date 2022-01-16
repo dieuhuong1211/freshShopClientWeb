@@ -113,3 +113,26 @@
     font-weight:bolder;
     font-size: 18px;
 }
+
+.modal{
+    position: absolute;
+    height: max-content;
+    float: left;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-body li{
+    margin-top: 8px;
+    
+    
+}
+
+.modal-body li button{
+    font-size: 18px;
+    font-weight: bolder;
+    width: 70%;
+    color:white;
+    
+}

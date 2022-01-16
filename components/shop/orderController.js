@@ -1,8 +1,10 @@
 const orderService = require('./orderService');
-const emptyOrder = "You have not created any orders yet";
+const emptyOrder = "You haven`t made any order yet";
 const emptySuccess = "Not Found";
 const emptyReturn = "Not Found";
 
+const now = new Date();
+const today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
 
 let orders = [];
 let orders_products = [];
@@ -209,7 +211,7 @@ exports.myorder = async (req, res, next) => {
     }
     //render returned orders
     try{
-        returns = await orderService.returnOrder(clientID);
+        returns = await orderService.findReturnOrder(clientID);
         //console.log(returns.length);
         if(returns.length === 0)
         {
@@ -385,7 +387,6 @@ exports.editOrderPage = async (req,res,next) => {
     if(req.user)
     {
         clientID = req.user.CLIENT_ID;
-        //console.log(clientID);
     }
     else {
         res.redirect('../auth/login');
@@ -394,13 +395,11 @@ exports.editOrderPage = async (req,res,next) => {
 
     const deliveryID = req.body.deleteRecieved;
     console.log(deliveryID);
-    console.log("123123123123");
 
-    let del;
     if(deliveryID)
     {
         try{
-            del = await orderService.deleteSuccessDelivery(deliveryID);
+            const del = await orderService.deleteSuccessDelivery(deliveryID);
             console.log(del);
 
         }
@@ -409,7 +408,82 @@ exports.editOrderPage = async (req,res,next) => {
             console.log(err);
             return next();
         }
+        res.redirect('back');
+        return;
     }
+
+    const cancleOrderID = req.body.return;
+    console.log(cancleOrderID);
+    if(cancleOrderID)
+    {
+        try{
+            const retr = await orderService.findDeliveryByOrder(cancleOrderID);
+            console.log("retr", retr[0]);
+            const note = "order is canceled";
+            try{
+                const result = await orderService.returnOrder(retr[0].DELIVERY_ID, note, today);
+                const aa = await orderService.findDeliveryByID(retr[0].DELIVERY_ID);
+                console.log("aaaaaaaaaaaaaa ", aa);
+                console.log(clientID);
+            }
+            catch(err)
+            {
+                console.log(err);
+                return next();
+            }
+            try{
+                const result = await orderService.deleteOrder(cancleOrderID);
+            }
+            catch(err)
+            {
+                console.log(err);
+                return next();
+            }
+
+        }
+        catch(err)
+        {
+            console.log(err);
+            return next();
+        }
+        res.redirect('back');
+        return;
+    }
+
+    const receiveOrderID = req.body.receive;
+    console.log(receiveOrderID);
+    if(receiveOrderID)
+    {
+        try{
+            const recv = await orderService.findDeliveryByOrder(receiveOrderID);
+            console.log("recv", recv[0]);
+            try{
+                const result = await orderService.receiveOrder(recv[0].DELIVERY_ID,today);
+            }
+            catch(err)
+            {
+                console.log(err);
+                return next();
+            }
+            try{
+                const result = await orderService.deleteOrder(receiveOrderID);
+            }
+            catch(err)
+            {
+                console.log(err);
+                return next();
+            }
+
+        }
+        catch(err)
+        {
+            console.log(err);
+            return next();
+        }
+        res.redirect('back');
+        return;
+    }
+
     res.redirect('back');
     
 }

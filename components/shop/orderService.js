@@ -73,7 +73,7 @@ exports.deliverySuccess = (clientID) =>{
     });
 }
 
-exports.returnOrder = (clientID) =>{
+exports.findReturnOrder = (clientID) =>{
     return models.deliveries.findAll({
         where: {
             CLIENT_ID: clientID,
@@ -99,6 +99,58 @@ exports.deleteSuccessDelivery = (deliveryID) => {
     return models.deliveries.update(
         {
         ISDELETED: true
+        },
+        {
+            where: {
+                DELIVERY_ID: deliveryID,
+            }
+        });
+}
+
+exports.findDeliveryByOrder = (orderID) => {
+    return models.deliveries.findAll({
+            where: {
+                ORDER_ID: orderID,
+                ISDELETED: false,
+            },
+            order: [
+                ['DELIVERY_DAY', 'DESC'],
+            ],
+            raw: true
+        });
+}
+
+exports.returnOrder = (deliveryID, note, date) => {
+    return models.deliveries.update(
+        {
+            DELIVERY_STATUS: "RETURN",
+            NOTE: note,
+            DELIVERY_DAY: date
+        },
+        {
+            where: {
+                DELIVERY_ID: deliveryID,
+            }
+        });
+}
+
+exports.deleteOrder = (orderID) => {
+    return models.orders.update(
+        {
+            ISDELETED: true
+        },
+        {
+            where: {
+                ORDER_ID: orderID,
+            }
+        });
+}
+
+exports.receiveOrder = (deliveryID, date) => {
+    return models.deliveries.update(
+        {
+            DELIVERY_STATUS: "SUCCEED",
+            DELIVERY_DAY: date
         },
         {
             where: {

@@ -25,13 +25,27 @@ exports.productInCart = (productID) =>{
 exports.deleteProductInCart = (productID, clientID) => {
     return models.carts.update(
         {
-        ISDELETED: true
+        ISDELETED: true,
+        QUANTITY: 1
         },
         {
             where: {
                 PRODUCT_ID: productID,
                 CLIENT_ID: clientID,
 
+            }
+        });
+}
+
+exports.updateCart = (clientID, productID, quantity) => {
+    return models.carts.update(
+        {
+        QUANTITY: quantity
+        },
+        {
+            where: {
+                PRODUCT_ID: productID,
+                CLIENT_ID: clientID
             }
         });
 }

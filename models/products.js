@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
         key: 'CATEGORY_ID'
       }
     },
-    STONK: {
+    STOCK: {
       type: DataTypes.ENUM('IN STOCK','OUT STOCK'),
       allowNull: true
     },

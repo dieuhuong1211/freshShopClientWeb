@@ -40,7 +40,7 @@
                                             <h3 class="custom-h3">In Transit</h3>
                                             {{#if emptyOrder}}
                                              <div class="custom-div">
-                                                 <p class="no_result_title">emptyOrder</p>
+                                                 <p class="no_result_title">{{emptyOrder}}</p>
                                              </div>
                                             {{else}}
                                             {{#each orders}}
@@ -70,14 +70,16 @@
                                                     </li>
                                                     {{/each}}
                                                     <div class="custom-total" style="height: 70px; text-align:left">
-                                                        <a href="#" class="btn btn-default hvr-hover btn-cart float-right custom-total">RECEIVE</a>
-                                                        <a href="#" class="btn btn-default hvr-hover btn-cart float-right custom-total">CANCEL</a>
-                                                        <p class="custom-total">
-                                                            <strong>Discount</strong>: ${{discount}}&nbsp; - &nbsp;
-                                                            <strong>Tax</strong>: ${{tax}}&nbsp; - &nbsp;
-                                                            <strong>Shipping</strong>: ${{shipping}}&nbsp; - &nbsp;
-                                                            <b style="color: #b0b435"><strong>Total</strong>: ${{totalprice}}</b>
-                                                        </p>
+                                                        <button class="btn btn-default hvr-hover float-right custom-total" name="receive" value="{{ORDER_ID}}" type="submit">RECEIVE</button>
+                                                        {{!-- <button class="btn btn-default hvr-hover float-right custom-total" data-toggle="modal" data-target="#returnod">CANCLE</button> --}}
+                                                        <button class="btn btn-default hvr-hover float-right custom-total" name="return" value="{{ORDER_ID}}" type="submit">CANCLE</button>
+                                                        
+                                                            <p class="custom-total">
+                                                                <strong>Discount</strong>: ${{discount}}&nbsp; - &nbsp;
+                                                                <strong>Tax</strong>: ${{tax}}&nbsp; - &nbsp;
+                                                                <strong>Shipping</strong>: ${{shipping}}&nbsp; - &nbsp;
+                                                                <b style="color: #b0b435"><strong>Total</strong>: ${{totalprice}}</b>
+                                                            </p>
                                                         <p class="custom-total"><strong>Arrive Before</strong>: {{arrive}}</p>
                                                         
                                                     </div>
@@ -137,7 +139,7 @@
                                             <div class="custom-div">
                                                 <a data-toggle="collapse"  href="#{{ORDER_ID}}"> 
                                                     <i class="fas fa-sad-tear"></i>
-                                                    <p>Reason for return: {{REASON}}</p>
+                                                    <p>Reason for return: {{NOTE}}</p>
                                                 </a>
                                                 <ul class="cart-list collapse" id="{{ORDER_ID}}">
                                                     {{#each productList}}
@@ -172,6 +174,27 @@
             </div>
         </div>
     </div>
-
+{{!-- {{#each orders}}
+<input name="orderCancle"  value="{{ORDER_ID}}"  hidden>
+<div class="modal" id="returnod" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" >Why you want to <br> return this order?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <ul>
+              <li><button name="Reasonreturn" value="damaged goods" type="submit" class="btn btn-default hvr-hover">I received a damaged order</button></li>
+              <li><button name="Reasonreturn" value="unable to receive goods" type="submit" class="btn btn-default hvr-hover">I can't receive the goods</button></li>
+              <li><button name="Reasonreturn" value="order is canceled" type="submit" class="btn btn-default hvr-hover">I have no reason</button></li>
+          </ul>
+        </div>
+    </div>
+  </div>
+</div>
+{{/each}} --}}
 </form>
     <!-- End My Order -->

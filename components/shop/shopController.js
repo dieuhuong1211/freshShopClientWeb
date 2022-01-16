@@ -13,8 +13,8 @@ let proCount = 0;
 const outstonk = "Sorry, this product is sold out :<";
 const carthaveproduct = "Your cart already has this product";
 const addtocartsuccess = "Product successfully added to cart :>";
-const date = new Date();
-const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+const now = new Date();
+const today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
 
 exports.list = async (req, res, next) => {
 
@@ -266,7 +266,7 @@ exports.detail = async (req, res, next) => {
     try{
         product_detail = await shopService.detail(id);
         //console.log(product_detail);
-        const category = product_detail.PRODUCT_TYPE;
+        const category = product_detail.CATEGORY;
         products = await shopService.listItemByCategory(category);
     }
     catch(err)

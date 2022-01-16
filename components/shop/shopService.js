@@ -5,7 +5,7 @@ exports.listItemByCategory = (category) => {
     return models.products.findAll({
         where: {
             ISDELETED: false,
-            PRODUCT_TYPE: category
+            CATEGORY: category
         },
         order: Sequelize.literal('rand()'),
         raw:true
@@ -181,7 +181,7 @@ exports.listLowToHigh = (search, page, itemPerPage) => {
 exports.category = (page, itemPerPage, type)=> {
     return models.products.findAll({
         where: {
-            PRODUCT_TYPE: type,
+            CATEGORY: type,
             ISDELETED: false
         },
         offset: page * itemPerPage, 

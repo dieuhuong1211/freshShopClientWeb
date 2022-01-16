@@ -8,7 +8,7 @@ exports.cart = async (req, res, next) => {
         console.log(clientID);
         try{
             const cart_products = await cartService.cart(clientID);
-            console.log(cart_products.length);
+            //console.log(cart_products.length);
             if(cart_products.length === 0)
             {
                 console.log("ko co product trong cart");
@@ -25,11 +25,11 @@ exports.cart = async (req, res, next) => {
                     let product_id = cart_products[i].PRODUCT_ID;
                     try{
                         product[i] = await cartService.productInCart(product_id);
-                        console.log(product[i]);
+                        //console.log(product[i]);
                         product[i].cartquantity = cart_products[i].QUANTITY;
                         product[i].totalprice = cart_products[i].QUANTITY * product[i].PRICE;
                         subtotal = subtotal + product[i].totalprice;
-                        console.log("tim product");
+                        //console.log("tim product");
                     }
                     catch(err){
                         console.log(err);
@@ -86,10 +86,35 @@ exports.editCart = async (req,res,next) => {
             return next();
         }
         res.redirect('back');
-
+        return;
     }
-    const updateQuantity = req.body.quantity;
-    const price = req.body.price;
-
+    let cart
+    try{
+        cart = await cartService.cart(clientID);
+    }
+    catch(err){
+        console.log(err);
+        next();
+    }
+    console.log(cart.length);
+    if(cart.length > 0)
+    {
+        const updateQuantity = req.body.quantity;
+        console.log("updateQuantity: ", updateQuantity);
+        for(let i = 0; i < updateQuantity.length; i++)
+        {
+            const quantity = parseInt(updateQuantity[i]);
+            const productID = cart[i].PRODUCT_ID;
+            try{
+                const update = await cartService.updateCart(clientID, productID, quantity);
+            }
+            catch(err){
+                console.log(err);
+                next();
+            }
+        }
+    }
+    res.redirect('back');
+    
     
 }
