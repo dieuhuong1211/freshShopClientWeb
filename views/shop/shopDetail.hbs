@@ -118,10 +118,19 @@
                             <hr>
                             {{/each}}
 						{{/if}}
-                        <div style="float: left;">
-                        <a href="#" class="btn hvr-hover">Leave a Review</a>
-                        </div>
+                        {{#if user}}
+                            {{#if clientalreadyreview}}
+                            {{else}}
+                                <div style="float: left; margin-right: 20px">
+                                    <a class="btn hvr-hover" data-toggle="collapse"  href="#formReview">Leave a Review</a>
+                                </div>
+                            {{/if}}
+                        {{else}}
+                            <a class="btn hvr-hover" href="/auth/login">Leave a Review</a>
+
+                        {{/if}}
                         <div style="float: right;">
+                            
                         <form method="get" id="detailform">
                             {{#if currentPage}}
                             <ul class="pagination">
@@ -137,9 +146,20 @@
                             </ul>
                             {{/if}}
                         </form>
+                        </div>
+                        <form method="post" id="commentForm">
+                            <div class="collapse" id="formReview">
+                                <div class="card card-body">
+                                    <textarea rows="4"  name="comment" placeholder="Enter your comment here..." ></textarea>
+                                <button  class="btn btn-default bnt-review hvr-hover"  type="submit" >Comment</a>
+                                    
+                                </div>
+                            </div>
+                        </form>
+                        
                         
 
-                        </div>
+                        
 						
 					</div>
 				  </div>
@@ -163,7 +183,7 @@
                                             <a href="/shop/shopDetail/{{PRODUCT_ID}}" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a>
                                             </li>
                                         </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
+                                    
                                     </div>
                                 </div>
                                 <div class="why-text">

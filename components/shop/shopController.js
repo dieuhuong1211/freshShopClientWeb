@@ -13,7 +13,8 @@ let proCount = 0;
 const outstonk = "Sorry, this product is sold out :<";
 const carthaveproduct = "Your cart already has this product";
 const addtocartsuccess = "Product successfully added to cart :>";
-
+const date = new Date();
+const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
 
 exports.list = async (req, res, next) => {
 
@@ -251,9 +252,8 @@ exports.list = async (req, res, next) => {
     
 };
 
-let id = "P0001";
-let reviewitemperpage = 3;
-const noReview = "There are no reviews yet"
+let reviewitemperpage = 2;
+const noReview = "There are no reviews yet";
 exports.detail = async (req, res, next) => {
     id = req.params.id;
     let product_detail;
@@ -261,11 +261,11 @@ exports.detail = async (req, res, next) => {
     let review
     if(id===null || id==="")
     {
-        id = "P0001";
+        return;
     }
     try{
         product_detail = await shopService.detail(id);
-        console.log(product_detail);
+        //console.log(product_detail);
         const category = product_detail.PRODUCT_TYPE;
         products = await shopService.listItemByCategory(category);
     }
@@ -286,7 +286,7 @@ exports.detail = async (req, res, next) => {
             {
                 try{
                     const person = await shopService.personalReview(review[i].CLIENT_ID);
-                    console.log(person);
+                    //console.log(person);
                     review[i].name = person.FIRSTNAME + " " + person.LASTNAME;
                     review[i].personimage = person.IMAGE;
                     const daytime = new Date(review[i].REVIEWDATE);
@@ -335,6 +335,22 @@ exports.detail = async (req, res, next) => {
         nextPage = currentPage + 1;
     }
 
+    let clientalreadyreview = null;
+    if(req.user)
+    {
+        const clientID = req.user.CLIENT_ID;
+        try{
+            clientalreadyreview = await shopService.clientAlreadyComment(id, clientID);
+        }
+        catch(err)
+        {
+            console.log(err);
+            return next();
+        }
+    }
+    
+    
+
     if(review.length === 0)
     {
         console.log("no review");
@@ -343,6 +359,7 @@ exports.detail = async (req, res, next) => {
             product_detail,
             products,
             noReview,
+            clientalreadyreview
         });
     }
     else if(prePage === nextPage) {
@@ -352,6 +369,7 @@ exports.detail = async (req, res, next) => {
             product_detail,
             products,
             review,
+            clientalreadyreview
         });
     }
     else {
@@ -360,9 +378,32 @@ exports.detail = async (req, res, next) => {
             product_detail,
             products,
             review,
+            clientalreadyreview,
             currentPage,
             prePage,
             nextPage,
             });
     }
 };
+
+exports.addComment = async (req, res, next) => {
+    let clientID = null;
+    let productID = req.params.id;
+    if(req.user)
+    {
+        clientID = req.user.CLIENT_ID;
+    }
+    const review = req.body.comment;
+    console.log("review: ", review);
+
+    try {
+        const addComment = await shopService.addComment(productID, clientID, review, today);
+        console.log(addComment);
+        res.redirect('back');
+    }
+    catch(err){
+        console.log(err);
+        next();
+    }
+
+}

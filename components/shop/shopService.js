@@ -267,6 +267,17 @@ exports.productInCartIsDelete = (productID, clientID) =>{
     });
 }
 
+exports.clientAlreadyComment = (productID, clientID) => {
+    return models.reviews.findOne({
+        where: {
+            CLIENT_ID: clientID,
+            PRODUCT_ID: productID,
+            ISDELETED: false
+        },
+        raw: true
+    });
+}
+
 exports.restoreProductInCart = (productID, clientID) => {
     return models.carts.update(
         {
@@ -280,3 +291,14 @@ exports.restoreProductInCart = (productID, clientID) => {
             }
         });
 }
+
+exports.addComment = (productID, clientID, review, date) => {
+    return models.reviews.create({
+        PRODUCT_ID: productID, 
+        CLIENT_ID: clientID,
+        REVIEW: review,
+        REVIEWDATE: date,
+        ISDELETED: false
+    });
+}
+

@@ -10,6 +10,8 @@ const OrderController = require('./orderController');
 router.get('/', ShopController.list);
 
 router.get('/shopDetail/:id', ShopController.detail);
+router.post('/shopDetail/:id', ShopController.addComment);
+
 
 router.get('/cart', CartController.cart);
 router.post('/cart', CartController.editCart);
