@@ -1,14 +1,5 @@
-<!-- Start Top Search -->
-    <div class="top-search">
-        <div class="container">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                <input type="text" class="form-control" placeholder="Search">
-                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
-            </div>
-        </div>
-    </div>
-    <!-- End Top Search -->
+
+
 
     <!-- Start All Title Box -->
     <div class="all-title-box">
@@ -27,6 +18,7 @@
     <!-- End All Title Box -->
 
     <!-- Start Cart  -->
+    <form method="post" id="newOrder" >
     <div class="cart-box-main">
         <div class="container">
             <div class="row">
@@ -39,72 +31,67 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="firstName">First name *</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                                    <input type="text" class="form-control" name="firstName" placeholder="" value="" required>
                                     <div class="invalid-feedback"> Valid first name is required. </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="lastName">Last name *</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                                    <input type="text" class="form-control" name="lastName" placeholder="" value="" required>
                                     <div class="invalid-feedback"> Valid last name is required. </div>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="username">Username *</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="username" placeholder="" required>
-                                    <div class="invalid-feedback" style="width: 100%;"> Your username is required. </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email">Email Address *</label>
-                                <input type="email" class="form-control" id="email" placeholder="">
-                                <div class="invalid-feedback"> Please enter a valid email address for shipping updates. </div>
-                            </div>
-                            <div class="mb-3">
                                 <label for="address">Address *</label>
-                                <input type="text" class="form-control" id="address" placeholder="" required>
+                                <input type="text" class="form-control" name="address" placeholder="" required>
                                 <div class="invalid-feedback"> Please enter your shipping address. </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-5 mb-3">
-                                    <label for="country">Country *</label>
-                                    <select class="wide w-100" id="country">
-									<option value="Choose..." data-display="Select">Choose...</option>
-									<option value="United States">United States</option>
-                                    <option value="United States">Viet Nam</option>
+                                    <label for="city">City *</label>
+                                    <select class="wide w-100" name="city">
+									<option value="" data-display="Select">Choose...</option>
+									<option value="Ho Chi Minh">Ho Chi Minh</option>
 								</select>
-                                    <div class="invalid-feedback"> Please select a valid country. </div>
+                                    <div class="invalid-feedback"> Please select a valid city. </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="state">State *</label>
-                                    <select class="wide w-100" id="state">
-									<option data-display="Select">Choose...</option>
-									<option>California</option>
-                                    <option>Ho Chi Minh</option>
-								</select>
-                                    <div class="invalid-feedback"> Please provide a valid state. </div>
+                                    <label for="district">District *</label>
+                                    <select class="wide w-100" name="district">
+									<option value="" data-display="Select">Choose...</option>
+                                    <option value="Quan 1">Quan 1</option>
+                                    <option value="Quan 3">Quan 3</option>
+                                    <option value="Quan 5">Quan 5</option>
+                                    <option value="Quan Tan Binh">Quan Tan Binh</option>
+                                    <option value="Quan Go Vap">Quan Go Vap</option>
+								    </select>
+                                    <div class="invalid-feedback"> Please provide a valid district. </div>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <label for="zip">Zip *</label>
-                                    <input type="text" class="form-control" id="zip" placeholder="" required>
-                                    <div class="invalid-feedback"> Zip code required. </div>
+                                    <label for="ward">Ward *</label>
+                                    <select class="wide w-100" name="ward">
+									<option value="" data-display="Select">Choose...</option>
+                                    <option value="Phuong1" >Phuong 1</option>
+                                    <option value="Phuong2" >Phuong 2</option>
+                                    <option value="Phuong3" >Phuong 3</option>
+								    </select>
+                                    <div class="invalid-feedback"> Please provide a valid ward. </div>
                                 </div>
                             </div>
                             <hr class="mb-4">
                             <div class="title"> <span>Payment</span> </div>
                             <div class="d-block my-3">
                                 <div class="custom-control custom-radio">
-                                    <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                    <input id="credit" name="paymentMethod" value="Credit card" type="radio" class="custom-control-input" checked required>
                                     <label class="custom-control-label" for="credit">Credit card</label>
                                 </div>
                                 
                                 <div class="custom-control custom-radio">
-                                    <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <input id="paypal" name="paymentMethod" value="Paypal" type="radio" class="custom-control-input" required>
                                     <label class="custom-control-label" for="paypal">Paypal</label>
                                 </div>
 
                                 <div class="custom-control custom-radio">
-                                    <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <input id="debit" name="paymentMethod" value="Cash On Delivery" type="radio" class="custom-control-input" required>
                                     <label class="custom-control-label" for="debit">Cash On Delivery</label>
                                 </div>
                             </div>
@@ -153,7 +140,7 @@
                                 <div class="title-left">
                                     <h3>Shipping Method</h3>
                                 </div>
-                                <form method="get" id="shipping-cost">
+                                
                                     {{#if shipping}}
                                     {{#equal shipping 0}}
                                     <div class="mb-4">
@@ -215,7 +202,7 @@
                                         <label class="custom-control-label" for="shippingOption3">Next Business day</label> <span class="float-right font-weight-bold">$20.00</span> </div>
                                     </div>
                                     {{/if}}
-                                </form>
+                                
                                 
                             </div>
                         </div>
@@ -230,6 +217,9 @@
                                         <div class="media-body"> <a href="/shop/shopDetail/{{PRODUCT_ID}}"> {{PRODUCT_NAME}}</a>
                                             <div class="small text-muted">Price: ${{PRICE}}<span class="mx-2">|</span> Qty: {{cartquantity}} <span class="mx-2">|</span> Subtotal: ${{totalprice}}</div>
                                         </div>
+                                        <input value="{{PRODUCT_ID}}" name="productID" hidden>
+                                        <input value="{{cartquantity}}" name="quantity" hidden>
+                                        <input value="{{totalprice}}" name="totalprice" hidden>
                                     </div>
                                     {{/each}}
                                 </div>
@@ -251,21 +241,25 @@
                                 </div>
                                 <div class="d-flex">
                                     <h4>Discount</h4>
+                                        <input value="{{discount}}" name="discount" hidden>
                                     <div class="ml-auto font-weight-bold"> $ {{discount}} </div>
                                 </div>
                                 <hr class="my-1">
                                 <div class="d-flex">
                                     <h4>Tax</h4>
+                                        <input value="{{tax}}" name="tax" hidden>
                                     <div class="ml-auto font-weight-bold"> $ {{tax}} </div>
                                 </div>
                                 {{#if shipping}}
                                 <div class="d-flex">
                                     <h4>Shipping Cost</h4>
+                                        <input value="{{shipping}}" name="shipping" hidden>
                                     <div class="ml-auto font-weight-bold">$ {{shipping}} </div>
                                 </div>
                                 {{else}}
                                 <div class="d-flex">
                                     <h4>Shipping Cost</h4>
+                                        <input value="0" name="shipping" hidden>
                                     <div class="ml-auto font-weight-bold"> Free </div>
                                 </div>
                                 {{/if}}
@@ -276,12 +270,15 @@
                                 </div>
                                 <hr> </div>
                         </div>
-                        <div class="col-12 d-flex shopping-box"> <a href="/auth/myAccount" class="ml-auto btn hvr-hover">Place Order</a> </div>
+                        <div class="col-12 d-flex shopping-box"> 
+                            <button class="btn btn-default hvr-hover float-right custom-total"  type="submit">Place Order</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+    </form>
     <!-- End Cart -->
 

@@ -422,9 +422,7 @@ exports.editOrderPage = async (req,res,next) => {
             const note = "order is canceled";
             try{
                 const result = await orderService.returnOrder(retr[0].DELIVERY_ID, note, today);
-                const aa = await orderService.findDeliveryByID(retr[0].DELIVERY_ID);
-                console.log("aaaaaaaaaaaaaa ", aa);
-                console.log(clientID);
+            
             }
             catch(err)
             {
