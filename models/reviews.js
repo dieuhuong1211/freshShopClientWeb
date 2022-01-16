@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     CLIENT_ID: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.STRING(50),
       allowNull: false,
       primaryKey: true,
       references: {
@@ -21,6 +21,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     REVIEW: {
       type: DataTypes.STRING(200),
+      allowNull: true
+    },
+    REVIEWDATE: {
+      type: DataTypes.DATEONLY,
       allowNull: true
     },
     ISDELETED: {

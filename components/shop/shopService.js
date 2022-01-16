@@ -211,9 +211,18 @@ exports.review = (productID, page, itemPerPage) => {
         raw: true
     });
 }
+exports.allReview = (productID) => {
+    return models.reviews.findAll({
+        where: {
+            PRODUCT_ID: productID,
+            ISDELETED: false
+        },
+        raw: true
+    });
+}
 
 exports.personalReview = (clientID) => {
-    return models.reviews.findOne({
+    return models.clients.findOne({
         where: {
             CLIENT_ID: clientID,
             ISDELETED: false

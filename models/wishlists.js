@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('wishlists', {
     CLIENT_ID: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.STRING(50),
       allowNull: false,
       primaryKey: true,
       references: {

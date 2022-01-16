@@ -252,11 +252,13 @@ exports.list = async (req, res, next) => {
 };
 
 let id = "P0001";
-let reviewPage = 1;
 let reviewitemperpage = 3;
+const noReview = "There are no reviews yet"
 exports.detail = async (req, res, next) => {
     id = req.params.id;
     let product_detail;
+    let products;
+    let review
     if(id===null || id==="")
     {
         id = "P0001";
@@ -265,16 +267,102 @@ exports.detail = async (req, res, next) => {
         product_detail = await shopService.detail(id);
         console.log(product_detail);
         const category = product_detail.PRODUCT_TYPE;
-        const products = await shopService.listItemByCategory(category);
-        res.render('shop/shopDetail', {
-            product_detail,
-            products,
-        });
+        products = await shopService.listItemByCategory(category);
     }
     catch(err)
     {
         console.log(err);
         next();
     }
+
+    const pageNumber = req.query.reviewpage;
+    let currentPage = (pageNumber && !Number.isNaN(pageNumber)) ? parseInt(pageNumber) : 1;
+    currentPage = (currentPage > 0) ? currentPage : 1;
+    try{
+        review = await shopService.review(id, currentPage - 1, reviewitemperpage);
+        if(review.length > 0)
+        {
+            for(let i = 0; i < review.length; i++)
+            {
+                try{
+                    const person = await shopService.personalReview(review[i].CLIENT_ID);
+                    console.log(person);
+                    review[i].name = person.FIRSTNAME + " " + person.LASTNAME;
+                    review[i].personimage = person.IMAGE;
+                    const daytime = new Date(review[i].REVIEWDATE);
+                    if (!isNaN(daytime.getTime())) {
+                        //get date
+                        let d = daytime.getDate();
+                        let m = daytime.getMonth() + 1;
+                        let y = daytime.getFullYear();
+                        review[i].date = d + '/' + m + '/' + y;
+                    }
+                }
+                catch(err)
+                {
+                    console.log(err);
+                    return next();
+                }
+            }
+
+        }
+
+
+        const allreview = await shopService.allReview(id);
+        const revCount = allreview.length;
+        totalPage = Math.ceil(revCount/reviewitemperpage);
+        currentPage = (currentPage <= totalPage) ? currentPage : totalPage;
+    }
+    catch(err)
+    {
+        console.log(err);
+        return next();
+    }
     
+    
+    if(totalPage === 1)
+    {
+        prePage = 1;
+        nextPage = 1;
+    }else if(currentPage === 1){
+        prePage = 1;
+        nextPage = 2;
+    }else if(currentPage === totalPage){
+        prePage = totalPage - 1;
+        nextPage = totalPage;
+    } else {
+        prePage = currentPage - 1;
+        nextPage = currentPage + 1;
+    }
+
+    if(review.length === 0)
+    {
+        console.log("no review");
+
+        res.render('shop/shopDetail', {
+            product_detail,
+            products,
+            noReview,
+        });
+    }
+    else if(prePage === nextPage) {
+        console.log("no paging");
+
+        res.render('shop/shopDetail', {
+            product_detail,
+            products,
+            review,
+        });
+    }
+    else {
+        console.log("review and paging");
+        res.render('shop/shopDetail', {
+            product_detail,
+            products,
+            review,
+            currentPage,
+            prePage,
+            nextPage,
+            });
+    }
 };
