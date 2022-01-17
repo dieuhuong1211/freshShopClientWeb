@@ -18,9 +18,25 @@
     <!-- End All Title Box -->
 
     <!-- Start Cart  -->
+    
     <form method="post" id="newOrder" >
     <div class="cart-box-main">
         <div class="container">
+            {{#if emptyCart}}
+            <div class="row wrapper-div" >
+                <ul>
+                    <li>
+                        <p class="no_result_title">Cannot place order because <br> your cart is empty</p>
+                    </li>
+                    <li>
+                        <img style="margin-bottom:8px" src="/images/noresultfoundicon.png" alt="">
+                    </li>
+                    <li>
+                        <a class="btn hvr-hover" href="/shop">Go To Shop Now</a>
+                    </li>
+                </ul>
+            </div>
+            {{else}}
             <div class="row">
                 <div class="col-sm-6 col-lg-6 mb-3">
                     <div class="checkout-address">
@@ -48,15 +64,15 @@
                             <div class="row">
                                 <div class="col-md-5 mb-3">
                                     <label for="city">City *</label>
-                                    <select class="wide w-100" name="city">
-									<option value="" data-display="Select">Choose...</option>
+                                    <select class="wide w-100" name="city" required>
+									<option value="" data-display="Select" >Choose...</option>
 									<option value="Ho Chi Minh">Ho Chi Minh</option>
 								</select>
                                     <div class="invalid-feedback"> Please select a valid city. </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="district">District *</label>
-                                    <select class="wide w-100" name="district">
+                                    <select class="wide w-100" name="district" required>
 									<option value="" data-display="Select">Choose...</option>
                                     <option value="Quan 1">Quan 1</option>
                                     <option value="Quan 3">Quan 3</option>
@@ -68,7 +84,7 @@
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="ward">Ward *</label>
-                                    <select class="wide w-100" name="ward">
+                                    <select class="wide w-100" name="ward" required>
 									<option value="" data-display="Select">Choose...</option>
                                     <option value="Phuong1" >Phuong 1</option>
                                     <option value="Phuong2" >Phuong 2</option>
@@ -135,7 +151,7 @@
                 </div>
                 <div class="col-sm-6 col-lg-6 mb-3">
                     <div class="row">
-                        <div class="col-md-12 col-lg-12">
+                        {{!-- <div class="col-md-12 col-lg-12">
                             <div class="shipping-method-box">
                                 <div class="title-left">
                                     <h3>Shipping Method</h3>
@@ -205,7 +221,7 @@
                                 
                                 
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-12 col-lg-12">
                             <div class="odr-box">
                                 <div class="title-left">
@@ -250,19 +266,19 @@
                                         <input value="{{tax}}" name="tax" hidden>
                                     <div class="ml-auto font-weight-bold"> $ {{tax}} </div>
                                 </div>
-                                {{#if shipping}}
+                                {{!-- {{#if shipping}}
                                 <div class="d-flex">
                                     <h4>Shipping Cost</h4>
-                                        <input value="{{shipping}}" name="shipping" hidden>
-                                    <div class="ml-auto font-weight-bold">$ {{shipping}} </div>
+                                        <input value="10" name="shipping" hidden>
+                                    <div class="ml-auto font-weight-bold">$10 </div>
                                 </div>
-                                {{else}}
+                                {{else}} --}}
                                 <div class="d-flex">
                                     <h4>Shipping Cost</h4>
                                         <input value="0" name="shipping" hidden>
-                                    <div class="ml-auto font-weight-bold"> Free </div>
+                                    <div class="ml-auto font-weight-bold"> $10 </div>
                                 </div>
-                                {{/if}}
+                                {{!-- {{/if}} --}}
                                 <hr>
                                 <div class="d-flex gr-total">
                                     <h5>Grand Total</h5>
@@ -276,9 +292,10 @@
                     </div>
                 </div>
             </div>
-
+            {{/if}}
         </div>
     </div>
+    
     </form>
     <!-- End Cart -->
 

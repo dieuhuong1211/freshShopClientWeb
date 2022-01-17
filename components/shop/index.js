@@ -18,7 +18,7 @@ router.post('/cart', CartController.editCart);
 
 
 router.get('/checkout', ChekoutController.checkout);
-router.post('/checkout', ChekoutController.newOrder);
+router.post('/checkout', ChekoutController.createOrder);
 
 router.get('/myOrders', OrderController.myorder);
 router.post('/myOrders', OrderController.editOrderPage);

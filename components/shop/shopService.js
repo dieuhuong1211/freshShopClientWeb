@@ -38,7 +38,7 @@ exports.listNonPaging = (search) => {
     
     
 }
-
+//--------- begin filter & search -------
 exports.list = (search, page, itemPerPage) => {
     if(search !== "" && search !== undefined)
     {
@@ -66,13 +66,6 @@ exports.list = (search, page, itemPerPage) => {
         });
     }
 };
-
-let proCount = 0;
-
-exports.Count = () => {
-     proCount = models.products.count({ col: 'PRODUCT_ID' });
-    return proCount;
-}
 
 exports.listPopular = (search, page, itemPerPage) => {
     if (search !== "")
@@ -177,6 +170,7 @@ exports.listLowToHigh = (search, page, itemPerPage) => {
     }
     
 };
+//---------end filter & search -------
 
 exports.category = (page, itemPerPage, type)=> {
     return models.products.findAll({

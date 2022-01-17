@@ -10,7 +10,7 @@ let filter = 0;
 let search = "";
 const noResult = "No Result Found :<";
 let proCount = 0;
-const outstonk = "Sorry, this product is sold out :<";
+const outstock = "Sorry, this product is sold out :<";
 const carthaveproduct = "Your cart already has this product";
 const addtocartsuccess = "Product successfully added to cart :>";
 const now = new Date();
@@ -159,13 +159,13 @@ exports.list = async (req, res, next) => {
     {
         clientID = req.user.CLIENT_ID;
     }
-    let cartResult = outstonk;
+    let cartResult = outstock;
     if(productID && clientID)
     {
-        try{ //in stonk?
-            let stonk = await shopService.detail(productID);
-            //console.log("stonk "+stonk.STOCK);
-            if(stonk.STOCK === "IN STOCK")
+        try{ //in stock?
+            let stock = await shopService.detail(productID);
+            //console.log("stock "+stock.STOCK);
+            if(stock.STOCK === "IN STOCK")
             {
                 cartResult = addtocartsuccess;
                 const productInCart = await shopService.productInCart(productID, clientID);

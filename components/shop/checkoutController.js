@@ -1,20 +1,17 @@
 const checkoutService = require('./checkoutService');
+const { v1: uuidv1 } = require('uuid');
+
 const now = new Date();
 const today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
 const time = now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
 const datetime = today +' '+ time;
-const emptyCart = "Cart is empty";
+const emptyCart = "Cannot place order because your cart is empty";
 
-let product = [];
-let subtotal = 0;
-let discount = 0;
-let tax = 0;
-let grandtotal = 0;
-let cart_products = [];
+
+const shipping = 10;
 
 exports.checkout = async (req, res, next) => {
-    
-    let shipping = 0;
+    let cart_products = [];
     if(req.user)
     {
         let clientID = req.user.CLIENT_ID;
@@ -28,9 +25,15 @@ exports.checkout = async (req, res, next) => {
                 res.render('shop/checkout', {
                     emptyCart
                 });
+                return;
             }
             else{
-               
+                let product = [];
+                let subtotal = 0;
+                let discount = 0;
+                let tax = 0;
+                let grandtotal = 0;
+                
                 for(let i = 0; i < cart_products.length; i++)
                 {
                     let product_id = cart_products[i].PRODUCT_ID;
@@ -54,9 +57,9 @@ exports.checkout = async (req, res, next) => {
                     subtotal,
                     discount,
                     tax,
-                    shipping,
                     grandtotal
                 });
+                return;
             }
         }
         catch(err)
@@ -67,33 +70,38 @@ exports.checkout = async (req, res, next) => {
     }
     else {
         res.redirect('../auth/login');
+        return;
     }
 };
 
-exports.newOrder = async (req, res, next) => {
+exports.createOrder = async (req, res, next) => {
     console.log('---------------------------------begin new order---------------------------');
     let clientID;
     if(req.user)
-        {
-            clientID = req.user.CLIENT_ID;
-        }
-        else{
-            res.redirect('../auth/login');
-        }      
-    let shipping = req.body.shippingOption;
-    shipping = (shipping && !Number.isNaN(shipping)) ? parseInt(shipping) : 0;
+    {
+        clientID = req.user.CLIENT_ID;
+    }
+    else{
+        res.redirect('../auth/login');
+        return;
+    }      
 
+    // let shipping = req.body.shippingOption;
+    // shipping = (shipping && !Number.isNaN(shipping)) ? parseInt(shipping) : 0;
 
+    
     let address = req.body.address;
     const city = req.body.city;
     const district = req.body.district;
     const ward = req.body.ward;
     
     address = address + ', ' + ward + ', ' + district + ', ' + city;
-    let newOD;
+    console.log("--------address-------: ", address);
+    const orderID = uuidv1();
+    console.log("--------id-------: ",orderID);
     try{
-        newOD = await checkoutService.newOrder(datetime, address, clientID);
-        console.log("--------newOD-------: ", newOD);
+        const newOD = await checkoutService.newOrder(orderID, datetime, address, clientID);
+        //console.log("--------newOD-------: ", newOD);
     }
     catch(err)
     {
@@ -101,27 +109,54 @@ exports.newOrder = async (req, res, next) => {
         next();
     }
      
-    const orderID = newOD.ORDER_ID;
-    console.log(orderID);
-
+    // const orderID = newOD.ORDER_ID;
+    // console.log(orderID);
+    let productID = [];
     const productID = req.body.productID;
-    console.log(productID);
+    console.log(productID);console.log("length: ", productID.length);
     const quantity = req.body.quantity;
-    const totalprice = req.body.totalprice;
+    console.log(quantity);console.log("length: ", quantity.length);
 
-    for(let i = 0; i < productID.length; i++)
+    const totalprice = req.body.totalprice;
+    console.log(totalprice);console.log("length: ", totalprice.length);
+
+    if (productID.length > 1)
+    {
+        for(let i = 0; i < productID.length; i++)
+        {
+            try{
+                console.log("--------productID[i]-------: ", productID[i]);
+                const id = productID[i];
+                const quan = parseInt(quantity[i]);
+                const pri = parseInt(totalprice[i]);
+                const newODDetail = await checkoutService.newOrderDetail(orderID, id ,quan,pri);
+                console.log("--------newODDetail-------: ", newODDetail);
+
+            }
+            catch(err)
+            {
+                console.log(err);
+                next();
+            }
+        }
+    }  
+    else
     {
         try{
-        
-            const newODDetail = await checkoutService.newOrderDetail(orderID,productID[i],quantity[i],totalprice[i]);
-            console.log(newODDetail);
+            console.log("--------productID-------: ", productID);
+            const id = productID;
+            const quan = parseInt(quantity);
+            const pri = parseInt(totalprice);
+            const newODDetail = await checkoutService.newOrderDetail(orderID, id ,quan,pri);
+            console.log("--------newODDetail-------: ", newODDetail);
+
         }
         catch(err)
         {
             console.log(err);
             next();
         }
-    }
+    }  
 
     try{
         
@@ -134,12 +169,12 @@ exports.newOrder = async (req, res, next) => {
         next();
     }
 
-    const discount = req.body.discount;
-    const tax = req.body.tax;
+    const discount = parseFloat(req.body.discount);
+    const tax = parseFloat(req.body.tax);
     const paymentMethod = req.body.paymentMethod;
     try{
         
-        const newBil= await checkoutService.newBill(orderID, paymentMethod, discount, tax, shipping);
+        const newBil = await checkoutService.newBill(orderID, paymentMethod, discount, tax, shipping);
         console.log(newBil);
     }
     catch(err)
@@ -158,26 +193,7 @@ exports.newOrder = async (req, res, next) => {
         console.log(err);
         next();
     }
-    cart_products = await checkoutService.cart(clientID);
-    console.log(cart_products.length);
-    // if(cart_products.length === 0)
-    // {
-    //     console.log("ko co product trong cart");
-    //     res.render('shop/checkout', {
-    //         emptyCart
-    //     });
-    // }
-    // else{
-    //     grandtotal = subtotal - discount + tax + shipping;
-    //     res.render('shop/checkout', {
-    //     product,
-    //     subtotal,
-    //     discount,
-    //     tax,
-    //     shipping,
-    //     grandtotal
-    //     });
-    // }
+    
     res.redirect('back');
     console.log('---------------------------------end new order---------------------------');
     

@@ -394,7 +394,7 @@ exports.editOrderPage = async (req,res,next) => {
     }
 
     const deliveryID = req.body.deleteRecieved;
-    console.log(deliveryID);
+    console.log("-------deliveryID----------", deliveryID);
 
     if(deliveryID)
     {
