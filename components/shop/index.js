@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-const ShopController = require('./shopController');
-const CartController = require('./cartController');
-const ChekoutController = require('./checkoutController');
-const OrderController = require('./orderController');
+const ShopController = require('./shopListAndDetail/shopController');
+const CartController = require('./cart/cartController');
+const ChekoutController = require('./checkout/checkoutController');
+const OrderController = require('./order/orderController');
 
 /* GET home page. */
 router.get('/', ShopController.list);

@@ -1,4 +1,5 @@
 const authService = require('./authService');
+const bcrypt = require('bcrypt');
 
 exports.register = async (req, res) => {
     
@@ -65,11 +66,12 @@ exports.updateAccount = async (req, res, next) => {
     else {
         res.redirect('/auth/login');
     }
-    if(req.body.firstname !== undefined)
+    if(req.body.firstname)
     {
+        console.log("--------update info-------");
         if(req.body.firstname.length > 0 || req.body.lastname.length > 0 || req.body.gender.length > 0 || req.body.dob.length > 0 || req.body.phone.length > 0 || req.body.image.length > 0)
         {
-            console.log("--------update-------");
+            
             firstname = (req.body.firstname.length > 0) ? req.body.firstname : req.user.FIRSTNAME;
             lastname = (req.body.lastname.length > 0) ? req.body.lastname : req.user.LASTNAME;
             gender = (req.body.gender.length > 0) ? req.body.gender : req.user.GENDER;
@@ -91,27 +93,47 @@ exports.updateAccount = async (req, res, next) => {
         }
     }
    
-
-    if(email.length > 0)
+    email = req.body.email;
+    pass = req.body.pass;
+    newpass = req.body.newpass;
+    if(email !== "")
     {
-        const updatepemail=await authService.updateEmail(clientID, email);
+        const updatepemail = await authService.updateEmail(clientID, email);
         console.log("---------updatepemail: ", updatepemail);
         
     }
-
+    const client = await authService.findUserByID(clientID);
     if(pass.length > 0 && newpass.length > 0)
     {
-        const updatepass = await authService.updatePass(clientID, newpass);
-        console.log("---------updatepass: ", updatepass);
+        //const hashNewPassword = await bcrypt.hash(pass, 10);
+        const validPassword = await bcrypt.compare(pass, client.PASS);
+        
+        // console.log("---------pass: ", hashNewPassword);
+        // console.log("---------client pass: ", client.PASS);
+        if(validPassword)
+        {
+            const updatepass = await authService.updatePass(clientID, newpass);
+            console.log("---------updatepass: ", updatepass);
+            res.render('shop/myAccount', {
+                client,
+                errorCode: -1
+            });
+        }
+        else {
+            res.render('shop/myAccount', {
+                client,
+                errorCode: 2
+            });
+            return;
+        }
+        
     }
 
     if((pass.length === 0 && newpass.length > 0) || (pass.length > 0 && newpass.length === 0))
     {
-        res.render('shop/myAccount', {errorCode: true});
+        res.render('shop/myAccount', {client, errorCode: 1});
         return;
     }
+
     console.log("--------- end update account ---------");
-   
-    res.redirect('back');
-    //res.render('shop/myAccount');
 }

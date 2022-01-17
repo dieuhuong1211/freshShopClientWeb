@@ -10,8 +10,8 @@ const multer  = require('multer');
 const indexRouter = require('./components/mainpage');
 const usersRouter = require('./routes/users');
 const shopRouter = require('./components/shop');
-const contactRouter = require('./routes/contact');
-const aboutRouter = require('./routes/about');
+const contactRouter = require('./components/contact');
+const aboutRouter = require('./components/about');
 const authRouter = require('./components/auth/authRouter');
 
 hbs.registerHelper("equal", require("handlebars-helper-equal"));
