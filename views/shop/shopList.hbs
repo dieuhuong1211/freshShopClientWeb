@@ -1,15 +1,4 @@
-<!-- Start Top Search -->
-    <div class="top-search">
-        <div class="container">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                <input type="text" class="form-control" placeholder="Search">
-                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
-            </div>
-        </div>
-    </div>
-    <!-- End Top Search -->
-    
+
     <!-- Start All Title Box -->
     <div class="all-title-box">
         <div class="container">
@@ -141,7 +130,7 @@
                                                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                                                             </ul>
                                                             {{#if ../user}}
-                                                                <button class="button_cart" type="submit" name="cart" value="{{PRODUCT_ID}}" >Add to Cart</button>
+                                                                <button class="button_cart" onclick="this.form.submit();" name="cart" id="btn-add-cart" value="{{PRODUCT_ID}}" >Add to Cart</button>
                                                             {{else}}
                                                             <a href="/auth/logout" class="cart">Add to Cart</a>
                                                             {{/if}}
@@ -300,6 +289,7 @@
 {{/if}}
 
 </form>
+
 
     <!-- End Shop Page -->
 

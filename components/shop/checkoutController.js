@@ -5,7 +5,7 @@ const now = new Date();
 const today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
 const time = now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
 const datetime = today +' '+ time;
-const emptyCart = "Cannot place order because your cart is empty";
+let emptyCart;
 
 
 const shipping = 10;
@@ -22,6 +22,7 @@ exports.checkout = async (req, res, next) => {
             if(cart_products.length === 0)
             {
                 console.log("ko co product trong cart");
+                emptyCart = 1;
                 res.render('shop/checkout', {
                     emptyCart
                 });
@@ -111,7 +112,6 @@ exports.createOrder = async (req, res, next) => {
      
     // const orderID = newOD.ORDER_ID;
     // console.log(orderID);
-    let productID = [];
     const productID = req.body.productID;
     console.log(productID);console.log("length: ", productID.length);
     const quantity = req.body.quantity;
@@ -120,7 +120,7 @@ exports.createOrder = async (req, res, next) => {
     const totalprice = req.body.totalprice;
     console.log(totalprice);console.log("length: ", totalprice.length);
 
-    if (productID.length > 1)
+    if (productID.length === quantity.length)
     {
         for(let i = 0; i < productID.length; i++)
         {
@@ -169,8 +169,8 @@ exports.createOrder = async (req, res, next) => {
         next();
     }
 
-    const discount = parseFloat(req.body.discount);
-    const tax = parseFloat(req.body.tax);
+    const discount = parseFloat(req.body.discount).toFixed(2);
+    const tax = parseFloat(req.body.tax).toFixed(2);
     const paymentMethod = req.body.paymentMethod;
     try{
         
@@ -193,8 +193,11 @@ exports.createOrder = async (req, res, next) => {
         console.log(err);
         next();
     }
+    emptyCart = 2;
+    res.render('shop/checkout', {
+        emptyCart
+    });
     
-    res.redirect('back');
     console.log('---------------------------------end new order---------------------------');
     
 };

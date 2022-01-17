@@ -36,13 +36,13 @@
                         <div class="account-box">
                             <div class="service-box">
                                 <div class="service-icon">
-                                    <a  data-toggle="collapse"  href="#formAccount"><i class="fa fa-lock"></i> </a>
+                                    <a  data-toggle="collapse"  href="#formAccount"><i class="fa fa-location-arrow"></i> </a>
                                 </div>
                                 <div class="service-desc">
-                                    <h4>Login &amp; security</h4>
+                                    <h4>Your Information</h4>
                                     <p>Edit login, name, and mobile number</p>
                                 </div>
-                                <form class="mt-3 collapse review-form-box" id="formAccount">
+                                <form method="post" class="mt-3 collapse review-form-box" id="formAccount">
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
                                             <input type="image" class="borderimg" src={{user.IMAGE}} alt="avatar" width="120" height="120"/>
@@ -53,34 +53,38 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="FirstName" class="mb-0">First Name</label>
-                                            <input type="text" class="form-control" id="FirstName" value={{user.FIRSTNAME}}> </div>
+                                            <input type="text" class="form-control" name="firstname" id="FirstName" placeholder={{user.FIRSTNAME}}> </div>
                                         <div class="form-group col-md-6">
                                             <label for="LastName" class="mb-0">Last Name</label>
-                                            <input type="text" class="form-control" id="LastName" value={{user.LASTNAME}}> </div>
+                                            <input type="text" class="form-control" name="lastname" id="LastName" placeholder={{user.LASTNAME}}> </div>
                                         <div class="form-group col-md-6">
                                             <label for="DOB" class="mb-0">Date of Birth</label>
-                                            <input type="date" class="form-control" id="DOB" value={{user.DOB}}> </div>
+                                            <input type="date" class="form-control" name="dob" id="DOB" value={{user.DOB}}> </div>
                                         <div class=" form-group col-md-6">
                                             <label for="Gender" class="mb-0">Gender</label>
-                                            <input type="text" class="form-control" id="LastName" value={{user.GENDER}}>
+                                            <select class=" form-control" id="Gender" name="gender">
+                                                {{#equal user.GENDER "Female"}}
+                                                <option selected>Female</option>
+                                                <option>Male</option>
+                                                {{/equal}}
+                                                {{#equal user.GENDER "Male"}}
+                                                <option>Female</option>
+                                                <option selected>Male</option>
+                                                {{/equal}}
+                                            </select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="InputPhone" class="mb-0">Phone Number</label>
-                                            <input type="text" class="form-control" id="InputPhone" value={{user.PHONE}}> </div>
+                                            <input type="text" class="form-control" name="phone" id="InputPhone" placeholder={{user.PHONE}}> </div>
                                         
                                         <div class="form-group col-md-6">
                                             <label for="Image" style="margin: 0px;">Change Image</label>
                                             <div class=" custom-file">
-                                                <input type="file" class="custom-file-input" id="validatedCustomFile">
-                                                <label class="custom-file-label" for="validatedCustomFile" style="text-align: left;">Choose file...</label>
+                                                <input type="file" class="custom-file-input" name="image" id="ImageFile">
+                                                <label class="custom-file-label" for="ImageFile" style="text-align: left;">Choose file...</label>
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="Inputpassword" class="mb-0">New Password</label>
-                                            <input type="password" class="form-control" id="Inputpassword"> </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="Comfirmpassword" class="mb-0">Comfirm New Passwork</label>
-                                            <input type="password" class="form-control" id="Comfirmpassword"> </div>
+                                        
                                     </div>
                                     <button type="submit" class="btn hvr-hover">Edit</button>
                                 </form>
@@ -91,20 +95,27 @@
                         <div class="account-box">
                             <div class="service-box">
                                 <div class="service-icon">
-                                    <a  data-toggle="collapse"  href="#formAddress"> <i class="fa fa-location-arrow"></i> </a>
+                                    <a  data-toggle="collapse"  href="#formAddress"> <i class="fa fa-lock"></i> </a>
                                 </div>
                                 <div class="service-desc">
-                                    <h4>Your Addresses</h4>
-                                    <p>Edit Email addresses for orders and gifts</p>
+                                    
+                                    <h4>Login &amp; security</h4>
+                                    <p>Edit Email addresses or password</p>
                                 </div>
-                                <form class="mt-3 collapse review-form-box" id="formAddress">
+                                <form method="post" class="mt-3 collapse review-form-box" id="formAddress">
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
                                             <label for="InputEmail" class="mb-0">Email Address</label>
-                                            <input style="width:50%; margin: auto; display: block;"type="text" class="form-control" id="InputEmail" placeholder="Enter New Email"> </div>
+                                            <input style="width:50%; margin: auto; display: block;" type="text" class="form-control" name="email" placeholder={{user.EMAIL}}> </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="Inputpassword" class="mb-0">Password</label>
+                                            <input type="password" style="width:50%; margin: auto; display: block;" class="form-control" name="pass"> </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="Comfirmpassword" class="mb-0">New Passwork</label>
+                                            <input type="password" style="width:50%; margin: auto; display: block;" class="form-control" name="newpass"> </div>
                                     </div>
                                     <button type="submit" class="btn hvr-hover" >Edit</button>
-                            </form>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -113,12 +124,14 @@
                     </div>
                     
                 </div>
-                
-
-                
-
-                
             </div>
         </div>
     </div>
+    <script>
+        document.querySelector('.custom-file-input').addEventListener('change',function(e){
+        var fileName = document.getElementById("ImageFile").files[0].name;
+        var nextSibling = e.target.nextElementSibling
+        nextSibling.innerText = fileName
+})
+    </script>
     <!-- End My Account -->

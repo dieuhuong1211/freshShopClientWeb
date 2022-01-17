@@ -26,8 +26,10 @@ router.get('/myAccount', function(req, res, next) {
   if(req.user)
     res.render('shop/myAccount');
   else
-    res.redirect('/login');
+    res.redirect('/auth/login');
 });
+
+router.post('/myAccount', authController.updateAccount);
 
 router.get('/logout', function(req, res){
   req.logout();

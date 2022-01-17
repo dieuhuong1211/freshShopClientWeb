@@ -23,6 +23,7 @@
     <div class="cart-box-main">
         <div class="container">
             {{#if emptyCart}}
+            {{#equal emptyCart 1}}
             <div class="row wrapper-div" >
                 <ul>
                     <li>
@@ -36,6 +37,24 @@
                     </li>
                 </ul>
             </div>
+            {{/equal}}
+            {{#equal emptyCart 2}}
+            <div class="row wrapper-div" >
+                <ul>
+                    <li>
+                        <p class="no_result_title">You have successfully <br> placed your order</p>
+                    </li>
+                    <li>
+                        <img style="margin-bottom:8px" src="/images/noresultfoundicon.png" alt="">
+                    </li>
+                    <li>
+                        <a style="margin-right: 5px;" class="btn hvr-hover" href="/shop/myOrders">Go To My Order</a>
+
+                        <a style="margin-left: 5px;" class="btn hvr-hover" href="/shop">Go To Shop Now</a>
+                    </li>
+                </ul>
+            </div>
+            {{/equal}}
             {{else}}
             <div class="row">
                 <div class="col-sm-6 col-lg-6 mb-3">

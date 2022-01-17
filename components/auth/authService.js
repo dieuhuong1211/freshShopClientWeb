@@ -24,7 +24,66 @@ exports.register = async (email, password, firstname, lastname, dob, gender, pho
         DOB: dob,
         GENDER: gender,
         PHONE: phone,
+        IMAGE: "/assets/images/clients/no-image.png",
         ISDELETED: false
     });
     
+}
+
+exports.updateInfowithFile = (clientID, firstname, lastname, dob, gender, phone, image) => {
+    return models.carts.update(
+        {
+            FIRSTNAME: firstname, 
+            LASTNAME: lastname, 
+            GENDER: gender, 
+            DOB: dob, 
+            PHONE: phone,
+            IMAGE: "/assets/images/clients/" + image,
+        },
+        {
+            where: {
+                CLIENT_ID: clientID,
+            }
+        });
+}
+
+exports.updateInfowithoutFile = (clientID, firstname, lastname, dob, gender, phone) => {
+    return models.carts.update(
+        {
+            FIRSTNAME: firstname, 
+            LASTNAME: lastname, 
+            GENDER: gender, 
+            DOB: dob, 
+            PHONE: phone,
+        },
+        {
+            where: {
+                CLIENT_ID: clientID,
+            }
+        });
+}
+
+exports.updateEmail = (clientID, email) => {
+    return models.carts.update(
+        {
+            EMAIL: email
+        },
+        {
+            where: {
+                CLIENT_ID: clientID,
+            }
+        });
+}
+
+exports.updatePass = async (clientID, password) => {
+    const hashPassword = await bcrypt.hash(password, 10);
+    return models.carts.update(
+        {
+            PASS: hashPassword,
+        },
+        {
+            where: {
+                CLIENT_ID: clientID,
+            }
+        });
 }
