@@ -21,13 +21,7 @@ router.get('/login', function(req, res, next) {
   res.render('login', {undefinedUser: req.query.undefinedUser !==undefined});
 });
 
-router.get('/myAccount', function(req, res, next) {
-  console.log(req.user);
-  if(req.user)
-    res.render('shop/myAccount');
-  else
-    res.redirect('/auth/login');
-});
+router.get('/myAccount', authController.myAccount);
 
 router.post('/myAccount', authController.updateAccount);
 

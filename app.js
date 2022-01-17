@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 var session = require('express-session');
 var hbs = require("hbs")
+const multer  = require('multer');
 
 const indexRouter = require('./components/mainpage');
 const usersRouter = require('./routes/users');
@@ -45,7 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function (req, res, next) {
-  res.locals.user = req.user
+  res.locals.user = req.user;
   next()
 })
 

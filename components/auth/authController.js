@@ -24,6 +24,27 @@ exports.register = async (req, res) => {
     }
 }
 
+exports.myAccount = async (req, res) => {
+    let clientID;
+    if(req.user)
+    {
+        clientID = req.user.CLIENT_ID;
+    }
+    else {
+        res.redirect('/auth/login');
+    }
+    try {
+        const client = await authService.findUserByID(clientID);
+        console.log(client);
+        res.render('shop/myAccount',{
+            client
+        });
+    }
+    catch(err){
+        console.log(err);
+    }
+} 
+
 exports.updateAccount = async (req, res, next) => {
     console.log("--------- begin update account ---------");
     console.log("--------- image: ", req.body.image);
@@ -44,47 +65,53 @@ exports.updateAccount = async (req, res, next) => {
     else {
         res.redirect('/auth/login');
     }
-
-    if(req.body.firstname !== "" || req.body.lastname !== "" || req.body.gender!== "" || req.body.dob!== "" || req.body.phone!== "" || req.body.image!== "")
+    if(req.body.firstname !== undefined)
     {
-        console.log("--------update-------");
-        firstname = (req.body.firstname !== "") ? req.body.firstname : req.user.FIRSTNAME;
-        lastname = (req.body.lastname !== "") ? req.body.lastname : req.user.LASTNAME;
-        gender = (req.body.gender !== "") ? req.body.gender : req.user.GENDER;
-        dob = (req.body.dob !== "") ? req.body.dob : req.user.DOB;
-        phone = (req.body.phone !== "") ? req.body.phone : req.user.PHONE;
-        image = (req.body.image !== "") ? req.body.image : "";
-        if(image !== "")
+        if(req.body.firstname.length > 0 || req.body.lastname.length > 0 || req.body.gender.length > 0 || req.body.dob.length > 0 || req.body.phone.length > 0 || req.body.image.length > 0)
         {
-            await authService.updateInfowithFile(clientID,firstname,lastname,dob,gender,phone,image);
-            res.redirect('back');
-            return;
-        }
-        else
-        {
-            await authService.updateInfowithoutFile(clientID,firstname,lastname,dob,gender,phone);
+            console.log("--------update-------");
+            firstname = (req.body.firstname.length > 0) ? req.body.firstname : req.user.FIRSTNAME;
+            lastname = (req.body.lastname.length > 0) ? req.body.lastname : req.user.LASTNAME;
+            gender = (req.body.gender.length > 0) ? req.body.gender : req.user.GENDER;
+            dob = (req.body.dob.length > 0) ? req.body.dob : req.user.DOB;
+            phone = (req.body.phone.length > 0) ? req.body.phone : req.user.PHONE;
+            image = (req.body.image.length > 0) ? req.body.image : "";
+            if(image.length > 0)
+            {
+                const updateinfo = await authService.updateInfowithFile(clientID,firstname,lastname,dob,gender,phone,image);
+                console.log(updateinfo);
+            }
+            else
+            {
+                const updateinfo = await authService.updateInfowithoutFile(clientID,firstname,lastname,dob,gender,phone);
+                console.log(updateinfo);
+            }
             res.redirect('back');
             return;
         }
     }
+   
 
-    if(email)
+    if(email.length > 0)
     {
-        await authService.updateEmail(clientID, email);
+        const updatepemail=await authService.updateEmail(clientID, email);
+        console.log("---------updatepemail: ", updatepemail);
         
     }
 
-    if(pass && newpass)
+    if(pass.length > 0 && newpass.length > 0)
     {
-        await authService.updatePass(clientID, newpass);
+        const updatepass = await authService.updatePass(clientID, newpass);
+        console.log("---------updatepass: ", updatepass);
     }
 
-    if((!pass && newpass) || (pass && !newpass))
+    if((pass.length === 0 && newpass.length > 0) || (pass.length > 0 && newpass.length === 0))
     {
         res.render('shop/myAccount', {errorCode: true});
+        return;
     }
     console.log("--------- end update account ---------");
    
-    //res.redirect('back');
-    res.render('shop/myAccount');
+    res.redirect('back');
+    //res.render('shop/myAccount');
 }
