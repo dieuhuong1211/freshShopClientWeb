@@ -428,16 +428,19 @@ exports.personalReview = (clientID) => {
     });
 }
 
-exports.addToCart = (productID, clientID) => {
+exports.addToCart = (productID, clientID, quantity) => {
     
     return models.carts.create({
         PRODUCT_ID: productID, 
         CLIENT_ID: clientID,
-        QUANTITY: 1, 
+        QUANTITY: quantity, 
         ISDELETED: false
     });
     
 }
+
+
+
 
 exports.productInCart = (productID, clientID) =>{
     return models.carts.findAll({
@@ -456,7 +459,6 @@ exports.productInCartIsDelete = (productID, clientID) =>{
         where: {
             PRODUCT_ID: productID,
             CLIENT_ID: clientID,
-
             ISDELETED: true
 
         },
@@ -475,9 +477,10 @@ exports.clientAlreadyComment = (productID, clientID) => {
     });
 }
 
-exports.restoreProductInCart = (productID, clientID) => {
+exports.restoreProductInCart = (productID, clientID, quantity) => {
     return models.carts.update(
         {
+        QUANTITY: quantity,
         ISDELETED: false
         },
         {

@@ -86,7 +86,12 @@
                                         </div>
                                         
                                     </div>
-                                    <button type="submit" class="btn hvr-hover">Edit</button>
+                                    <div style="display: none;"  id="errorInput" >
+                                        <b style="color: coral;">
+                                        The phone number you entered is not valid
+                                        </b>
+                                    </div>
+                                    <button type="submit" id="bnt-sbmit1" class="btn hvr-hover">Edit</button>
                                 </form>
                             </div>
                         </div>
@@ -172,6 +177,22 @@
         var fileName = document.getElementById("ImageFile").files[0].name;
         var nextSibling = e.target.nextElementSibling
         nextSibling.innerText = fileName
-})
+        })
+        // phone invalid
+        let number = document.getElementById("InputPhone");
+        function isVietnamesePhoneNumberValid() {
+            let check = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/.test(number.value);
+            if(check === false)
+            {
+                document.getElementById("errorInput").style.display = "block";
+                document.getElementById("bnt-sbmit1").style.display = "none";
+            }
+            else {
+                document.getElementById("errorInput").style.display = "none";
+                document.getElementById("bnt-sbmit1").style.display = "block";
+
+            }
+        }
+        number.onchange = isVietnamesePhoneNumberValid;
     </script>
     <!-- End My Account -->

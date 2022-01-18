@@ -275,10 +275,10 @@ exports.cart = async (req, res, next) => {
                 }
                 else if(dummyInCart.length > 0)
                 {
-                    const cart = await shopService.restoreProductInCart(productID, clientID);
+                    const cart = await shopService.restoreProductInCart(productID, clientID, 1);
                 }
                 else{
-                    const cart = await shopService.addToCart(productID, clientID);
+                    const cart = await shopService.addToCart(productID, clientID, 1);
                 }
             } 
         }
@@ -466,7 +466,7 @@ exports.detail = async (req, res, next) => {
     }
 };
 
-exports.addComment = async (req, res, next) => {
+exports.addCommentandCart = async (req, res, next) => {
     let clientID = null;
     let productID = req.params.id;
     if(req.user)
@@ -474,7 +474,8 @@ exports.addComment = async (req, res, next) => {
         clientID = req.user.CLIENT_ID;
     }
     const review = req.body.comment;
-    console.log("review: ", review);
+    console.log("---------review: ", review);
+    
     if(review.length > 0 && review)
     {
         try {
@@ -486,6 +487,31 @@ exports.addComment = async (req, res, next) => {
             console.log(err);
             next();
         }
+        res.redirect('back');
+        return;
+    }
+
+    const quantity = req.body.quantity;
+    console.log("---------quantity: ", quantity);
+    if(quantity > 0)
+    {
+        try{
+            const temp = await shopService.productInCartIsDelete(productID,clientID);
+            if(temp.length > 0)
+            {
+                await shopService.restoreProductInCart(productID,clientID,quantity);
+            }
+            else 
+            {
+                await shopService.addToCart(productID,clientID,quantity);
+            }
+        }
+        catch(err){
+            console.log(err);
+            next();
+        }
+        res.redirect('back');
+        return;
     }
     res.redirect('back');
 }
