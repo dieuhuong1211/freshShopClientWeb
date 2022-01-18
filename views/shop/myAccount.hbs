@@ -89,7 +89,7 @@
                                                 
                                                 <li class="col-3" style="float: left;  width:100%;margin:0;padding:0">
                                                     <div style="display: block;">
-                                                        <span class="file-upload-browse btn hvr-hover" style="border-top-left-radius:0;border-bottom-left-radius:0;">
+                                                        <span class="file-upload-browse btn hvr-hover" style="color:white;font-weight:bolder;border-top-left-radius:0;border-bottom-left-radius:0;">
                                                             <label class="mb-0 align-items-center " for="actual-btn">Choose File</label>
                                                             <input type="file" class="form-control-file" id="actual-btn" name="uploaded_newfile" hidden/>
                                                         </span>
@@ -230,11 +230,7 @@
     </div>
     
     <script>
-        document.querySelector('.custom-file-input').addEventListener('change',function(e){
-        var fileName = document.getElementById("ImageFile").files[0].name;
-        var nextSibling = e.target.nextElementSibling
-        nextSibling.innerText = fileName
-        })
+        
         // phone invalid
         let number = document.getElementById("InputPhone");
         function isVietnamesePhoneNumberValid() {
@@ -277,5 +273,12 @@
             }
         };
         email.onchange = isEmailValid;
+    </script>
+    <script>
+        document.querySelector('.custom-file-input').addEventListener('change',function(e){
+        var fileName = document.getElementById("ImageFile").files[0].name;
+        var nextSibling = e.target.nextElementSibling
+        nextSibling.innerText = fileName
+        })
     </script>
     <!-- End My Account -->

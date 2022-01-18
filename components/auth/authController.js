@@ -48,10 +48,7 @@ exports.myAccount = async (req, res) => {
 
 exports.updateAccount = async (req, res, next) => {
     console.log("--------- begin update account ---------");
-    if(req.file.filename)
-    {
-        console.log("--------- image: ", req.file.filename);
-    }
+    
     console.log("--------- firstname: ", req.body.firstname);
     console.log("--------- lastname: ", req.body.lastname);
     console.log("--------- dob: ", req.body.dob);
@@ -71,14 +68,14 @@ exports.updateAccount = async (req, res, next) => {
     }
 
         console.log("--------update info-------");
-        if(req.body.firstname || req.body.lastname || req.body.gender || req.body.dob || req.body.phone || req.file.filename)
+        if(req.body.firstname || req.body.lastname || req.body.gender || req.body.dob || req.body.phone || req.file)
         {
             firstname = (req.body.firstname) ? req.body.firstname : req.user.FIRSTNAME;
             lastname = (req.body.lastname) ? req.body.lastname : req.user.LASTNAME;
             gender = (req.body.gender) ? req.body.gender : req.user.GENDER;
             dob = (req.body.dob) ? req.body.dob : req.user.DOB;
             phone = (req.body.phone) ? req.body.phone : req.user.PHONE;
-            image = (req.file.filename) ? req.file.filename : "";
+            image = (req.file) ? req.file.filename : "";
             console.log("image----------------:", image);
             try{
                 if(image.length > 0)
