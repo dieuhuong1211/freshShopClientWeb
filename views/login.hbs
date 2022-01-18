@@ -38,5 +38,10 @@
                             The email or password you have entered is incorrect
                         </b>
                         {{/if}}
+                        {{#if lockCode}}
+                        <b style="color: coral;">
+                            Your account has been locked or does not exist
+                        </b>
+                        {{/if}}
                     </form>
                 </div>

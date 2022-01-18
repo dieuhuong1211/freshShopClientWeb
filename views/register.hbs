@@ -50,7 +50,7 @@
                                 <input type="password" class="form-control" id="InputPassword" placeholder="Password"  name="password" required> </div>
                             
                         </div>
-                        <button type="submit" class="btn hvr-hover">Register</button>
+                        <button type="submit" id="btn-sumbit1" class="btn hvr-hover">Register</button>
                         {{#if errorCode}}
                         <b style="color: coral;">
                            The email you entered is already in use
@@ -73,10 +73,11 @@ function isVietnamesePhoneNumberValid() {
     if(check === false)
     {
         document.getElementById("errorInput").style.display = "block";
+        document.getElementById("btn-sumbit1").style.display = "none"
     }
     else {
         document.getElementById("errorInput").style.display = "none";
-
+        document.getElementById("btn-sumbit1").style.display = "inline"
     }
 }
 number.onchange = isVietnamesePhoneNumberValid;

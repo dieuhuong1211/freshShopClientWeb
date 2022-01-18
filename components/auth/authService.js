@@ -5,6 +5,7 @@ exports.findAccount = async (email) =>{
     const account = await models.clients.findOne({
         where: {
             EMAIL: email,
+            ISLOCK: false,
             ISDELETED: false
         }
     });
@@ -16,6 +17,8 @@ exports.findUserByID = (clientID) => {
     return models.clients.findOne({
         where: {
             CLIENT_ID: clientID,
+            ISLOCK: false,
+            
             ISDELETED: false
         },
         raw: true
@@ -35,6 +38,7 @@ exports.register = async (email, password, firstname, lastname, dob, gender, pho
         GENDER: gender,
         PHONE: phone,
         IMAGE: "/assets/images/clients/no-image.png",
+        ISLOCK: false,
         ISDELETED: false
     });
     

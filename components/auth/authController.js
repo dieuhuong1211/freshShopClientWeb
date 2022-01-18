@@ -71,7 +71,6 @@ exports.updateAccount = async (req, res, next) => {
         console.log("--------update info-------");
         if(req.body.firstname.length > 0 || req.body.lastname.length > 0 || req.body.gender.length > 0 || req.body.dob.length > 0 || req.body.phone.length > 0 || req.body.image.length > 0)
         {
-            
             firstname = (req.body.firstname.length > 0) ? req.body.firstname : req.user.FIRSTNAME;
             lastname = (req.body.lastname.length > 0) ? req.body.lastname : req.user.LASTNAME;
             gender = (req.body.gender.length > 0) ? req.body.gender : req.user.GENDER;
@@ -96,14 +95,16 @@ exports.updateAccount = async (req, res, next) => {
     email = req.body.email;
     pass = req.body.pass;
     newpass = req.body.newpass;
-    if(email !== "")
+    if(email && email !== "")
     {
         const updatepemail = await authService.updateEmail(clientID, email);
         console.log("---------updatepemail: ", updatepemail);
         
     }
     const client = await authService.findUserByID(clientID);
-    if(pass.length > 0 && newpass.length > 0)
+    if(pass || newpass)
+    {
+        if(pass.length > 0 && newpass.length > 0)
     {
         //const hashNewPassword = await bcrypt.hash(pass, 10);
         const validPassword = await bcrypt.compare(pass, client.PASS);
@@ -127,13 +128,15 @@ exports.updateAccount = async (req, res, next) => {
             return;
         }
         
-    }
+        }
 
-    if((pass.length === 0 && newpass.length > 0) || (pass.length > 0 && newpass.length === 0))
-    {
-        res.render('shop/myAccount', {client, errorCode: 1});
-        return;
+        if((pass.length === 0 && newpass.length > 0) || (pass.length > 0 && newpass.length === 0))
+        {
+            res.render('shop/myAccount', {client, errorCode: 1});
+            return;
+        }
     }
+    
 
     console.log("--------- end update account ---------");
 }

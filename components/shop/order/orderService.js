@@ -3,13 +3,17 @@ const { Op } = require('sequelize');
 
 exports.order = (clientID) => {
     return models.orders.findAll({
+        include: 
+        [{model: models.deliveries, as: "deliveries", 
+        where: {DELIVERY_STATUS:{[Op.ne]: "SUCCEED"}}}],
+
         where: {
             CLIENT_ID: clientID,
             ISDELETED: false
-
+            
         },
         raw: true
-    });
+    });   
 }
 exports.orderByID = (orderID) => {
     return models.orders.findOne({

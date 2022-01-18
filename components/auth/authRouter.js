@@ -8,10 +8,23 @@ router.post('/login',
   passport.authenticate('local', 
   { successRedirect: '/',
   failureRedirect: '/auth/login?undefinedUser' }),
-
   function(req, res) { 
     if(req.user)
-      res.redirect('/');
+    {
+      let lock = req.user.ISLOCK;
+      let del = req.user.ISDELETED;
+      console.log("------------lock: ", lock);
+
+      if(lock === false && del === false)
+      {
+        res.redirect('/');
+      }
+      else
+      {
+        req.logout();
+        res.render('login',{lockCode: true});
+      }
+    }
     else
       res.redirect('/auth/login');
   }

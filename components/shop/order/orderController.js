@@ -463,14 +463,14 @@ exports.editOrderPage = async (req,res,next) => {
                 console.log(err);
                 return next();
             }
-            try{
-                const result = await orderService.deleteOrder(receiveOrderID);
-            }
-            catch(err)
-            {
-                console.log(err);
-                return next();
-            }
+            // try{
+            //     const result = await orderService.deleteOrder(receiveOrderID);
+            // }
+            // catch(err)
+            // {
+            //     console.log(err);
+            //     return next();
+            // }
 
         }
         catch(err)
