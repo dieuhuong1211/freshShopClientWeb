@@ -70,16 +70,62 @@
                             {{DETAIL}}
                         </p>
 						<ul>
-							<li>
-								<div class="form-group quantity-box">
-									<label class="control-label">Quantity</label>
-									<input class="form-control" value="0" min="0" max="20" type="number">
+							<li style="width: 100%;">
+								<div class="form-group">
+                                    {{#if ../user}}
+                                        {{#equal inCart 0}}
+                                            {{#equal STOCK "IN STOCK"}}
+                                            <label class="control-label">Quantity</label>
+                                            <input class="form-control" value="0" min="0" max="20" type="number">
+                                            {{/equal}}
+                                            {{#equal STOCK "OUT STOCK"}}
+                                            <p class="no_result_title" style="font-size:25px">Sorry, this product is out of stock </p>
+                                            {{/equal}}
+                                        {{/equal}}
+
+                                        {{#equal inCart 1}}
+                                            <p class="no_result_title" style="font-size:25px">You already have this product in cart </p>
+                                            
+                                        {{/equal}}
+                                    {{else}}
+                                        {{#equal STOCK "IN STOCK"}}
+                                        <label class="control-label">Quantity</label>
+                                        <input class="form-control" value="0" min="0" max="20" type="number">
+                                        {{/equal}}
+                                        {{#equal STOCK "OUT STOCK"}}
+                                        <p class="no_result_title" style="font-size:25px">Sorry, this product is out of stock </p>
+                                        {{/equal}}
+                                    {{/if}}
 								</div>
 							</li>
 						</ul>
 						<div class="add-to-btn">
 							<div class="add-comp">
-								<a class="btn hvr-hover" href="#"><i class="fas fa-heart"></i> Add to cart</a>
+                                {{#if ../user}}
+                                    {{#equal inCart 0}}
+                                        {{#equal STOCK "IN STOCK"}}
+                                        <a class="btn hvr-hover" href="#"><i class="fas fa-heart"></i> Add to cart</a>
+                                        {{/equal}}
+
+                                        {{#equal STOCK "OUT STOCK"}}
+                                        <a class="btn hvr-hover" href="/shop"><i class="fas fa-heart"></i> Go to shop</a>
+                                        {{/equal}}
+                                    {{/equal}}
+                                    {{#equal inCart 1}}
+                                        <a class="btn hvr-hover" href="/shop" style="margin-right:8px"><i class="fas fa-heart"></i> Go to shop</a>
+                                        <a class="btn hvr-hover" href="/shop/cart"><i class="fas fa-heart"></i> Go to cart</a>
+                                    {{/equal}}
+
+                                {{else}}
+                                    {{#equal STOCK "IN STOCK"}}
+                                    <a class="btn hvr-hover" href="/auth/login"><i class="fas fa-heart"></i> Add to cart</a>
+                                    {{/equal}}
+
+                                    {{#equal STOCK "OUT STOCK"}}
+                                    <a class="btn hvr-hover" href="/shop"><i class="fas fa-heart"></i> Go to shop</a>
+                                    {{/equal}}
+
+                                {{/if}}
 							</div>
 							<div class="share-bar">
 								<a class="btn hvr-hover" href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a>
@@ -147,10 +193,11 @@
                             {{/if}}
                         </form>
                         </div>
-                        <form method="post" id="commentForm">
+                        <form method="post" id="commentForm" >
                             <div class="collapse" id="formReview">
                                 <div class="card card-body">
-                                    <textarea rows="4"  name="comment" placeholder="Enter your comment here..." ></textarea>
+                                    <textarea rows="4" maxlength="500" name="comment" placeholder="Enter your comment here (max: 500 letters)..." required></textarea>
+                                    
                                 <button  class="btn btn-default bnt-review hvr-hover"  type="submit" >Comment</a>
                                     
                                 </div>

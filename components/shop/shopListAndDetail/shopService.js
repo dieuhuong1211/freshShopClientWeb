@@ -11,20 +11,46 @@ exports.listItemByCategory = (category) => {
         raw:true
     });
 };
-exports.listNonPaging = (search) => {
-    if(search !== "" && search !== undefined)
+exports.listNonPaging = (search, cate) => {
+    if((search !== "" && search ) && (cate !== "" && cate ))
     {
         return models.products.findAll({
             where: {
                 PRODUCT_NAME: {
                     [Op.like]: '%' + search + '%'
                 },
-            ISDELETED: false
+                CATEGORY: cate,
+                ISDELETED: false
 
             },
             raw:true
         });
         
+    }
+    else if(search !== "" && search )
+    {
+        return models.products.findAll({
+            where: {
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
+                ISDELETED: false
+
+            },
+            raw:true
+        });
+        
+    }
+    else if(cate !== "" && cate )
+    {
+        return models.products.findAll({
+            where: {
+                CATEGORY: cate,
+                ISDELETED: false
+
+            },
+            raw:true
+        });
     }
     else {
         return models.products.findAll({
@@ -35,12 +61,27 @@ exports.listNonPaging = (search) => {
             raw:true
         });
     }
-    
-    
 }
-//--------- begin filter & search -------
-exports.list = (search, page, itemPerPage) => {
-    if(search !== "" && search !== undefined)
+//--------- begin filter & search & cate -------
+exports.list = (search, page, itemPerPage, cate) => {
+    if((search !== "" && search ) && (cate !== "" && cate ))
+    {
+        return models.products.findAll({
+            where: {
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
+                CATEGORY: cate,
+                ISDELETED: false
+
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+        
+    }
+    else if(search !== "" && search )
     {
         return models.products.findAll({
             where: {
@@ -48,6 +89,20 @@ exports.list = (search, page, itemPerPage) => {
                     [Op.like]: '%' + search + '%'
                 },
             ISDELETED: false
+
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+        
+    }
+    else if(cate !== "" && cate )
+    {
+        return models.products.findAll({
+            where: {
+                CATEGORY: cate,
+                ISDELETED: false
 
             },
             offset: page * itemPerPage, 
@@ -58,59 +113,134 @@ exports.list = (search, page, itemPerPage) => {
     else {
         return models.products.findAll({
             where: {
+                ISDELETED: false
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+    }
+};
+
+exports.listPopular = (search, page, itemPerPage, cate) => {
+    if((search !== "" && search ) && (cate !== "" && cate ))
+    {
+        return models.products.findAll({
+            where: {
+                SOLD: {
+                    [Op.gte]: 80,  
+                },
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
+                CATEGORY: cate,
+                ISDELETED: false
+                
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+        
+    }
+    else if(search !== "" && search )
+    {
+        return models.products.findAll({
+            where: {
+                SOLD: {
+                    [Op.gte]: 80,  
+                },
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
+                ISDELETED: false
+                
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+        
+    }
+    else if(cate !== "" && cate )
+    {
+        return models.products.findAll({
+            where: {
+                SOLD: {
+                    [Op.gte]: 80,  
+                },
+                CATEGORY: cate,
+                ISDELETED: false
+                
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+    }
+    else {
+        return models.products.findAll({
+            where: {
+                SOLD: {
+                    [Op.gte]: 80,  
+                },
+                ISDELETED: false
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+    }
+
+};
+
+exports.listHighToLow = (search, page, itemPerPage, cate) => {
+    if((search !== "" && search ) && (cate !== "" && cate ))
+    {
+        return models.products.findAll({
+            where: {
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
+                CATEGORY: cate,
+                ISDELETED: false
+
+            },
+            order: [
+                ['PRICE', 'DESC'],
+            ],
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+        
+    }
+    else if(search !== "" && search )
+    {
+        return models.products.findAll({
+            where: {
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
             ISDELETED: false
+
             },
+            order: [
+                ['PRICE', 'DESC'],
+            ],
             offset: page * itemPerPage, 
             limit: itemPerPage, 
             raw:true
         });
+        
     }
-};
-
-exports.listPopular = (search, page, itemPerPage) => {
-    if (search !== "")
+    else if(cate !== "" && cate )
     {
         return models.products.findAll({
             where: {
-                SOLD: {
-                    [Op.gte]: 80,  
-                },
-                PRODUCT_NAME: {
-                    [Op.like]: '%' + search + '%'
-                },
+                CATEGORY: cate,
                 ISDELETED: false
-                
-            },
-            offset: page * itemPerPage, 
-            limit: itemPerPage, 
-            raw:true
-        });
-    }
-    else
-    {
-        return models.products.findAll({
-            where: {
-                SOLD: {
-                    [Op.gte]: 80,  
-                },
-                ISDELETED: false
-            },
-            offset: page * itemPerPage, 
-            limit: itemPerPage, 
-            raw:true
-        });
-    }
-};
 
-exports.listHighToLow = (search, page, itemPerPage) => {
-    if (search !== "") {
-        return models.products.findAll({
-            where: {
-                PRODUCT_NAME: {
-                    [Op.like]: '%' + search + '%'
-                },
-                ISDELETED: false
-                
             },
             order: [
                 ['PRICE', 'DESC'],
@@ -120,7 +250,7 @@ exports.listHighToLow = (search, page, itemPerPage) => {
             raw:true
         });
     }
-    else{
+    else {
         return models.products.findAll({
             where: {
                 ISDELETED: false
@@ -133,17 +263,56 @@ exports.listHighToLow = (search, page, itemPerPage) => {
             raw:true
         });
     }
+   
 };
 
-exports.listLowToHigh = (search, page, itemPerPage) => {
-    if(search !== "")
+exports.listLowToHigh = (search, page, itemPerPage, cate) => {
+    if((search !== "" && search ) && (cate !== "" && cate ))
     {
         return models.products.findAll({
             where: {
                 PRODUCT_NAME: {
                     [Op.like]: '%' + search + '%'
                 },
+                CATEGORY: cate,
                 ISDELETED: false
+
+            },
+            order: [
+                ['PRICE', 'ASC'],
+            ],
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+        
+    }
+    else if(search !== "" && search )
+    {
+        return models.products.findAll({
+            where: {
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
+            ISDELETED: false
+
+            },
+            order: [
+                ['PRICE', 'ASC'],
+            ],
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+        
+    }
+    else if(cate !== "" && cate )
+    {
+        return models.products.findAll({
+            where: {
+                CATEGORY: cate,
+                ISDELETED: false
+
             },
             order: [
                 ['PRICE', 'ASC'],
@@ -153,8 +322,7 @@ exports.listLowToHigh = (search, page, itemPerPage) => {
             raw:true
         });
     }
-    else
-    {
+    else {
         return models.products.findAll({
             where: {
                 ISDELETED: false
@@ -162,26 +330,61 @@ exports.listLowToHigh = (search, page, itemPerPage) => {
             order: [
                 ['PRICE', 'ASC'],
             ],
-            
             offset: page * itemPerPage, 
             limit: itemPerPage, 
             raw:true
         });
     }
+   
     
 };
 //---------end filter & search -------
 
-exports.category = (page, itemPerPage, type)=> {
+exports.allCate = ()=> {
+    return models.categories.findAll({
+        raw:true
+    });
+}
+
+exports.allProductByCate = (type) => {
+    
     return models.products.findAll({
         where: {
             CATEGORY: type,
             ISDELETED: false
-        },
-        offset: page * itemPerPage, 
-        limit: itemPerPage, 
+        }, 
         raw:true
     });
+    
+}
+
+exports.category = (search, page, itemPerPage, type)=> {
+    if(search !== "" && search)
+    {
+        return models.products.findAll({
+            where: {
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
+            ISDELETED: false,
+            CATEGORY: type
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+    }
+    else {
+        return models.products.findAll({
+            where: {
+                CATEGORY: type,
+                ISDELETED: false
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+    }
 };
 
 exports.detail = (id) => {

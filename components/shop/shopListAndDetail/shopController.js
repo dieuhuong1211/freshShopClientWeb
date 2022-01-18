@@ -8,6 +8,8 @@ let currentPage = 1;
 let pageNumber = 0;
 let filter = 0;
 let search = "";
+let cate = "";
+
 const noResult = "No Result Found :<";
 let proCount = 0;
 const outstock = "Sorry, this product is sold out :<";
@@ -16,25 +18,51 @@ const addtocartsuccess = "Product successfully added to cart :>";
 const now = new Date();
 const today = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
 
-exports.list = async (req, res, next) => {
 
+let products = [];
+let prePage = 0;
+let nextPage = 0;
+let categories = [];
+
+exports.list = async (req, res, next) => {
+    
     pageNumber = req.query.page;
     currentPage = (pageNumber && !Number.isNaN(pageNumber)) ? parseInt(pageNumber) : 1;
     currentPage = (currentPage > 0) ? currentPage : 1;
+
     search = req.query.search;
+    console.log("------search: ",search);
     
+
     filter = req.query.filter;
     filter = (filter && !Number.isNaN(filter)) ? parseInt(filter) : 0;
     filter = (filter > 0 && filter < 4) ? filter : 0;
-    console.log(filter);
+    console.log("------filter: ",filter);
 
-    let products = [];
-    let prePage = 0;
-    let nextPage = 0;
+    cate = req.query.cate;
+    console.log("------cate: ", cate);
+
+    //count product by cate for layout 
+    try{
+        
+        categories = await shopService.allCate();
+        for(let i = 0; i < categories.length; i++)
+        {
+            const temp = await shopService.allProductByCate(categories[i].CATEGORY_ID);
+            categories[i].count = temp.length;
+        }
+    }
+    catch(err){
+        console.log(err);
+        next();
+    }
+    
+
+    //filter + search + categori
     if(filter == 0 ) {
         try{
-            products = await shopService.list(search, currentPage - 1, itemPrePage);
-            const allproduct = await shopService.listNonPaging(search);
+            products = await shopService.list(search, currentPage - 1, itemPrePage, cate);
+            const allproduct = await shopService.listNonPaging(search, cate);
             proCount = allproduct.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage;
@@ -64,8 +92,8 @@ exports.list = async (req, res, next) => {
     if(filter === 1)
     {
         try{
-            products = await shopService.listPopular(search, currentPage - 1, itemPrePage);
-            const allproduct = await shopService.listNonPaging(search);
+            products = await shopService.listPopular(search, currentPage - 1, itemPrePage, cate);
+            const allproduct = await shopService.listNonPaging(search, cate);
             proCount = allproduct.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
@@ -94,8 +122,8 @@ exports.list = async (req, res, next) => {
     if(filter === 2)
     {
         try{
-            products = await shopService.listHighToLow(search, currentPage - 1, itemPrePage);
-            const allproduct = await shopService.listNonPaging(search);
+            products = await shopService.listHighToLow(search, currentPage - 1, itemPrePage, cate);
+            const allproduct = await shopService.listNonPaging(search, cate);
             proCount = allproduct.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
@@ -124,8 +152,8 @@ exports.list = async (req, res, next) => {
     if(filter === 3)
     {
         try{
-            products = await shopService.listLowToHigh(search, currentPage - 1, itemPrePage);
-            const allproduct = await shopService.listNonPaging(search);
+            products = await shopService.listLowToHigh(search, currentPage - 1, itemPrePage, cate);
+            const allproduct = await shopService.listNonPaging(search, cate);
             proCount = allproduct.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage;
@@ -151,14 +179,81 @@ exports.list = async (req, res, next) => {
         }
         
     }
+    
+    if(products.length === 0)
+    {
+        console.log("part 3");
 
+        res.render('shop/shopList', {
+        noResult,
+        filter,
+        search,
+        categories,
+        cate
+        });
+    }
+    else if(prePage === nextPage) {
+        console.log("part 4");
+
+        res.render('shop/shopList', {
+            products,
+            filter,
+            search,
+            categories,
+            cate
+            });
+    }
+    else if(prePage === currentPage)
+    {
+        console.log("part 5");
+        res.render('shop/shopList', {
+            products,
+            currentPage,
+            nextPage,
+            filter,
+            search,
+            categories,
+            cate
+            });
+    }
+    else if(nextPage === currentPage)
+    {
+        console.log("part 6");
+        res.render('shop/shopList', {
+            products,
+            currentPage,
+            prePage,
+            filter,
+            search,
+            categories,
+            cate
+            });
+    }
+    else {
+        console.log("part 7");
+        res.render('shop/shopList', {
+            products,
+            currentPage,
+            prePage,
+            nextPage,
+            filter,
+            search,
+            categories,
+            cate
+            });
+    }
+}
+
+
+exports.cart = async (req, res, next) => {
     // add product to cart
-    const productID = req.query.cart;
+    const productID = req.body.cart;
     let clientID;
     if(req.user)
     {
         clientID = req.user.CLIENT_ID;
     }
+    console.log("--------product: ", productID);
     let cartResult = outstock;
     if(productID && clientID)
     {
@@ -196,7 +291,8 @@ exports.list = async (req, res, next) => {
                 products,
                 filter,
                 search,
-                cartResult
+                cartResult,
+                categories
                 });
         }
         else {
@@ -209,48 +305,15 @@ exports.list = async (req, res, next) => {
                 nextPage,
                 filter,
                 search,
-                cartResult
+                cartResult,
+                categories
                 });
-        
         }
         console.log("cartResult " + cartResult);
         return;
     }
-    
-    if(products.length === 0)
-    {
-        console.log("part 3");
-
-        res.render('shop/shopList', {
-        noResult,
-        filter,
-        search,
-        });
-    }
-    else if(prePage === nextPage) {
-        console.log("part 4");
-
-        res.render('shop/shopList', {
-            products,
-            filter,
-            search,
-            });
-    }
-    else {
-        console.log("part 5");
-        res.render('shop/shopList', {
-            products,
-            currentPage,
-            prePage,
-            nextPage,
-            filter,
-            search,
-            });
-    }
-   
-    
-    
-};
+    res.redirect('back');
+}
 
 let reviewitemperpage = 2;
 const noReview = "There are no reviews yet";
@@ -259,6 +322,11 @@ exports.detail = async (req, res, next) => {
     let product_detail;
     let products;
     let review
+    let clientID;
+    if(req.user)
+    {
+        clientID = req.user.CLIENT_ID;
+    }
     if(id===null || id==="")
     {
         return;
@@ -266,6 +334,18 @@ exports.detail = async (req, res, next) => {
     try{
         product_detail = await shopService.detail(id);
         //console.log(product_detail);
+        product_detail.inCart = 0;
+        if(clientID)
+        {
+            const inCart = await shopService.productInCart(product_detail.PRODUCT_ID, clientID);
+            console.log("-------in cart:", inCart );
+            if(inCart.length > 0)
+            {
+                product_detail.inCart = 1;
+                console.log("code--------------",product_detail.inCart);
+            }
+
+        }
         const category = product_detail.CATEGORY;
         products = await shopService.listItemByCategory(category);
     }
@@ -395,15 +475,17 @@ exports.addComment = async (req, res, next) => {
     }
     const review = req.body.comment;
     console.log("review: ", review);
-
-    try {
-        const addComment = await shopService.addComment(productID, clientID, review, today);
-        console.log(addComment);
-        res.redirect('back');
+    if(review.length > 0 && review)
+    {
+        try {
+            const addComment = await shopService.addComment(productID, clientID, review, today);
+            console.log(addComment);
+            res.redirect('back');
+        }
+        catch(err){
+            console.log(err);
+            next();
+        }
     }
-    catch(err){
-        console.log(err);
-        next();
-    }
-
+    res.redirect('back');
 }
