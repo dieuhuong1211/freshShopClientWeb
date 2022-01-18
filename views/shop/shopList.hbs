@@ -239,6 +239,19 @@
                             </div>
                             <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
                                 {{#if cate}}
+                                <div class="list-group-collapse sub-men">
+                                    <button class="list-group-item list-group-item-action " href="#sub-men0" data-toggle="collapse" aria-expanded="true" aria-controls="sub-men1">
+                                        All
+								    </button>
+    
+                                    <div class="collapse show" id="sub-men0" data-parent="#list-group-men">
+                                        <div class="list-group">
+                                            <button onclick="this.form.submit()" form="shopList" name="allCate" value="true" class="list-group-item list-group-item-action ">
+                                                All products
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                                 {{#equal cate categories.[0].CATEGORY_ID}}
                                 <div class="list-group-collapse sub-men">
                                     <button class="list-group-item list-group-item-action " href="#sub-men1" data-toggle="collapse" aria-expanded="true" aria-controls="sub-men1">
@@ -247,7 +260,8 @@
     
                                     <div class="collapse show" id="sub-men1" data-parent="#list-group-men">
                                         <div class="list-group">
-                                            <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[0].CATEGORY_ID}}" class="list-group-item list-group-item-action active">
+                                            <input form="shopList" name="oldCate" value="{{categories.[0].CATEGORY_ID}}" hidden>
+                                            <button class="list-group-item list-group-item-action active">
                                                 Fruits<small class="text-muted">&nbsp;({{categories.[0].count}})</small>
                                             </button>
                                             <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[1].CATEGORY_ID}}" class="list-group-item list-group-item-action ">
@@ -286,7 +300,8 @@
                                             <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[0].CATEGORY_ID}}" class="list-group-item list-group-item-action ">
                                                 Fruits<small class="text-muted">&nbsp;({{categories.[0].count}})</small>
                                             </button>
-                                            <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[1].CATEGORY_ID}}" class="list-group-item list-group-item-action active">
+                                            <input form="shopList" name="oldCate" value="{{categories.[1].CATEGORY_ID}}" hidden>
+                                            <button  class="list-group-item list-group-item-action active">
                                                 Vegetables<small class="text-muted">&nbsp;({{categories.[1].count}})</small>
                                             </button>
                                             <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[2].CATEGORY_ID}}" class="list-group-item list-group-item-action ">
@@ -325,7 +340,8 @@
                                             <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[1].CATEGORY_ID}}" class="list-group-item list-group-item-action ">
                                                 Vegetables<small class="text-muted">&nbsp;({{categories.[1].count}})</small>
                                             </button>
-                                            <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[2].CATEGORY_ID}}" class="list-group-item list-group-item-action active">
+                                            <input form="shopList" name="oldCate" value="{{categories.[2].CATEGORY_ID}}" hidden>
+                                            <button class="list-group-item list-group-item-action active">
                                                 Podded Vegetables<small class="text-muted">&nbsp;({{categories.[2].count}})</small>
                                             </button>
                                         </div>
@@ -373,7 +389,8 @@
 								    </button>
                                     <div class="collapse show" id="sub-men2" data-parent="#list-group-men">
                                         <div class="list-group">
-                                            <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[3].CATEGORY_ID}}" class="list-group-item list-group-item-action active">
+                                            <input form="shopList" name="oldCate" value="{{categories.[3].CATEGORY_ID}}" hidden>
+                                            <button class="list-group-item list-group-item-action active">
                                                 Bulbs<small class="text-muted">&nbsp;({{categories.[3].count}})</small>
                                             </button>
                                             <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[4].CATEGORY_ID}}" class="list-group-item list-group-item-action">
@@ -412,7 +429,8 @@
                                             <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[3].CATEGORY_ID}}" class="list-group-item list-group-item-action ">
                                                 Bulbs<small class="text-muted">&nbsp;({{categories.[3].count}})</small>
                                             </button>
-                                            <button onclick="this.form.submit()" form="shopList" name="cate" value="{{categories.[4].CATEGORY_ID}}" class="list-group-item list-group-item-action active">
+                                            <input form="shopList" name="oldCate" value="{{categories.[4].CATEGORY_ID}}" hidden>
+                                            <button  class="list-group-item list-group-item-action active">
                                                 Root and tuberous<small class="text-muted">&nbsp;({{categories.[4].count}})</small>
                                             </button>
                                         </div>
@@ -486,6 +504,7 @@
     </div>
     
     <input id="btnModal" data-toggle="modal" type="button" data-target="#addProductToCart" hidden></input>
+
 {{#if cartResult}}
 <script>
     document.addEventListener('DOMContentLoaded',function(){

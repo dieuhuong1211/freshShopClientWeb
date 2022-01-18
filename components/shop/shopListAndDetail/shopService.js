@@ -122,6 +122,76 @@ exports.list = (search, page, itemPerPage, cate) => {
     }
 };
 
+exports.listAllPopular = (search, cate) => {
+    if((search !== "" && search ) && (cate !== "" && cate ))
+    {
+        return models.products.findAll({
+            where: {
+                SOLD: {
+                    [Op.gte]: 80,  
+                },
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
+                CATEGORY: cate,
+                ISDELETED: false
+                
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+        
+    }
+    else if(search !== "" && search )
+    {
+        return models.products.findAll({
+            where: {
+                SOLD: {
+                    [Op.gte]: 80,  
+                },
+                PRODUCT_NAME: {
+                    [Op.like]: '%' + search + '%'
+                },
+                ISDELETED: false
+                
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+        
+    }
+    else if(cate !== "" && cate )
+    {
+        return models.products.findAll({
+            where: {
+                SOLD: {
+                    [Op.gte]: 80,  
+                },
+                CATEGORY: cate,
+                ISDELETED: false
+                
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+    }
+    else {
+        return models.products.findAll({
+            where: {
+                SOLD: {
+                    [Op.gte]: 80,  
+                },
+                ISDELETED: false
+            },
+            offset: page * itemPerPage, 
+            limit: itemPerPage, 
+            raw:true
+        });
+    }
+} 
 exports.listPopular = (search, page, itemPerPage, cate) => {
     if((search !== "" && search ) && (cate !== "" && cate ))
     {

@@ -40,8 +40,17 @@ exports.list = async (req, res, next) => {
     console.log("------filter: ",filter);
 
     cate = req.query.cate;
+    const oleCart = req.query.oldCate;
     console.log("------cate: ", cate);
-
+    if(req.query.oldCate && !req.query.cate)
+    {
+        cate = oleCart;
+    }
+    if(req.query.allCate)
+    {
+        cate = "";
+    }
+    console.log("-------cart: ", cate);
     //count product by cate for layout 
     try{
         
@@ -59,7 +68,7 @@ exports.list = async (req, res, next) => {
     
 
     //filter + search + categori
-    if(filter == 0 ) {
+    if(filter === 0 ) {
         try{
             products = await shopService.list(search, currentPage - 1, itemPrePage, cate);
             const allproduct = await shopService.listNonPaging(search, cate);
@@ -179,68 +188,132 @@ exports.list = async (req, res, next) => {
         }
         
     }
-    
-    if(products.length === 0)
+    if(req.query.allCate)
     {
-        console.log("part 3");
+        if(products.length === 0)
+        {
+            console.log("part 12");
 
-        res.render('shop/shopList', {
-        noResult,
-        filter,
-        search,
-        categories,
-        cate
-        });
-    }
-    else if(prePage === nextPage) {
-        console.log("part 4");
+            res.render('shop/shopList', {
+            noResult,
+            filter,
+            search,
+            categories
+            });
+        }
+        else if(prePage === nextPage) {
+            console.log("part 13");
 
-        res.render('shop/shopList', {
-            products,
-            filter,
-            search,
-            categories,
-            cate
-            });
-    }
-    else if(prePage === currentPage)
-    {
-        console.log("part 5");
-        res.render('shop/shopList', {
-            products,
-            currentPage,
-            nextPage,
-            filter,
-            search,
-            categories,
-            cate
-            });
-    }
-    else if(nextPage === currentPage)
-    {
-        console.log("part 6");
-        res.render('shop/shopList', {
-            products,
-            currentPage,
-            prePage,
-            filter,
-            search,
-            categories,
-            cate
-            });
+            res.render('shop/shopList', {
+                products,
+                filter,
+                search,
+                categories
+                });
+        }
+        else if(prePage === currentPage)
+        {
+            console.log("part 14");
+            res.render('shop/shopList', {
+                products,
+                currentPage,
+                nextPage,
+                filter,
+                search,
+                categories
+                });
+        }
+        else if(nextPage === currentPage)
+        {
+            console.log("part 15");
+            res.render('shop/shopList', {
+                products,
+                currentPage,
+                prePage,
+                filter,
+                search,
+                categories
+                });
+        }
+        else {
+            console.log("part 16");
+            res.render('shop/shopList', {
+                products,
+                currentPage,
+                prePage,
+                nextPage,
+                filter,
+                search,
+                categories
+                });
+        }
+        return;
     }
     else {
-        console.log("part 7");
-        res.render('shop/shopList', {
-            products,
-            currentPage,
-            prePage,
-            nextPage,
+
+    
+        if(products.length === 0)
+        {
+            console.log("part 3");
+
+            res.render('shop/shopList', {
+            noResult,
             filter,
             search,
             categories,
             cate
             });
+        }
+        else if(prePage === nextPage) {
+            console.log("part 4");
+
+            res.render('shop/shopList', {
+                products,
+                filter,
+                search,
+                categories,
+                cate
+                });
+        }
+        else if(prePage === currentPage)
+        {
+            console.log("part 5");
+            res.render('shop/shopList', {
+                products,
+                currentPage,
+                nextPage,
+                filter,
+                search,
+                categories,
+                cate
+                });
+        }
+        else if(nextPage === currentPage)
+        {
+            console.log("part 6");
+            res.render('shop/shopList', {
+                products,
+                currentPage,
+                prePage,
+                filter,
+                search,
+                categories,
+                cate
+                });
+        }
+        else {
+            console.log("part 7");
+            res.render('shop/shopList', {
+                products,
+                currentPage,
+                prePage,
+                nextPage,
+                filter,
+                search,
+                categories,
+                cate
+                });
+        }
     }
 }
 
