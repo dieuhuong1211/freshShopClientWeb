@@ -11,19 +11,7 @@ router.post('/login',
   function(req, res) { 
     if(req.user)
     {
-      let lock = req.user.ISLOCK;
-      let del = req.user.ISDELETED;
-      console.log("------------lock: ", lock);
-
-      if(lock === false && del === false)
-      {
-        res.redirect('/');
-      }
-      else
-      {
-        req.logout();
-        res.render('login',{lockCode: true});
-      }
+      res.redirect('/');
     }
     else
       res.redirect('/auth/login');

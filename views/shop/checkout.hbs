@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="lastName">Phone *</label>
-                                    <input type="text" class="form-control" name="phone" placeholder="" value="" required>
+                                    <input type="text" class="form-control" id="InputPhone" name="phone" placeholder="" value="" required>
                                     <div class="invalid-feedback"> Valid phone number is required. </div>
                                 </div>
                             </div>
@@ -307,8 +307,14 @@
                                 <hr> </div>
                         </div>
                         <div class="col-12 d-flex shopping-box"> 
-                            <button class="btn btn-default hvr-hover float-right custom-total" style="color: white;font-weight:bolder;background-color:#b0b435" type="submit">Place Order</button>
+                            <button class="btn btn-default hvr-hover float-right custom-total" id="bnt-sbmit1" style="color: white;font-weight:bolder;background-color:#b0b435" type="submit">Place Order</button>
+                            <div style="display: none;"  id="errorInput" >
+                                        <b style="color: coral;">
+                                        The phone number you entered is not valid
+                                        </b>
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -317,5 +323,23 @@
     </div>
     
     </form>
+
+    <script>
+        let number = document.getElementById("InputPhone");
+        function isVietnamesePhoneNumberValid() {
+            let check = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/.test(number.value);
+            if(check === false)
+            {
+                document.getElementById("errorInput").style.display = "block";
+                document.getElementById("bnt-sbmit1").style.display = "none";
+            }
+            else {
+                document.getElementById("errorInput").style.display = "none";
+                document.getElementById("bnt-sbmit1").style.display = "inline";
+
+            }
+        }
+        number.onchange = isVietnamesePhoneNumberValid;
+    </script>
     <!-- End Cart -->
 

@@ -8,7 +8,6 @@ var hbs = require("hbs")
 const multer  = require('multer');
 
 const indexRouter = require('./components/mainpage');
-const usersRouter = require('./routes/users');
 const shopRouter = require('./components/shop');
 const contactRouter = require('./components/contact');
 const aboutRouter = require('./components/about');
@@ -51,7 +50,6 @@ app.use(function (req, res, next) {
 })
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/shop', shopRouter);
 app.use('/contact', contactRouter);
 app.use('/about', aboutRouter);

@@ -12,8 +12,13 @@ passport.use(new LocalStrategy({
   },
   async function(username, password, done) {
     try{
-      const user = await models.clients.findOne(
-        {where: { EMAIL: username },
+      const user = await models.clients.findOne({
+        where:
+           { 
+             EMAIL: username,
+             ISLOCK: false,
+             ISDELETED: false
+           },
         raw:true
       });
       if (!user) {

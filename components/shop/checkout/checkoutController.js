@@ -50,9 +50,10 @@ exports.checkout = async (req, res, next) => {
                         console.log(err);
                     }
                 }
-                discount = subtotal*0.1;
-                tax = subtotal*0.02;
-                grandtotal = subtotal - discount + tax + shipping;
+                discount = parseFloat(subtotal*0.1).toFixed(2);
+                tax = parseFloat(subtotal*0.02).toFixed(2);
+                grandtotal = (subtotal - discount) + parseFloat(tax) + parseFloat(shipping);
+                grandtotal = parseFloat(grandtotal).toFixed(2);
                 res.render('shop/checkout', {
                     product,
                     subtotal,

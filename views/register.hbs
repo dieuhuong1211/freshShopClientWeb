@@ -81,4 +81,20 @@ function isVietnamesePhoneNumberValid() {
     }
 }
 number.onchange = isVietnamesePhoneNumberValid;
+
+let email = document.getElementById("InputEmail");
+function isEmailValid() {
+  let temp = new String(email.value).toLowerCase()
+  let check = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(temp);
+    if(check === false)
+    {
+        document.getElementById("errorInput").style.display = "block";
+        document.getElementById("btn-sumbit1").style.display = "none"
+    }
+    else {
+        document.getElementById("errorInput").style.display = "none";
+        document.getElementById("btn-sumbit1").style.display = "inline"
+    }
+};
+email.onchange = isEmailValid;
 </script>

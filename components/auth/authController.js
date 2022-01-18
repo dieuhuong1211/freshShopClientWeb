@@ -77,18 +77,24 @@ exports.updateAccount = async (req, res, next) => {
             dob = (req.body.dob.length > 0) ? req.body.dob : req.user.DOB;
             phone = (req.body.phone.length > 0) ? req.body.phone : req.user.PHONE;
             image = (req.body.image.length > 0) ? req.body.image : "";
-            if(image.length > 0)
-            {
-                const updateinfo = await authService.updateInfowithFile(clientID,firstname,lastname,dob,gender,phone,image);
-                console.log(updateinfo);
+            try{
+                if(image.length > 0)
+                {
+                    const updateinfo = await authService.updateInfowithFile(clientID,firstname,lastname,dob,gender,phone,image);
+                    console.log(updateinfo);
+                }
+                else
+                {
+                    const updateinfo = await authService.updateInfowithoutFile(clientID,firstname,lastname,dob,gender,phone);
+                    console.log(updateinfo);
+                }
+                res.redirect('back');
+                return;
             }
-            else
-            {
-                const updateinfo = await authService.updateInfowithoutFile(clientID,firstname,lastname,dob,gender,phone);
-                console.log(updateinfo);
+            catch(err){
+                console.log(err);
             }
-            res.redirect('back');
-            return;
+            
         }
     }
    
@@ -97,46 +103,63 @@ exports.updateAccount = async (req, res, next) => {
     newpass = req.body.newpass;
     if(email && email !== "")
     {
-        const updatepemail = await authService.updateEmail(clientID, email);
-        console.log("---------updatepemail: ", updatepemail);
-        
+        try{
+            const updatepemail = await authService.updateEmail(clientID, email);
+            console.log("---------updatepemail: ", updatepemail);
+        }
+        catch(err){
+                console.log(err);
+            }
     }
-    const client = await authService.findUserByID(clientID);
-    if(pass || newpass)
-    {
-        if(pass.length > 0 && newpass.length > 0)
-    {
-        //const hashNewPassword = await bcrypt.hash(pass, 10);
-        const validPassword = await bcrypt.compare(pass, client.PASS);
-        
-        // console.log("---------pass: ", hashNewPassword);
-        // console.log("---------client pass: ", client.PASS);
-        if(validPassword)
-        {
-            const updatepass = await authService.updatePass(clientID, newpass);
-            console.log("---------updatepass: ", updatepass);
-            res.render('shop/myAccount', {
-                client,
-                errorCode: -1
-            });
-        }
-        else {
-            res.render('shop/myAccount', {
-                client,
-                errorCode: 2
-            });
-            return;
-        }
-        
-        }
-
-        if((pass.length === 0 && newpass.length > 0) || (pass.length > 0 && newpass.length === 0))
-        {
-            res.render('shop/myAccount', {client, errorCode: 1});
-            return;
-        }
+    let client
+    try{
+        client = await authService.findUserByID(clientID);
+    }
+    catch(err){
+        console.log(err);
     }
     
+    if(pass || newpass)
+    {
+        try{
+            if(pass !== "" && newpass !== "")
+            {
+            //const hashNewPassword = await bcrypt.hash(pass, 10);
+            const validPassword = await bcrypt.compare(pass, client.PASS);
+            
+            // console.log("---------pass: ", hashNewPassword);
+            // console.log("---------client pass: ", client.PASS);
+            if(validPassword)
+            {
+                const updatepass = await authService.updatePass(clientID, newpass);
+                console.log("---------updatepass: ", updatepass);
+                res.render('shop/myAccount', {
+                    client,
+                    errorCode: -1
+                });
+            }
+            else {
+                res.render('shop/myAccount', {
+                    client,
+                    errorCode: 2
+                });
+                return;
+            }
+            
+            }
 
+            if((pass.length === 0 && newpass.length > 0) || (pass.length > 0 && newpass.length === 0))
+            {
+                res.render('shop/myAccount', {client, errorCode: 1});
+                return;
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
+        
+    }
+    
+    res.redirect('back');
     console.log("--------- end update account ---------");
 }

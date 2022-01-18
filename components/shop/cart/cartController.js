@@ -88,7 +88,7 @@ exports.editCart = async (req,res,next) => {
         res.redirect('back');
         return;
     }
-    let cart
+    let cart = [];
     try{
         cart = await cartService.cart(clientID);
     }
@@ -101,10 +101,10 @@ exports.editCart = async (req,res,next) => {
     {
         const updateQuantity = req.body.quantity;
         console.log("updateQuantity: ", updateQuantity);
-        for(let i = 0; i < updateQuantity.length; i++)
+        if(cart.length === 1)
         {
-            const quantity = parseInt(updateQuantity[i]);
-            const productID = cart[i].PRODUCT_ID;
+            const quantity = parseInt(updateQuantity);
+            const productID = cart[0].PRODUCT_ID;
             try{
                 const update = await cartService.updateCart(clientID, productID, quantity);
             }
@@ -113,6 +113,21 @@ exports.editCart = async (req,res,next) => {
                 next();
             }
         }
+        else{
+            for(let i = 0; i < cart.length; i++)
+            {
+                const quantity = parseInt(updateQuantity[i]);
+                const productID = cart[i].PRODUCT_ID;
+                try{
+                    const update = await cartService.updateCart(clientID, productID, quantity);
+                }
+                catch(err){
+                    console.log(err);
+                    next();
+                }
+            }
+        }
+        
     }
     res.redirect('back');
     
