@@ -9,7 +9,6 @@ var _orders = require("./orders");
 var _orders_detail = require("./orders_detail");
 var _products = require("./products");
 var _reviews = require("./reviews");
-var _wishlists = require("./wishlists");
 
 function initModels(sequelize) {
   var admins = _admins(sequelize, DataTypes);
@@ -22,15 +21,12 @@ function initModels(sequelize) {
   var orders_detail = _orders_detail(sequelize, DataTypes);
   var products = _products(sequelize, DataTypes);
   var reviews = _reviews(sequelize, DataTypes);
-  var wishlists = _wishlists(sequelize, DataTypes);
 
   clients.belongsToMany(products, { as: 'PRODUCT_ID_products', through: carts, foreignKey: "CLIENT_ID", otherKey: "PRODUCT_ID" });
   clients.belongsToMany(products, { as: 'PRODUCT_ID_products_reviews', through: reviews, foreignKey: "CLIENT_ID", otherKey: "PRODUCT_ID" });
-  clients.belongsToMany(products, { as: 'PRODUCT_ID_products_wishlists', through: wishlists, foreignKey: "CLIENT_ID", otherKey: "PRODUCT_ID" });
   orders.belongsToMany(products, { as: 'PRODUCT_ID_products_orders_details', through: orders_detail, foreignKey: "ORDER_ID", otherKey: "PRODUCT_ID" });
   products.belongsToMany(clients, { as: 'CLIENT_ID_clients', through: carts, foreignKey: "PRODUCT_ID", otherKey: "CLIENT_ID" });
   products.belongsToMany(clients, { as: 'CLIENT_ID_clients_reviews', through: reviews, foreignKey: "PRODUCT_ID", otherKey: "CLIENT_ID" });
-  products.belongsToMany(clients, { as: 'CLIENT_ID_clients_wishlists', through: wishlists, foreignKey: "PRODUCT_ID", otherKey: "CLIENT_ID" });
   products.belongsToMany(orders, { as: 'ORDER_ID_orders', through: orders_detail, foreignKey: "PRODUCT_ID", otherKey: "ORDER_ID" });
   deliveries.belongsTo(admins, { as: "MANAGER_admin", foreignKey: "MANAGER"});
   admins.hasMany(deliveries, { as: "deliveries", foreignKey: "MANAGER"});
@@ -48,8 +44,6 @@ function initModels(sequelize) {
   clients.hasMany(orders, { as: "orders", foreignKey: "CLIENT_ID"});
   reviews.belongsTo(clients, { as: "CLIENT", foreignKey: "CLIENT_ID"});
   clients.hasMany(reviews, { as: "reviews", foreignKey: "CLIENT_ID"});
-  wishlists.belongsTo(clients, { as: "CLIENT", foreignKey: "CLIENT_ID"});
-  clients.hasMany(wishlists, { as: "wishlists", foreignKey: "CLIENT_ID"});
   bills.belongsTo(orders, { as: "ORDER", foreignKey: "ORDER_ID"});
   orders.hasOne(bills, { as: "bill", foreignKey: "ORDER_ID"});
   deliveries.belongsTo(orders, { as: "ORDER", foreignKey: "ORDER_ID"});
@@ -62,8 +56,6 @@ function initModels(sequelize) {
   products.hasMany(orders_detail, { as: "orders_details", foreignKey: "PRODUCT_ID"});
   reviews.belongsTo(products, { as: "PRODUCT", foreignKey: "PRODUCT_ID"});
   products.hasMany(reviews, { as: "reviews", foreignKey: "PRODUCT_ID"});
-  wishlists.belongsTo(products, { as: "PRODUCT", foreignKey: "PRODUCT_ID"});
-  products.hasMany(wishlists, { as: "wishlists", foreignKey: "PRODUCT_ID"});
 
   return {
     admins,
@@ -76,7 +68,6 @@ function initModels(sequelize) {
     orders_detail,
     products,
     reviews,
-    wishlists,
   };
 }
 module.exports = initModels;

@@ -41,6 +41,10 @@ module.exports = function(sequelize, DataTypes) {
     ISDELETED: {
       type: DataTypes.BOOLEAN,
       allowNull: true
+    },
+    ISLOCK: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }, {
     sequelize,
