@@ -137,8 +137,6 @@ exports.listAllPopular = (search, cate) => {
                 ISDELETED: false
                 
             },
-            offset: page * itemPerPage, 
-            limit: itemPerPage, 
             raw:true
         });
         
@@ -156,8 +154,6 @@ exports.listAllPopular = (search, cate) => {
                 ISDELETED: false
                 
             },
-            offset: page * itemPerPage, 
-            limit: itemPerPage, 
             raw:true
         });
         
@@ -173,8 +169,6 @@ exports.listAllPopular = (search, cate) => {
                 ISDELETED: false
                 
             },
-            offset: page * itemPerPage, 
-            limit: itemPerPage, 
             raw:true
         });
     }
@@ -186,8 +180,6 @@ exports.listAllPopular = (search, cate) => {
                 },
                 ISDELETED: false
             },
-            offset: page * itemPerPage, 
-            limit: itemPerPage, 
             raw:true
         });
     }

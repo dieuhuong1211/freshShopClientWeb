@@ -4,7 +4,15 @@ const bcrypt = require('bcrypt');
 exports.register = async (req, res) => {
     
     const {email, password, firstname, lastname, dob, gender, phone} = req.body;
-    const account = await authService.findAccount(email);
+    
+    let account
+    try{
+         account = await authService.findAccount(email);
+
+    }
+    catch(err){
+        console.log(err);
+    }
     if(account) {
         res.render('register', {errorCode: true});
         return;
@@ -14,7 +22,13 @@ exports.register = async (req, res) => {
             res.render('register', {errorCode: true});
         else
         {
-            authService.register(email, password, firstname, lastname, dob, gender, phone);
+            try {
+                await authService.register(email, password, firstname, lastname, dob, gender, phone);
+            }
+            catch(err)
+            {
+                console.log(err);
+            }
             console.log('register successed');
             res.redirect('/auth/login');
         }

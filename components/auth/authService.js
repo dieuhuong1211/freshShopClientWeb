@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const {models} = require('../../models');
 
+const { v1: uuidv1 } = require('uuid');
+
 exports.findAccount = async (email) =>{
     const account = await models.clients.findOne({
         where: {
@@ -31,7 +33,7 @@ exports.register = async (email, password, firstname, lastname, dob, gender, pho
     return models.clients.create({
         EMAIL: email, 
         PASS: hashPassword, 
-        CLIENT_ID:email,
+        CLIENT_ID: uuidv1(),
         FIRSTNAME: firstname,
         LASTNAME: lastname,
         DOB: dob,
@@ -39,7 +41,7 @@ exports.register = async (email, password, firstname, lastname, dob, gender, pho
         PHONE: phone,
         IMAGE: "/assets/images/clients/no-image.png",
         ISLOCK: false,
-        ISDELETED: false
+        ISDELETED: false,
     });
     
 }

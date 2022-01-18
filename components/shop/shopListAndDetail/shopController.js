@@ -73,8 +73,14 @@ exports.list = async (req, res, next) => {
             products = await shopService.list(search, currentPage - 1, itemPrePage, cate);
             const allproduct = await shopService.listNonPaging(search, cate);
             proCount = allproduct.length;
+            console.log("------------p-length: ",allproduct.length);
+
+            console.log("------------currentPage1: ",currentPage);
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage;
+            console.log("------------total: ",totalPage);
+            console.log("------------currentPage2: ",currentPage);
+
             
             if(totalPage === 1)
             {
@@ -102,7 +108,7 @@ exports.list = async (req, res, next) => {
     {
         try{
             products = await shopService.listPopular(search, currentPage - 1, itemPrePage, cate);
-            const allproduct = await shopService.listNonPaging(search, cate);
+            const allproduct = await shopService.listAllPopular(search, cate);
             proCount = allproduct.length;
             totalPage = Math.ceil(proCount/itemPrePage);
             currentPage = (currentPage <= totalPage) ? currentPage : totalPage
@@ -207,6 +213,7 @@ exports.list = async (req, res, next) => {
             res.render('shop/shopList', {
                 products,
                 filter,
+                currentPage,
                 search,
                 categories
                 });
@@ -271,6 +278,8 @@ exports.list = async (req, res, next) => {
                 products,
                 filter,
                 search,
+                currentPage,
+
                 categories,
                 cate
                 });
