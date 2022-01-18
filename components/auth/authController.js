@@ -48,7 +48,10 @@ exports.myAccount = async (req, res) => {
 
 exports.updateAccount = async (req, res, next) => {
     console.log("--------- begin update account ---------");
-    console.log("--------- image: ", req.body.image);
+    if(req.file.filename)
+    {
+        console.log("--------- image: ", req.file.filename);
+    }
     console.log("--------- firstname: ", req.body.firstname);
     console.log("--------- lastname: ", req.body.lastname);
     console.log("--------- dob: ", req.body.dob);
@@ -66,17 +69,17 @@ exports.updateAccount = async (req, res, next) => {
     else {
         res.redirect('/auth/login');
     }
-    if(req.body.firstname)
-    {
+
         console.log("--------update info-------");
-        if(req.body.firstname.length > 0 || req.body.lastname.length > 0 || req.body.gender.length > 0 || req.body.dob.length > 0 || req.body.phone.length > 0 || req.body.image.length > 0)
+        if(req.body.firstname || req.body.lastname || req.body.gender || req.body.dob || req.body.phone || req.file.filename)
         {
-            firstname = (req.body.firstname.length > 0) ? req.body.firstname : req.user.FIRSTNAME;
-            lastname = (req.body.lastname.length > 0) ? req.body.lastname : req.user.LASTNAME;
-            gender = (req.body.gender.length > 0) ? req.body.gender : req.user.GENDER;
-            dob = (req.body.dob.length > 0) ? req.body.dob : req.user.DOB;
-            phone = (req.body.phone.length > 0) ? req.body.phone : req.user.PHONE;
-            image = (req.body.image.length > 0) ? req.body.image : "";
+            firstname = (req.body.firstname) ? req.body.firstname : req.user.FIRSTNAME;
+            lastname = (req.body.lastname) ? req.body.lastname : req.user.LASTNAME;
+            gender = (req.body.gender) ? req.body.gender : req.user.GENDER;
+            dob = (req.body.dob) ? req.body.dob : req.user.DOB;
+            phone = (req.body.phone) ? req.body.phone : req.user.PHONE;
+            image = (req.file.filename) ? req.file.filename : "";
+            console.log("image----------------:", image);
             try{
                 if(image.length > 0)
                 {
@@ -96,8 +99,6 @@ exports.updateAccount = async (req, res, next) => {
             }
             
         }
-    }
-   
     email = req.body.email;
     pass = req.body.pass;
     newpass = req.body.newpass;

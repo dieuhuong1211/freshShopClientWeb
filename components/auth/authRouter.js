@@ -1,6 +1,18 @@
 var express = require('express');
 var router = express.Router();
-const passport = require('../../auth/passport')
+const passport = require('../../auth/passport');
+
+const multer  = require('multer');
+const path = require('path');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/assets/images/clients/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + path.extname(file.originalname)) 
+    }
+  })
+const upload = multer({ storage: storage });
 
 const authController = require('./authController');
 
@@ -24,7 +36,8 @@ router.get('/login', function(req, res, next) {
 
 router.get('/myAccount', authController.myAccount);
 
-router.post('/myAccount', authController.updateAccount);
+router.post('/myAccount',upload.single('uploaded_newfile')
+, authController.updateAccount);
 
 router.get('/logout', function(req, res){
   req.logout();
